@@ -41,7 +41,7 @@ export const LocationPickerModal: React.FC<LocationPickerModalProps> = ({
 
   // Cargar GeoJSON de los 14 municipios de Carabobo
   useEffect(() => {
-    fetch('/data/carabobo_municipios.geojson')
+    fetch(`${import.meta.env.BASE_URL}data/carabobo_municipios.geojson`)
       .then((res) => res.json())
       .then((data: GeoJSON.FeatureCollection) => {
         geojsonRef.current = data;
@@ -74,7 +74,7 @@ export const LocationPickerModal: React.FC<LocationPickerModalProps> = ({
     }).addTo(map);
 
     // Cargar polígonos de municipios de Carabobo con bordes sutiles
-    fetch('/data/carabobo_municipios.geojson')
+    fetch(`${import.meta.env.BASE_URL}data/carabobo_municipios.geojson`)
       .then((res) => res.json())
       .then((geojson) => {
         L.geoJSON(geojson, {

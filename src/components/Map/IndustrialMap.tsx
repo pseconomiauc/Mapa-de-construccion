@@ -92,7 +92,7 @@ export const IndustrialMap: React.FC<IndustrialMapProps> = ({
     clusterGroupRef.current = clusterGroup;
 
     // Cargar capa GeoJSON de los 14 municipios de Carabobo
-    fetch('/data/carabobo_municipios.geojson')
+    fetch(`${import.meta.env.BASE_URL}data/carabobo_municipios.geojson`)
       .then((res) => {
         if (!res.ok) throw new Error('Error al cargar GeoJSON de municipios');
         return res.json();

@@ -30,7 +30,7 @@ export const MapView: React.FC<MapViewProps> = ({ onNavigateHome }) => {
 
   // Cargar GeoJSON de municipios
   useEffect(() => {
-    fetch('/data/carabobo_municipios.geojson')
+    fetch(`${import.meta.env.BASE_URL}data/carabobo_municipios.geojson`)
       .then((res) => res.json())
       .then((data) => setGeojsonData(data))
       .catch((err) => console.warn('No se pudo cargar GeoJSON para cálculo de municipio:', err));

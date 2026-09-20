@@ -89,7 +89,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
 
   // Cargar GeoJSON de Carabobo para cálculo de municipio en el cliente
   useEffect(() => {
-    fetch('/data/carabobo_municipios.geojson')
+    fetch(`${import.meta.env.BASE_URL}data/carabobo_municipios.geojson`)
       .then((res) => res.json())
       .then((data) => setGeojsonData(data))
       .catch((err) => console.warn('No se pudo cargar GeoJSON en CompanyForm:', err));
