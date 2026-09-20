@@ -124,7 +124,21 @@ Las subcategorías se cargan desde la tabla `categorias` de Supabase.
 
 ## Despliegue
 
-### Opción A: Netlify
+### Opción A: GitHub Pages
+
+El repositorio incluye el workflow `.github/workflows/deploy-pages.yml`. Para activarlo:
+
+1. Sube el proyecto a GitHub. La ruta base se ajusta automáticamente al nombre del repositorio durante el workflow.
+2. En GitHub, abre **Settings → Secrets and variables → Actions** y crea estos secretos del repositorio:
+   - `VITE_SUPABASE_URL` → URL pública de tu proyecto Supabase.
+   - `VITE_SUPABASE_ANON_KEY` → clave pública `anon`/publishable.
+3. En **Settings → Pages**, selecciona **GitHub Actions** como fuente de publicación.
+4. Haz push a `main` o `master`. El workflow compilará y publicará automáticamente la aplicación.
+
+La URL quedará con este formato: `https://<usuario>.github.io/Mapa-de-construccion/`.
+Las credenciales `VITE_*` quedan incorporadas al bundle del navegador, por lo que deben ser únicamente la URL pública y la clave `anon`/publishable. La seguridad depende de las políticas RLS de Supabase; nunca uses una clave `service_role`.
+
+### Opción B: Netlify
 
 1. Sube el repositorio a GitHub/GitLab.
 2. Ve a [Netlify](https://app.netlify.com/) → **Add new site** → **Import an existing project**.
@@ -139,7 +153,7 @@ Las subcategorías se cargan desde la tabla `categorias` de Supabase.
 
 > El archivo `public/_redirects` ya está incluido para que las rutas SPA funcionen correctamente.
 
-### Opción B: Vercel
+### Opción C: Vercel
 
 1. Sube el repositorio a GitHub/GitLab.
 2. Ve a [Vercel](https://vercel.com/) → **Add New** → **Project**.
