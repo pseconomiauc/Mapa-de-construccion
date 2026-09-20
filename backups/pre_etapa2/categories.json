@@ -1,0 +1,2160 @@
+{
+  "branches": [
+    {
+      "id": 1,
+      "name": "Extracción y recursos primarios",
+      "groups": [
+        {
+          "name": "1.1 Minería no metálica",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "aridos-grava-arena",
+              "nombre": "Áridos (grava, arena)",
+              "actores": [
+                "F"
+              ],
+              "orden": 1,
+              "t": "Áridos (grava, arena)",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "rocas-ornamentales-granito-marmol",
+              "nombre": "Rocas ornamentales (granito, mármol)",
+              "actores": [
+                "F"
+              ],
+              "orden": 2,
+              "t": "Rocas ornamentales (granito, mármol)",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "calizas-y-arcillas",
+              "nombre": "Calizas y arcillas",
+              "actores": [
+                "F"
+              ],
+              "orden": 3,
+              "t": "Calizas y arcillas",
+              "tags": [
+                "F"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "1.2 Minería metálica",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "hierro-bauxita-cobre",
+              "nombre": "Hierro, bauxita, cobre",
+              "actores": [
+                "F"
+              ],
+              "orden": 4,
+              "t": "Hierro, bauxita, cobre",
+              "tags": [
+                "F"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "1.3 Otros recursos",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "madera-cruda-sector-forestal",
+              "nombre": "Madera cruda (sector forestal)",
+              "actores": [
+                "F"
+              ],
+              "orden": 5,
+              "t": "Madera cruda (sector forestal)",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "agua-industrial",
+              "nombre": "Agua industrial",
+              "actores": [
+                "S"
+              ],
+              "orden": 6,
+              "t": "Agua industrial",
+              "tags": [
+                "S"
+              ]
+            },
+            {
+              "slug": "hidrocarburos-y-derivados",
+              "nombre": "Hidrocarburos y derivados",
+              "actores": [
+                "F"
+              ],
+              "orden": 7,
+              "t": "Hidrocarburos y derivados",
+              "tags": [
+                "F"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Manufactura de materiales",
+      "groups": [
+        {
+          "name": "2.1 Cemento, concreto y prefabricados",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "cemento-gris-blanco-especial-y-clinker",
+              "nombre": "Cemento (gris, blanco, especial) y clinker",
+              "actores": [
+                "F"
+              ],
+              "orden": 8,
+              "t": "Cemento (gris, blanco, especial) y clinker",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "concreto-premezclado-y-morteros",
+              "nombre": "Concreto premezclado y morteros",
+              "actores": [
+                "F"
+              ],
+              "orden": 9,
+              "t": "Concreto premezclado y morteros",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "cal-y-yeso",
+              "nombre": "Cal y yeso",
+              "actores": [
+                "F"
+              ],
+              "orden": 10,
+              "t": "Cal y yeso",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "bloques-adoquines-y-tuberias-de-concreto",
+              "nombre": "Bloques, adoquines y tuberías de concreto",
+              "actores": [
+                "F"
+              ],
+              "orden": 11,
+              "t": "Bloques, adoquines y tuberías de concreto",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "vigas-pretensadas-y-losacero",
+              "nombre": "Vigas pretensadas y losacero",
+              "actores": [
+                "F"
+              ],
+              "orden": 12,
+              "t": "Vigas pretensadas y losacero",
+              "tags": [
+                "F"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "2.2 Cerámica, vidrio y sistemas livianos",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "ladrillos-y-tejas",
+              "nombre": "Ladrillos y tejas",
+              "actores": [
+                "F"
+              ],
+              "orden": 13,
+              "t": "Ladrillos y tejas",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "baldosas-y-porcelanatos",
+              "nombre": "Baldosas y porcelanatos",
+              "actores": [
+                "F"
+              ],
+              "orden": 14,
+              "t": "Baldosas y porcelanatos",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "piezas-sanitarias",
+              "nombre": "Piezas sanitarias",
+              "actores": [
+                "F"
+              ],
+              "orden": 15,
+              "t": "Piezas sanitarias",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "vidrio-plano-templado-laminado",
+              "nombre": "Vidrio (plano, templado, laminado)",
+              "actores": [
+                "F"
+              ],
+              "orden": 16,
+              "t": "Vidrio (plano, templado, laminado)",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "drywall-y-fibrocemento",
+              "nombre": "Drywall y fibrocemento",
+              "actores": [
+                "F"
+              ],
+              "orden": 17,
+              "t": "Drywall y fibrocemento",
+              "tags": [
+                "F"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "2.3 Acero y metalurgia",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "cabillas-mallas-y-estribos",
+              "nombre": "Cabillas, mallas y estribos",
+              "actores": [
+                "F"
+              ],
+              "orden": 18,
+              "t": "Cabillas, mallas y estribos",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "perfiles-y-planchas-estructurales",
+              "nombre": "Perfiles y planchas estructurales",
+              "actores": [
+                "F"
+              ],
+              "orden": 19,
+              "t": "Perfiles y planchas estructurales",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "laminas-de-techo-galvanizadas-termoacusticas-zinc",
+              "nombre": "Láminas de techo (galvanizadas, termoacústicas, zinc)",
+              "actores": [
+                "F"
+              ],
+              "orden": 20,
+              "t": "Láminas de techo (galvanizadas, termoacústicas, zinc)",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "aluminio-para-ventanas",
+              "nombre": "Aluminio para ventanas",
+              "actores": [
+                "F"
+              ],
+              "orden": 21,
+              "t": "Aluminio para ventanas",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "clavos-tornillos-y-anclajes",
+              "nombre": "Clavos, tornillos y anclajes",
+              "actores": [
+                "F"
+              ],
+              "orden": 22,
+              "t": "Clavos, tornillos y anclajes",
+              "tags": [
+                "F"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "2.4 Plásticos y química",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "tuberias-pvc-cpvc-pead-y-ppr",
+              "nombre": "Tuberías PVC, CPVC, PEAD y PPR",
+              "actores": [
+                "F"
+              ],
+              "orden": 23,
+              "t": "Tuberías PVC, CPVC, PEAD y PPR",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "tanques-de-polietileno",
+              "nombre": "Tanques de polietileno",
+              "actores": [
+                "F"
+              ],
+              "orden": 24,
+              "t": "Tanques de polietileno",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "pinturas-masillas-y-anticorrosivos",
+              "nombre": "Pinturas, masillas y anticorrosivos",
+              "actores": [
+                "F"
+              ],
+              "orden": 25,
+              "t": "Pinturas, masillas y anticorrosivos",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "impermeabilizantes-mantos-asfalticos-y-selladores",
+              "nombre": "Impermeabilizantes, mantos asfálticos y selladores",
+              "actores": [
+                "F"
+              ],
+              "orden": 26,
+              "t": "Impermeabilizantes, mantos asfálticos y selladores",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "aditivos-pegamentos-y-resinas",
+              "nombre": "Aditivos, pegamentos y resinas",
+              "actores": [
+                "F"
+              ],
+              "orden": 27,
+              "t": "Aditivos, pegamentos y resinas",
+              "tags": [
+                "F"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "2.5 Material eléctrico",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "cables-baja-media-y-alta-tension",
+              "nombre": "Cables (baja, media y alta tensión)",
+              "actores": [
+                "F"
+              ],
+              "orden": 28,
+              "t": "Cables (baja, media y alta tensión)",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "canalizaciones-emt-imc-bandejas",
+              "nombre": "Canalizaciones (EMT, IMC, bandejas)",
+              "actores": [
+                "F"
+              ],
+              "orden": 29,
+              "t": "Canalizaciones (EMT, IMC, bandejas)",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "tableros-y-breakers",
+              "nombre": "Tableros y breakers",
+              "actores": [
+                "F"
+              ],
+              "orden": 30,
+              "t": "Tableros y breakers",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "tomacorrientes-apagadores-y-luminarias",
+              "nombre": "Tomacorrientes, apagadores y luminarias",
+              "actores": [
+                "F"
+              ],
+              "orden": 31,
+              "t": "Tomacorrientes, apagadores y luminarias",
+              "tags": [
+                "F"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "2.6 Madera y derivados",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "madera-para-encofrado-y-andamiaje",
+              "nombre": "Madera para encofrado y andamiaje",
+              "actores": [
+                "F"
+              ],
+              "orden": 32,
+              "t": "Madera para encofrado y andamiaje",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "tableros-plywood-mdf-mdp",
+              "nombre": "Tableros (plywood, MDF, MDP)",
+              "actores": [
+                "F"
+              ],
+              "orden": 33,
+              "t": "Tableros (plywood, MDF, MDP)",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "puertas-marcos-y-carpinteria",
+              "nombre": "Puertas, marcos y carpintería",
+              "actores": [
+                "F"
+              ],
+              "orden": 34,
+              "t": "Puertas, marcos y carpintería",
+              "tags": [
+                "F"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "2.7 Prefabricación y ensamblaje",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "estructuras-modulares-y-paneles-sip",
+              "nombre": "Estructuras modulares y paneles SIP",
+              "actores": [
+                "F"
+              ],
+              "orden": 35,
+              "t": "Estructuras modulares y paneles SIP",
+              "tags": [
+                "F"
+              ]
+            },
+            {
+              "slug": "fachadas-y-ventanas-preensambladas",
+              "nombre": "Fachadas y ventanas preensambladas",
+              "actores": [
+                "F"
+              ],
+              "orden": 36,
+              "t": "Fachadas y ventanas preensambladas",
+              "tags": [
+                "F"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Distribución y comercio de materiales",
+      "groups": [
+        {
+          "name": "3.1 Ferreterías y depósitos de materiales",
+          "tags": [
+            "D"
+          ],
+          "leaf": true,
+          "items": [
+            {
+              "slug": "3-1-ferreterias-y-depositos-de-materiales",
+              "nombre": "3.1 Ferreterías y depósitos de materiales",
+              "actores": [
+                "D"
+              ],
+              "orden": 37,
+              "t": "3.1 Ferreterías y depósitos de materiales",
+              "tags": [
+                "D"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "3.2 Distribuidores especializados",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "acero",
+              "nombre": "Acero",
+              "actores": [
+                "D"
+              ],
+              "orden": 38,
+              "t": "Acero",
+              "tags": [
+                "D"
+              ]
+            },
+            {
+              "slug": "material-electrico",
+              "nombre": "Material eléctrico",
+              "actores": [
+                "D"
+              ],
+              "orden": 39,
+              "t": "Material eléctrico",
+              "tags": [
+                "D"
+              ]
+            },
+            {
+              "slug": "sanitarios-y-griferia",
+              "nombre": "Sanitarios y grifería",
+              "actores": [
+                "D"
+              ],
+              "orden": 40,
+              "t": "Sanitarios y grifería",
+              "tags": [
+                "D"
+              ]
+            },
+            {
+              "slug": "pinturas",
+              "nombre": "Pinturas",
+              "actores": [
+                "D"
+              ],
+              "orden": 41,
+              "t": "Pinturas",
+              "tags": [
+                "D"
+              ]
+            },
+            {
+              "slug": "acabados",
+              "nombre": "Acabados",
+              "actores": [
+                "D"
+              ],
+              "orden": 42,
+              "t": "Acabados",
+              "tags": [
+                "D"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "3.3 Importadores",
+          "tags": [
+            "D"
+          ],
+          "leaf": true,
+          "items": [
+            {
+              "slug": "3-3-importadores",
+              "nombre": "3.3 Importadores",
+              "actores": [
+                "D"
+              ],
+              "orden": 43,
+              "t": "3.3 Importadores",
+              "tags": [
+                "D"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "3.4 Transporte y fletes de carga",
+          "tags": [
+            "A"
+          ],
+          "leaf": true,
+          "items": [
+            {
+              "slug": "3-4-transporte-y-fletes-de-carga",
+              "nombre": "3.4 Transporte y fletes de carga",
+              "actores": [
+                "A"
+              ],
+              "orden": 44,
+              "t": "3.4 Transporte y fletes de carga",
+              "tags": [
+                "A"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Servicios profesionales y técnicos",
+      "groups": [
+        {
+          "name": "4.1 Estudios previos",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "topografia-y-geotecnia",
+              "nombre": "Topografía y geotecnia",
+              "actores": [
+                "S"
+              ],
+              "orden": 45,
+              "t": "Topografía y geotecnia",
+              "tags": [
+                "S"
+              ]
+            },
+            {
+              "slug": "estudios-ambientales",
+              "nombre": "Estudios ambientales",
+              "actores": [
+                "S"
+              ],
+              "orden": 46,
+              "t": "Estudios ambientales",
+              "tags": [
+                "S"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "4.2 Diseño e ingeniería",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "arquitectura-y-bim",
+              "nombre": "Arquitectura y BIM",
+              "actores": [
+                "S"
+              ],
+              "orden": 47,
+              "t": "Arquitectura y BIM",
+              "tags": [
+                "S"
+              ]
+            },
+            {
+              "slug": "calculo-estructural",
+              "nombre": "Cálculo estructural",
+              "actores": [
+                "S"
+              ],
+              "orden": 48,
+              "t": "Cálculo estructural",
+              "tags": [
+                "S"
+              ]
+            },
+            {
+              "slug": "proyectos-mep",
+              "nombre": "Proyectos MEP",
+              "actores": [
+                "S"
+              ],
+              "orden": 49,
+              "t": "Proyectos MEP",
+              "tags": [
+                "S"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "4.3 Gestión y control",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "permisos-y-licencias",
+              "nombre": "Permisos y licencias",
+              "actores": [
+                "S"
+              ],
+              "orden": 50,
+              "t": "Permisos y licencias",
+              "tags": [
+                "S"
+              ]
+            },
+            {
+              "slug": "gerencia-e-inspeccion-de-obra",
+              "nombre": "Gerencia e inspección de obra",
+              "actores": [
+                "S"
+              ],
+              "orden": 51,
+              "t": "Gerencia e inspección de obra",
+              "tags": [
+                "S"
+              ]
+            },
+            {
+              "slug": "laboratorios-de-control-de-calidad",
+              "nombre": "Laboratorios de control de calidad",
+              "actores": [
+                "S"
+              ],
+              "orden": 52,
+              "t": "Laboratorios de control de calidad",
+              "tags": [
+                "S"
+              ]
+            },
+            {
+              "slug": "seguridad-industrial-y-dotacion-epp",
+              "nombre": "Seguridad industrial y dotación (EPP)",
+              "actores": [
+                "S"
+              ],
+              "orden": 53,
+              "t": "Seguridad industrial y dotación (EPP)",
+              "tags": [
+                "S"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Ejecución de obra",
+      "groups": [
+        {
+          "name": "5.1 Tipos de contratista",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "edificacion-residencial-y-no-residencial",
+              "nombre": "Edificación residencial y no residencial",
+              "actores": [
+                "C"
+              ],
+              "orden": 54,
+              "t": "Edificación residencial y no residencial",
+              "tags": [
+                "C"
+              ]
+            },
+            {
+              "slug": "obras-civiles-e-infraestructura",
+              "nombre": "Obras civiles e infraestructura",
+              "actores": [
+                "C"
+              ],
+              "orden": 55,
+              "t": "Obras civiles e infraestructura",
+              "tags": [
+                "C"
+              ]
+            },
+            {
+              "slug": "subcontratistas-por-especialidad",
+              "nombre": "Subcontratistas por especialidad",
+              "actores": [
+                "C"
+              ],
+              "orden": 56,
+              "t": "Subcontratistas por especialidad",
+              "tags": [
+                "C"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "5.2 Etapas de obra",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "preliminares-y-cimentacion-movimiento-de-tierras-pilotes-zap",
+              "nombre": "Preliminares y cimentación (movimiento de tierras, pilotes, zapatas)",
+              "actores": [
+                "C"
+              ],
+              "orden": 57,
+              "t": "Preliminares y cimentación (movimiento de tierras, pilotes, zapatas)",
+              "tags": [
+                "C"
+              ]
+            },
+            {
+              "slug": "obra-negra-estructura-columnas-vigas-y-losas",
+              "nombre": "Obra negra: estructura, columnas, vigas y losas",
+              "actores": [
+                "C"
+              ],
+              "orden": 58,
+              "t": "Obra negra: estructura, columnas, vigas y losas",
+              "tags": [
+                "C"
+              ]
+            },
+            {
+              "slug": "obra-gris-instalaciones-mep-hvac-domotica-y-cableado",
+              "nombre": "Obra gris: instalaciones MEP, HVAC, domótica y cableado",
+              "actores": [
+                "C"
+              ],
+              "orden": 59,
+              "t": "Obra gris: instalaciones MEP, HVAC, domótica y cableado",
+              "tags": [
+                "C"
+              ]
+            },
+            {
+              "slug": "obra-blanca-pisos-estucos-pintura-carpinteria-y-paisajismo",
+              "nombre": "Obra blanca: pisos, estucos, pintura, carpintería y paisajismo",
+              "actores": [
+                "C"
+              ],
+              "orden": 60,
+              "t": "Obra blanca: pisos, estucos, pintura, carpintería y paisajismo",
+              "tags": [
+                "C"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Equipos, maquinaria y suministros especiales",
+      "groups": [
+        {
+          "name": "6.1 Maquinaria pesada",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "gruas-excavadoras-mezcladoras",
+              "nombre": "Grúas, excavadoras, mezcladoras",
+              "actores": [
+                "F",
+                "A"
+              ],
+              "orden": 61,
+              "t": "Grúas, excavadoras, mezcladoras",
+              "tags": [
+                "F",
+                "A"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "6.2 Andamios y encofrados",
+          "tags": [
+            "F",
+            "A"
+          ],
+          "leaf": true,
+          "items": [
+            {
+              "slug": "6-2-andamios-y-encofrados",
+              "nombre": "6.2 Andamios y encofrados",
+              "actores": [
+                "F",
+                "A"
+              ],
+              "orden": 62,
+              "t": "6.2 Andamios y encofrados",
+              "tags": [
+                "F",
+                "A"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "6.3 Equipos de edificación",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "ascensores-y-escaleras-mecanicas",
+              "nombre": "Ascensores y escaleras mecánicas",
+              "actores": [
+                "F",
+                "S"
+              ],
+              "orden": 63,
+              "t": "Ascensores y escaleras mecánicas",
+              "tags": [
+                "F",
+                "S"
+              ]
+            },
+            {
+              "slug": "hvac",
+              "nombre": "HVAC",
+              "actores": [
+                "F",
+                "S"
+              ],
+              "orden": 64,
+              "t": "HVAC",
+              "tags": [
+                "F",
+                "S"
+              ]
+            },
+            {
+              "slug": "bombas-e-hidroneumaticos",
+              "nombre": "Bombas e hidroneumáticos",
+              "actores": [
+                "F",
+                "S"
+              ],
+              "orden": 65,
+              "t": "Bombas e hidroneumáticos",
+              "tags": [
+                "F",
+                "S"
+              ]
+            },
+            {
+              "slug": "transformadores",
+              "nombre": "Transformadores",
+              "actores": [
+                "F",
+                "S"
+              ],
+              "orden": 66,
+              "t": "Transformadores",
+              "tags": [
+                "F",
+                "S"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Financiamiento y comercialización",
+      "groups": [
+        {
+          "name": "7.1 Banca, fiducias y créditos puente",
+          "tags": [
+            "S"
+          ],
+          "leaf": true,
+          "items": [
+            {
+              "slug": "7-1-banca-fiducias-y-creditos-puente",
+              "nombre": "7.1 Banca, fiducias y créditos puente",
+              "actores": [
+                "S"
+              ],
+              "orden": 67,
+              "t": "7.1 Banca, fiducias y créditos puente",
+              "tags": [
+                "S"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "7.2 Seguros (todo riesgo)",
+          "tags": [
+            "S"
+          ],
+          "leaf": true,
+          "items": [
+            {
+              "slug": "7-2-seguros-todo-riesgo",
+              "nombre": "7.2 Seguros (todo riesgo)",
+              "actores": [
+                "S"
+              ],
+              "orden": 68,
+              "t": "7.2 Seguros (todo riesgo)",
+              "tags": [
+                "S"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "7.3 Inmobiliarias, corretaje y avalúos",
+          "tags": [
+            "S"
+          ],
+          "leaf": true,
+          "items": [
+            {
+              "slug": "7-3-inmobiliarias-corretaje-y-avaluos",
+              "nombre": "7.3 Inmobiliarias, corretaje y avalúos",
+              "actores": [
+                "S"
+              ],
+              "orden": 69,
+              "t": "7.3 Inmobiliarias, corretaje y avalúos",
+              "tags": [
+                "S"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "7.4 Notarías y registros",
+          "tags": [
+            "S"
+          ],
+          "leaf": true,
+          "items": [
+            {
+              "slug": "7-4-notarias-y-registros",
+              "nombre": "7.4 Notarías y registros",
+              "actores": [
+                "S"
+              ],
+              "orden": 70,
+              "t": "7.4 Notarías y registros",
+              "tags": [
+                "S"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Operación y fin de ciclo",
+      "groups": [
+        {
+          "name": "8.1 Facility management y mantenimiento",
+          "tags": [
+            "S"
+          ],
+          "leaf": true,
+          "items": [
+            {
+              "slug": "8-1-facility-management-y-mantenimiento",
+              "nombre": "8.1 Facility management y mantenimiento",
+              "actores": [
+                "S"
+              ],
+              "orden": 71,
+              "t": "8.1 Facility management y mantenimiento",
+              "tags": [
+                "S"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "8.2 Demolición técnica",
+          "tags": [
+            "C"
+          ],
+          "leaf": true,
+          "items": [
+            {
+              "slug": "8-2-demolicion-tecnica",
+              "nombre": "8.2 Demolición técnica",
+              "actores": [
+                "C"
+              ],
+              "orden": 72,
+              "t": "8.2 Demolición técnica",
+              "tags": [
+                "C"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "8.3 Reciclaje de residuos (RCD), retorna a la rama 2",
+          "tags": [
+            "F",
+            "S"
+          ],
+          "leaf": true,
+          "items": [
+            {
+              "slug": "8-3-reciclaje-de-residuos-rcd-retorna-a-la-rama-2",
+              "nombre": "8.3 Reciclaje de residuos (RCD), retorna a la rama 2",
+              "actores": [
+                "F",
+                "S"
+              ],
+              "orden": 73,
+              "t": "8.3 Reciclaje de residuos (RCD), retorna a la rama 2",
+              "tags": [
+                "F",
+                "S"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Demanda final",
+      "groups": [
+        {
+          "name": "Quién compra",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "familias",
+              "nombre": "Familias",
+              "actores": [],
+              "orden": 74,
+              "t": "Familias",
+              "tags": []
+            },
+            {
+              "slug": "sector-publico-gobernacion-alcaldias-y-ministerios",
+              "nombre": "Sector público: gobernación, alcaldías y ministerios",
+              "actores": [],
+              "orden": 75,
+              "t": "Sector público: gobernación, alcaldías y ministerios",
+              "tags": []
+            },
+            {
+              "slug": "empresas-privadas-e-industria",
+              "nombre": "Empresas privadas e industria",
+              "actores": [],
+              "orden": 76,
+              "t": "Empresas privadas e industria",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Referencia territorial: Carabobo",
+      "groups": [
+        {
+          "name": "Municipios y zonas",
+          "tags": [],
+          "leaf": false,
+          "items": [
+            {
+              "slug": "valencia",
+              "nombre": "Valencia",
+              "actores": [],
+              "orden": 77,
+              "t": "Valencia",
+              "tags": []
+            },
+            {
+              "slug": "los-guayos",
+              "nombre": "Los Guayos",
+              "actores": [],
+              "orden": 78,
+              "t": "Los Guayos",
+              "tags": []
+            },
+            {
+              "slug": "guacara",
+              "nombre": "Guacara",
+              "actores": [],
+              "orden": 79,
+              "t": "Guacara",
+              "tags": []
+            },
+            {
+              "slug": "san-diego",
+              "nombre": "San Diego",
+              "actores": [],
+              "orden": 80,
+              "t": "San Diego",
+              "tags": []
+            },
+            {
+              "slug": "puerto-cabello",
+              "nombre": "Puerto Cabello",
+              "actores": [],
+              "orden": 81,
+              "t": "Puerto Cabello",
+              "tags": []
+            },
+            {
+              "slug": "otros-municipios",
+              "nombre": "Otros municipios",
+              "actores": [],
+              "orden": 82,
+              "t": "Otros municipios",
+              "tags": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "allCategories": [
+    {
+      "slug": "aridos-grava-arena",
+      "rama_id": 1,
+      "rama_nombre": "Extracción y recursos primarios",
+      "grupo": "1.1 Minería no metálica",
+      "nombre": "Áridos (grava, arena)",
+      "actores": [
+        "F"
+      ],
+      "orden": 1
+    },
+    {
+      "slug": "rocas-ornamentales-granito-marmol",
+      "rama_id": 1,
+      "rama_nombre": "Extracción y recursos primarios",
+      "grupo": "1.1 Minería no metálica",
+      "nombre": "Rocas ornamentales (granito, mármol)",
+      "actores": [
+        "F"
+      ],
+      "orden": 2
+    },
+    {
+      "slug": "calizas-y-arcillas",
+      "rama_id": 1,
+      "rama_nombre": "Extracción y recursos primarios",
+      "grupo": "1.1 Minería no metálica",
+      "nombre": "Calizas y arcillas",
+      "actores": [
+        "F"
+      ],
+      "orden": 3
+    },
+    {
+      "slug": "hierro-bauxita-cobre",
+      "rama_id": 1,
+      "rama_nombre": "Extracción y recursos primarios",
+      "grupo": "1.2 Minería metálica",
+      "nombre": "Hierro, bauxita, cobre",
+      "actores": [
+        "F"
+      ],
+      "orden": 4
+    },
+    {
+      "slug": "madera-cruda-sector-forestal",
+      "rama_id": 1,
+      "rama_nombre": "Extracción y recursos primarios",
+      "grupo": "1.3 Otros recursos",
+      "nombre": "Madera cruda (sector forestal)",
+      "actores": [
+        "F"
+      ],
+      "orden": 5
+    },
+    {
+      "slug": "agua-industrial",
+      "rama_id": 1,
+      "rama_nombre": "Extracción y recursos primarios",
+      "grupo": "1.3 Otros recursos",
+      "nombre": "Agua industrial",
+      "actores": [
+        "S"
+      ],
+      "orden": 6
+    },
+    {
+      "slug": "hidrocarburos-y-derivados",
+      "rama_id": 1,
+      "rama_nombre": "Extracción y recursos primarios",
+      "grupo": "1.3 Otros recursos",
+      "nombre": "Hidrocarburos y derivados",
+      "actores": [
+        "F"
+      ],
+      "orden": 7
+    },
+    {
+      "slug": "cemento-gris-blanco-especial-y-clinker",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.1 Cemento, concreto y prefabricados",
+      "nombre": "Cemento (gris, blanco, especial) y clinker",
+      "actores": [
+        "F"
+      ],
+      "orden": 8
+    },
+    {
+      "slug": "concreto-premezclado-y-morteros",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.1 Cemento, concreto y prefabricados",
+      "nombre": "Concreto premezclado y morteros",
+      "actores": [
+        "F"
+      ],
+      "orden": 9
+    },
+    {
+      "slug": "cal-y-yeso",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.1 Cemento, concreto y prefabricados",
+      "nombre": "Cal y yeso",
+      "actores": [
+        "F"
+      ],
+      "orden": 10
+    },
+    {
+      "slug": "bloques-adoquines-y-tuberias-de-concreto",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.1 Cemento, concreto y prefabricados",
+      "nombre": "Bloques, adoquines y tuberías de concreto",
+      "actores": [
+        "F"
+      ],
+      "orden": 11
+    },
+    {
+      "slug": "vigas-pretensadas-y-losacero",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.1 Cemento, concreto y prefabricados",
+      "nombre": "Vigas pretensadas y losacero",
+      "actores": [
+        "F"
+      ],
+      "orden": 12
+    },
+    {
+      "slug": "ladrillos-y-tejas",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.2 Cerámica, vidrio y sistemas livianos",
+      "nombre": "Ladrillos y tejas",
+      "actores": [
+        "F"
+      ],
+      "orden": 13
+    },
+    {
+      "slug": "baldosas-y-porcelanatos",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.2 Cerámica, vidrio y sistemas livianos",
+      "nombre": "Baldosas y porcelanatos",
+      "actores": [
+        "F"
+      ],
+      "orden": 14
+    },
+    {
+      "slug": "piezas-sanitarias",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.2 Cerámica, vidrio y sistemas livianos",
+      "nombre": "Piezas sanitarias",
+      "actores": [
+        "F"
+      ],
+      "orden": 15
+    },
+    {
+      "slug": "vidrio-plano-templado-laminado",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.2 Cerámica, vidrio y sistemas livianos",
+      "nombre": "Vidrio (plano, templado, laminado)",
+      "actores": [
+        "F"
+      ],
+      "orden": 16
+    },
+    {
+      "slug": "drywall-y-fibrocemento",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.2 Cerámica, vidrio y sistemas livianos",
+      "nombre": "Drywall y fibrocemento",
+      "actores": [
+        "F"
+      ],
+      "orden": 17
+    },
+    {
+      "slug": "cabillas-mallas-y-estribos",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.3 Acero y metalurgia",
+      "nombre": "Cabillas, mallas y estribos",
+      "actores": [
+        "F"
+      ],
+      "orden": 18
+    },
+    {
+      "slug": "perfiles-y-planchas-estructurales",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.3 Acero y metalurgia",
+      "nombre": "Perfiles y planchas estructurales",
+      "actores": [
+        "F"
+      ],
+      "orden": 19
+    },
+    {
+      "slug": "laminas-de-techo-galvanizadas-termoacusticas-zinc",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.3 Acero y metalurgia",
+      "nombre": "Láminas de techo (galvanizadas, termoacústicas, zinc)",
+      "actores": [
+        "F"
+      ],
+      "orden": 20
+    },
+    {
+      "slug": "aluminio-para-ventanas",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.3 Acero y metalurgia",
+      "nombre": "Aluminio para ventanas",
+      "actores": [
+        "F"
+      ],
+      "orden": 21
+    },
+    {
+      "slug": "clavos-tornillos-y-anclajes",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.3 Acero y metalurgia",
+      "nombre": "Clavos, tornillos y anclajes",
+      "actores": [
+        "F"
+      ],
+      "orden": 22
+    },
+    {
+      "slug": "tuberias-pvc-cpvc-pead-y-ppr",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "nombre": "Tuberías PVC, CPVC, PEAD y PPR",
+      "actores": [
+        "F"
+      ],
+      "orden": 23
+    },
+    {
+      "slug": "tanques-de-polietileno",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "nombre": "Tanques de polietileno",
+      "actores": [
+        "F"
+      ],
+      "orden": 24
+    },
+    {
+      "slug": "pinturas-masillas-y-anticorrosivos",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "nombre": "Pinturas, masillas y anticorrosivos",
+      "actores": [
+        "F"
+      ],
+      "orden": 25
+    },
+    {
+      "slug": "impermeabilizantes-mantos-asfalticos-y-selladores",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "nombre": "Impermeabilizantes, mantos asfálticos y selladores",
+      "actores": [
+        "F"
+      ],
+      "orden": 26
+    },
+    {
+      "slug": "aditivos-pegamentos-y-resinas",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "nombre": "Aditivos, pegamentos y resinas",
+      "actores": [
+        "F"
+      ],
+      "orden": 27
+    },
+    {
+      "slug": "cables-baja-media-y-alta-tension",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.5 Material eléctrico",
+      "nombre": "Cables (baja, media y alta tensión)",
+      "actores": [
+        "F"
+      ],
+      "orden": 28
+    },
+    {
+      "slug": "canalizaciones-emt-imc-bandejas",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.5 Material eléctrico",
+      "nombre": "Canalizaciones (EMT, IMC, bandejas)",
+      "actores": [
+        "F"
+      ],
+      "orden": 29
+    },
+    {
+      "slug": "tableros-y-breakers",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.5 Material eléctrico",
+      "nombre": "Tableros y breakers",
+      "actores": [
+        "F"
+      ],
+      "orden": 30
+    },
+    {
+      "slug": "tomacorrientes-apagadores-y-luminarias",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.5 Material eléctrico",
+      "nombre": "Tomacorrientes, apagadores y luminarias",
+      "actores": [
+        "F"
+      ],
+      "orden": 31
+    },
+    {
+      "slug": "madera-para-encofrado-y-andamiaje",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.6 Madera y derivados",
+      "nombre": "Madera para encofrado y andamiaje",
+      "actores": [
+        "F"
+      ],
+      "orden": 32
+    },
+    {
+      "slug": "tableros-plywood-mdf-mdp",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.6 Madera y derivados",
+      "nombre": "Tableros (plywood, MDF, MDP)",
+      "actores": [
+        "F"
+      ],
+      "orden": 33
+    },
+    {
+      "slug": "puertas-marcos-y-carpinteria",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.6 Madera y derivados",
+      "nombre": "Puertas, marcos y carpintería",
+      "actores": [
+        "F"
+      ],
+      "orden": 34
+    },
+    {
+      "slug": "estructuras-modulares-y-paneles-sip",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.7 Prefabricación y ensamblaje",
+      "nombre": "Estructuras modulares y paneles SIP",
+      "actores": [
+        "F"
+      ],
+      "orden": 35
+    },
+    {
+      "slug": "fachadas-y-ventanas-preensambladas",
+      "rama_id": 2,
+      "rama_nombre": "Manufactura de materiales",
+      "grupo": "2.7 Prefabricación y ensamblaje",
+      "nombre": "Fachadas y ventanas preensambladas",
+      "actores": [
+        "F"
+      ],
+      "orden": 36
+    },
+    {
+      "slug": "3-1-ferreterias-y-depositos-de-materiales",
+      "rama_id": 3,
+      "rama_nombre": "Distribución y comercio de materiales",
+      "grupo": "3.1 Ferreterías y depósitos de materiales",
+      "nombre": "3.1 Ferreterías y depósitos de materiales",
+      "actores": [
+        "D"
+      ],
+      "orden": 37
+    },
+    {
+      "slug": "acero",
+      "rama_id": 3,
+      "rama_nombre": "Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "nombre": "Acero",
+      "actores": [
+        "D"
+      ],
+      "orden": 38
+    },
+    {
+      "slug": "material-electrico",
+      "rama_id": 3,
+      "rama_nombre": "Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "nombre": "Material eléctrico",
+      "actores": [
+        "D"
+      ],
+      "orden": 39
+    },
+    {
+      "slug": "sanitarios-y-griferia",
+      "rama_id": 3,
+      "rama_nombre": "Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "nombre": "Sanitarios y grifería",
+      "actores": [
+        "D"
+      ],
+      "orden": 40
+    },
+    {
+      "slug": "pinturas",
+      "rama_id": 3,
+      "rama_nombre": "Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "nombre": "Pinturas",
+      "actores": [
+        "D"
+      ],
+      "orden": 41
+    },
+    {
+      "slug": "acabados",
+      "rama_id": 3,
+      "rama_nombre": "Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "nombre": "Acabados",
+      "actores": [
+        "D"
+      ],
+      "orden": 42
+    },
+    {
+      "slug": "3-3-importadores",
+      "rama_id": 3,
+      "rama_nombre": "Distribución y comercio de materiales",
+      "grupo": "3.3 Importadores",
+      "nombre": "3.3 Importadores",
+      "actores": [
+        "D"
+      ],
+      "orden": 43
+    },
+    {
+      "slug": "3-4-transporte-y-fletes-de-carga",
+      "rama_id": 3,
+      "rama_nombre": "Distribución y comercio de materiales",
+      "grupo": "3.4 Transporte y fletes de carga",
+      "nombre": "3.4 Transporte y fletes de carga",
+      "actores": [
+        "A"
+      ],
+      "orden": 44
+    },
+    {
+      "slug": "topografia-y-geotecnia",
+      "rama_id": 4,
+      "rama_nombre": "Servicios profesionales y técnicos",
+      "grupo": "4.1 Estudios previos",
+      "nombre": "Topografía y geotecnia",
+      "actores": [
+        "S"
+      ],
+      "orden": 45
+    },
+    {
+      "slug": "estudios-ambientales",
+      "rama_id": 4,
+      "rama_nombre": "Servicios profesionales y técnicos",
+      "grupo": "4.1 Estudios previos",
+      "nombre": "Estudios ambientales",
+      "actores": [
+        "S"
+      ],
+      "orden": 46
+    },
+    {
+      "slug": "arquitectura-y-bim",
+      "rama_id": 4,
+      "rama_nombre": "Servicios profesionales y técnicos",
+      "grupo": "4.2 Diseño e ingeniería",
+      "nombre": "Arquitectura y BIM",
+      "actores": [
+        "S"
+      ],
+      "orden": 47
+    },
+    {
+      "slug": "calculo-estructural",
+      "rama_id": 4,
+      "rama_nombre": "Servicios profesionales y técnicos",
+      "grupo": "4.2 Diseño e ingeniería",
+      "nombre": "Cálculo estructural",
+      "actores": [
+        "S"
+      ],
+      "orden": 48
+    },
+    {
+      "slug": "proyectos-mep",
+      "rama_id": 4,
+      "rama_nombre": "Servicios profesionales y técnicos",
+      "grupo": "4.2 Diseño e ingeniería",
+      "nombre": "Proyectos MEP",
+      "actores": [
+        "S"
+      ],
+      "orden": 49
+    },
+    {
+      "slug": "permisos-y-licencias",
+      "rama_id": 4,
+      "rama_nombre": "Servicios profesionales y técnicos",
+      "grupo": "4.3 Gestión y control",
+      "nombre": "Permisos y licencias",
+      "actores": [
+        "S"
+      ],
+      "orden": 50
+    },
+    {
+      "slug": "gerencia-e-inspeccion-de-obra",
+      "rama_id": 4,
+      "rama_nombre": "Servicios profesionales y técnicos",
+      "grupo": "4.3 Gestión y control",
+      "nombre": "Gerencia e inspección de obra",
+      "actores": [
+        "S"
+      ],
+      "orden": 51
+    },
+    {
+      "slug": "laboratorios-de-control-de-calidad",
+      "rama_id": 4,
+      "rama_nombre": "Servicios profesionales y técnicos",
+      "grupo": "4.3 Gestión y control",
+      "nombre": "Laboratorios de control de calidad",
+      "actores": [
+        "S"
+      ],
+      "orden": 52
+    },
+    {
+      "slug": "seguridad-industrial-y-dotacion-epp",
+      "rama_id": 4,
+      "rama_nombre": "Servicios profesionales y técnicos",
+      "grupo": "4.3 Gestión y control",
+      "nombre": "Seguridad industrial y dotación (EPP)",
+      "actores": [
+        "S"
+      ],
+      "orden": 53
+    },
+    {
+      "slug": "edificacion-residencial-y-no-residencial",
+      "rama_id": 5,
+      "rama_nombre": "Ejecución de obra",
+      "grupo": "5.1 Tipos de contratista",
+      "nombre": "Edificación residencial y no residencial",
+      "actores": [
+        "C"
+      ],
+      "orden": 54
+    },
+    {
+      "slug": "obras-civiles-e-infraestructura",
+      "rama_id": 5,
+      "rama_nombre": "Ejecución de obra",
+      "grupo": "5.1 Tipos de contratista",
+      "nombre": "Obras civiles e infraestructura",
+      "actores": [
+        "C"
+      ],
+      "orden": 55
+    },
+    {
+      "slug": "subcontratistas-por-especialidad",
+      "rama_id": 5,
+      "rama_nombre": "Ejecución de obra",
+      "grupo": "5.1 Tipos de contratista",
+      "nombre": "Subcontratistas por especialidad",
+      "actores": [
+        "C"
+      ],
+      "orden": 56
+    },
+    {
+      "slug": "preliminares-y-cimentacion-movimiento-de-tierras-pilotes-zap",
+      "rama_id": 5,
+      "rama_nombre": "Ejecución de obra",
+      "grupo": "5.2 Etapas de obra",
+      "nombre": "Preliminares y cimentación (movimiento de tierras, pilotes, zapatas)",
+      "actores": [
+        "C"
+      ],
+      "orden": 57
+    },
+    {
+      "slug": "obra-negra-estructura-columnas-vigas-y-losas",
+      "rama_id": 5,
+      "rama_nombre": "Ejecución de obra",
+      "grupo": "5.2 Etapas de obra",
+      "nombre": "Obra negra: estructura, columnas, vigas y losas",
+      "actores": [
+        "C"
+      ],
+      "orden": 58
+    },
+    {
+      "slug": "obra-gris-instalaciones-mep-hvac-domotica-y-cableado",
+      "rama_id": 5,
+      "rama_nombre": "Ejecución de obra",
+      "grupo": "5.2 Etapas de obra",
+      "nombre": "Obra gris: instalaciones MEP, HVAC, domótica y cableado",
+      "actores": [
+        "C"
+      ],
+      "orden": 59
+    },
+    {
+      "slug": "obra-blanca-pisos-estucos-pintura-carpinteria-y-paisajismo",
+      "rama_id": 5,
+      "rama_nombre": "Ejecución de obra",
+      "grupo": "5.2 Etapas de obra",
+      "nombre": "Obra blanca: pisos, estucos, pintura, carpintería y paisajismo",
+      "actores": [
+        "C"
+      ],
+      "orden": 60
+    },
+    {
+      "slug": "gruas-excavadoras-mezcladoras",
+      "rama_id": 6,
+      "rama_nombre": "Equipos, maquinaria y suministros especiales",
+      "grupo": "6.1 Maquinaria pesada",
+      "nombre": "Grúas, excavadoras, mezcladoras",
+      "actores": [
+        "F",
+        "A"
+      ],
+      "orden": 61
+    },
+    {
+      "slug": "6-2-andamios-y-encofrados",
+      "rama_id": 6,
+      "rama_nombre": "Equipos, maquinaria y suministros especiales",
+      "grupo": "6.2 Andamios y encofrados",
+      "nombre": "6.2 Andamios y encofrados",
+      "actores": [
+        "F",
+        "A"
+      ],
+      "orden": 62
+    },
+    {
+      "slug": "ascensores-y-escaleras-mecanicas",
+      "rama_id": 6,
+      "rama_nombre": "Equipos, maquinaria y suministros especiales",
+      "grupo": "6.3 Equipos de edificación",
+      "nombre": "Ascensores y escaleras mecánicas",
+      "actores": [
+        "F",
+        "S"
+      ],
+      "orden": 63
+    },
+    {
+      "slug": "hvac",
+      "rama_id": 6,
+      "rama_nombre": "Equipos, maquinaria y suministros especiales",
+      "grupo": "6.3 Equipos de edificación",
+      "nombre": "HVAC",
+      "actores": [
+        "F",
+        "S"
+      ],
+      "orden": 64
+    },
+    {
+      "slug": "bombas-e-hidroneumaticos",
+      "rama_id": 6,
+      "rama_nombre": "Equipos, maquinaria y suministros especiales",
+      "grupo": "6.3 Equipos de edificación",
+      "nombre": "Bombas e hidroneumáticos",
+      "actores": [
+        "F",
+        "S"
+      ],
+      "orden": 65
+    },
+    {
+      "slug": "transformadores",
+      "rama_id": 6,
+      "rama_nombre": "Equipos, maquinaria y suministros especiales",
+      "grupo": "6.3 Equipos de edificación",
+      "nombre": "Transformadores",
+      "actores": [
+        "F",
+        "S"
+      ],
+      "orden": 66
+    },
+    {
+      "slug": "7-1-banca-fiducias-y-creditos-puente",
+      "rama_id": 7,
+      "rama_nombre": "Financiamiento y comercialización",
+      "grupo": "7.1 Banca, fiducias y créditos puente",
+      "nombre": "7.1 Banca, fiducias y créditos puente",
+      "actores": [
+        "S"
+      ],
+      "orden": 67
+    },
+    {
+      "slug": "7-2-seguros-todo-riesgo",
+      "rama_id": 7,
+      "rama_nombre": "Financiamiento y comercialización",
+      "grupo": "7.2 Seguros (todo riesgo)",
+      "nombre": "7.2 Seguros (todo riesgo)",
+      "actores": [
+        "S"
+      ],
+      "orden": 68
+    },
+    {
+      "slug": "7-3-inmobiliarias-corretaje-y-avaluos",
+      "rama_id": 7,
+      "rama_nombre": "Financiamiento y comercialización",
+      "grupo": "7.3 Inmobiliarias, corretaje y avalúos",
+      "nombre": "7.3 Inmobiliarias, corretaje y avalúos",
+      "actores": [
+        "S"
+      ],
+      "orden": 69
+    },
+    {
+      "slug": "7-4-notarias-y-registros",
+      "rama_id": 7,
+      "rama_nombre": "Financiamiento y comercialización",
+      "grupo": "7.4 Notarías y registros",
+      "nombre": "7.4 Notarías y registros",
+      "actores": [
+        "S"
+      ],
+      "orden": 70
+    },
+    {
+      "slug": "8-1-facility-management-y-mantenimiento",
+      "rama_id": 8,
+      "rama_nombre": "Operación y fin de ciclo",
+      "grupo": "8.1 Facility management y mantenimiento",
+      "nombre": "8.1 Facility management y mantenimiento",
+      "actores": [
+        "S"
+      ],
+      "orden": 71
+    },
+    {
+      "slug": "8-2-demolicion-tecnica",
+      "rama_id": 8,
+      "rama_nombre": "Operación y fin de ciclo",
+      "grupo": "8.2 Demolición técnica",
+      "nombre": "8.2 Demolición técnica",
+      "actores": [
+        "C"
+      ],
+      "orden": 72
+    },
+    {
+      "slug": "8-3-reciclaje-de-residuos-rcd-retorna-a-la-rama-2",
+      "rama_id": 8,
+      "rama_nombre": "Operación y fin de ciclo",
+      "grupo": "8.3 Reciclaje de residuos (RCD), retorna a la rama 2",
+      "nombre": "8.3 Reciclaje de residuos (RCD), retorna a la rama 2",
+      "actores": [
+        "F",
+        "S"
+      ],
+      "orden": 73
+    },
+    {
+      "slug": "familias",
+      "rama_id": 9,
+      "rama_nombre": "Demanda final",
+      "grupo": "Quién compra",
+      "nombre": "Familias",
+      "actores": [],
+      "orden": 74
+    },
+    {
+      "slug": "sector-publico-gobernacion-alcaldias-y-ministerios",
+      "rama_id": 9,
+      "rama_nombre": "Demanda final",
+      "grupo": "Quién compra",
+      "nombre": "Sector público: gobernación, alcaldías y ministerios",
+      "actores": [],
+      "orden": 75
+    },
+    {
+      "slug": "empresas-privadas-e-industria",
+      "rama_id": 9,
+      "rama_nombre": "Demanda final",
+      "grupo": "Quién compra",
+      "nombre": "Empresas privadas e industria",
+      "actores": [],
+      "orden": 76
+    },
+    {
+      "slug": "valencia",
+      "rama_id": 10,
+      "rama_nombre": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "nombre": "Valencia",
+      "actores": [],
+      "orden": 77
+    },
+    {
+      "slug": "los-guayos",
+      "rama_id": 10,
+      "rama_nombre": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "nombre": "Los Guayos",
+      "actores": [],
+      "orden": 78
+    },
+    {
+      "slug": "guacara",
+      "rama_id": 10,
+      "rama_nombre": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "nombre": "Guacara",
+      "actores": [],
+      "orden": 79
+    },
+    {
+      "slug": "san-diego",
+      "rama_id": 10,
+      "rama_nombre": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "nombre": "San Diego",
+      "actores": [],
+      "orden": 80
+    },
+    {
+      "slug": "puerto-cabello",
+      "rama_id": 10,
+      "rama_nombre": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "nombre": "Puerto Cabello",
+      "actores": [],
+      "orden": 81
+    },
+    {
+      "slug": "otros-municipios",
+      "rama_id": 10,
+      "rama_nombre": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "nombre": "Otros municipios",
+      "actores": [],
+      "orden": 82
+    }
+  ]
+}

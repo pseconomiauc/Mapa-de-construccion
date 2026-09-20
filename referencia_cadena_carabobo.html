@@ -1,0 +1,723 @@
+<title>Cadena de Construcción Carabobo</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: #f8f9fa;
+  --ink: #202122;
+  --muted: #54595d;
+  --line: #a2a9b1;
+  --line-soft: #eaecf0;
+  --link: #3366cc;
+  --accent: #3366cc;
+  --mark: #fef6c7;
+  --f-serif: "Linux Libertine", Georgia, "Times New Roman", serif;
+  --f-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+html, body { background: #ffffff; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1100px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 48px; }
+header.top { padding-bottom: 4px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+h1 { font-family: var(--f-serif); font-weight: 400; font-size: clamp(26px, 4.5vw, 32px); line-height: 1.25; text-wrap: balance; }
+h1 span { color: inherit; }
+.stats { font-size: 13px; color: var(--muted); padding-bottom: 8px; }
+.legend { font-size: 13px; background: var(--surface); border: 1px solid var(--line-soft); padding: 8px 12px; margin-bottom: 12px; color: var(--muted); }
+.legend b { color: var(--ink); font-weight: 600; }
+.tools { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; padding-block: 4px 14px; }
+.search { flex: 1 1 260px; min-width: 0; }
+.search input { width: 100%; font: inherit; font-size: 14px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 2px; padding: 6px 10px; }
+.search input:focus-visible, button:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: inherit; font-size: 13px; color: var(--link); background: var(--surface); border: 1px solid var(--line); border-radius: 2px; padding: 3px 9px; cursor: pointer; }
+.chip .k { font-weight: 600; margin-right: 4px; }
+.chip .n { color: var(--muted); margin-left: 4px; font-size: 12px; }
+.chip[aria-pressed="true"] { background: var(--link); color: var(--bg); border-color: var(--link); }
+.chip[aria-pressed="true"] .n { color: inherit; opacity: .8; }
+.acts { display: flex; gap: 12px; margin-left: auto; }
+.btn { font: inherit; font-size: 13px; color: var(--link); background: transparent; border: 0; padding: 2px 0; cursor: pointer; }
+.btn:hover { text-decoration: underline; }
+.layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 22px; align-items: start; }
+nav.branches { position: sticky; top: env(safe-area-inset-top, 0px); padding-top: 4px; display: flex; flex-direction: column; gap: 0; max-height: 100vh; overflow-y: auto; font-size: 13.5px; }
+nav.branches::before { content: "Ramas"; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); padding: 0 0 4px 8px; }
+.nb { font: inherit; text-align: left; line-height: 1.35; color: var(--link); background: transparent; border: 0; border-left: 2px solid transparent; padding: 4px 8px; cursor: pointer; display: grid; grid-template-columns: 22px 1fr auto; gap: 4px; align-items: baseline; }
+.nb:hover { text-decoration: underline; }
+.nb[aria-current="true"] { color: var(--ink); border-left-color: var(--ink); font-weight: 600; background: var(--surface); }
+.nb .num, .nb .cnt { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.nb.zero { opacity: .45; }
+section.br { margin-bottom: 26px; }
+section.br > h2 { font-family: var(--f-serif); font-weight: 400; font-size: 24px; line-height: 1.3; border-bottom: 1px solid var(--line); margin-bottom: 8px; display: flex; align-items: baseline; gap: 8px; text-wrap: balance; }
+section.br > h2 .num { color: var(--muted); font-size: 18px; }
+section.br > h2 .cnt { margin-left: auto; font-family: var(--f-body); font-size: 12px; color: var(--muted); }
+details.g { margin-bottom: 2px; }
+details.g > summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 8px; padding: 4px 0; font-weight: 600; font-size: 15px; }
+details.g > summary::-webkit-details-marker { display: none; }
+details.g > summary::before { content: "▸"; color: var(--muted); font-size: 12px; width: 12px; flex: none; }
+details.g[open] > summary::before { content: "▾"; }
+details.g > summary:hover span:not(.gn):not(.gc):not(.tags) { color: var(--link); text-decoration: underline; }
+.gn { color: var(--muted); font-weight: 400; font-size: 13px; }
+.gc { color: var(--muted); font-weight: 400; font-size: 12px; margin-left: auto; }
+.tags { display: inline-flex; gap: 4px; }
+.tg { color: var(--muted); font-size: 11.5px; font-weight: 400; border: 1px solid var(--line); border-radius: 2px; padding: 0 4px; line-height: 1.5; background: var(--surface); cursor: help; }
+ul.items { list-style: disc; margin: 0 0 8px 40px; padding: 0; }
+ul.items li { padding: 1px 0; }
+ul.items li .tags { margin-left: 6px; vertical-align: 1px; }
+.leaf { padding: 4px 0 4px 20px; font-weight: 600; }
+.leaf .tags { margin-left: 8px; }
+mark { background: var(--mark); color: inherit; padding-inline: 1px; }
+.empty { padding: 30px 0; color: var(--muted); }
+.note { margin-top: 24px; padding-top: 10px; border-top: 1px solid var(--line-soft); font-size: 12.5px; color: var(--muted); }
+@media (max-width: 560px) {
+  .layout { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  nav.branches { position: static; flex-direction: row; overflow-x: auto; max-height: none; gap: 4px; padding-bottom: 6px; align-items: baseline; }
+  nav.branches::before { display: none; }
+  .nb { flex: none; border-left: 0; border-bottom: 2px solid transparent; }
+  .nb[aria-current="true"] { border-bottom-color: var(--ink); }
+  .acts { margin-left: 0; }
+}
+
+h1 a { color: inherit; text-decoration: none; }
+a.it { color: var(--link); text-decoration: none; }
+a.it:hover { text-decoration: underline; }
+.ec { font-size: 11.5px; color: var(--muted); margin-left: 8px; }
+.ec.on { color: var(--ink); background: var(--surface); border: 1px solid var(--line-soft); border-radius: 2px; padding: 0 5px; }
+.crumbs { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.crumbs a { color: var(--link); text-decoration: none; }
+.crumbs a:hover { text-decoration: underline; }
+h2.ct { font-family: var(--f-serif); font-weight: 400; font-size: 28px; line-height: 1.25; border-bottom: 1px solid var(--line); margin-bottom: 12px; text-wrap: balance; }
+h2.ct .tags { margin-left: 8px; vertical-align: 4px; }
+h3.lh { font-family: var(--f-serif); font-weight: 400; font-size: 21px; margin: 6px 0 8px; }
+#vCat { max-width: 760px; }
+.co { border: 1px solid var(--line-soft); background: var(--bg); padding: 10px 14px; margin-bottom: 10px; }
+.coh { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; margin-bottom: 4px; }
+.coh h4 { font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
+.cob { font-size: 13px; color: var(--muted); display: inline-flex; gap: 12px; flex-wrap: wrap; align-items: baseline; }
+.co dl { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 3px 12px; font-size: 14px; }
+.co dt { color: var(--muted); }
+.co dd { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.co dd a { color: var(--link); }
+.none { font-size: 13px; color: var(--muted); }
+.btn.danger { color: #b32424; }
+.warn { font-size: 14px; background: #fef6e7; border: 1px solid #f0d9a8; color: #5c4400; padding: 8px 12px; margin-bottom: 10px; }
+#vCat .empty { padding: 4px 0 14px; }
+form#cf { margin-top: 22px; border-top: 1px solid var(--line); padding-top: 8px; }
+form#cf label { display: block; font-size: 14px; margin-bottom: 10px; }
+form#cf label.tick { display: inline-flex; align-items: center; gap: 6px; margin: 0 14px 6px 0; }
+form#cf label em { font-style: normal; color: var(--muted); font-size: 12.5px; }
+form#cf input[type="text"], form#cf input[type="tel"], form#cf input[type="email"], form#cf textarea { display: block; width: 100%; margin-top: 3px; font: inherit; font-size: 14px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 2px; padding: 6px 10px; }
+form#cf textarea { resize: vertical; }
+form#cf input:focus-visible, form#cf textarea:focus-visible { outline: 2px solid var(--link); outline-offset: 1px; }
+form#cf fieldset { border: 1px solid var(--line-soft); padding: 8px 12px 6px; margin-bottom: 12px; min-width: 0; }
+form#cf legend { font-size: 13px; color: var(--muted); padding-inline: 4px; }
+.optbox { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 0 16px; margin-top: 4px; }
+.optbox label[hidden] { display: none; }
+.frow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+button.primary { font: inherit; font-size: 14px; color: #fff; background: var(--link); border: 1px solid var(--link); border-radius: 2px; padding: 6px 16px; cursor: pointer; }
+button.primary:disabled { opacity: .6; cursor: default; }
+#msg.ok { color: #1a7f37; font-size: 13.5px; }
+#msg.bad { color: #b32424; font-size: 13.5px; }
+@media (max-width: 560px) { .co dl { grid-template-columns: minmax(0, 1fr); gap: 0; } .co dt { margin-top: 4px; } }
+#xmsg { font-size: 12.5px; margin-left: 6px; }
+#xmsg.bad { color: #b32424; }
+#xmsg.ok { color: #1a7f37; }
+.impbox { font-size: 14px; background: var(--surface); border: 1px solid var(--line); padding: 10px 14px; margin-bottom: 14px; }
+.impbox ul { margin: 6px 0 8px 22px; }
+.impbox .bad { color: #b32424; }
+.impbox .row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 8px; }
+form#cf select { display: block; width: 100%; margin-top: 3px; font: inherit; font-size: 14px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 2px; padding: 6px 8px; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<div class="wrap">
+  <header class="top">
+    <h1><a href="#" id="homeLink">Cadena de la construcción en Carabobo</a></h1>
+    <div class="stats"><span id="stats"></span> · <button type="button" class="btn" id="xls">Descargar Excel</button> · <button type="button" class="btn" id="imp">Importar Excel</button> · <button type="button" class="btn" id="tpl">Plantilla</button> <span id="xmsg" role="status"></span><input type="file" id="file" accept=".xlsx,.xls,.csv" hidden></div>
+  </header>
+
+  <div id="impBox" class="impbox" hidden></div>
+
+  <div id="vIndex">
+    <div class="legend"><b>Tipo de actor:</b> F = Fabricante · D = Distribuidor · C = Contratista · S = Servicio profesional · A = Alquiler / logística. Dos letras (F/A) significa que ambos tipos pueden ofrecerlo. <b>Haz clic en cualquier subcategoría</b> para ver o registrar las empresas del sector.</div>
+    <div class="tools">
+      <div class="search"><input id="q" type="search" placeholder="Buscar producto o servicio: cabilla, PVC, topografía…" autocomplete="off" aria-label="Buscar"></div>
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por tipo de actor"></div>
+      <div class="acts">
+        <button class="btn" id="expand" type="button">Expandir todo</button>
+        <button class="btn" id="collapse" type="button">Contraer todo</button>
+      </div>
+    </div>
+    <div class="layout">
+      <nav class="branches" id="nav" aria-label="Ramas de la cadena"></nav>
+      <main id="main"></main>
+    </div>
+  </div>
+
+  <div id="vCat" hidden></div>
+</div>
+
+<script>
+const RAW = `
+## 1. Extracción y recursos primarios
+### 1.1 Minería no metálica
+- Áridos (grava, arena) [F]
+- Rocas ornamentales (granito, mármol) [F]
+- Calizas y arcillas [F]
+### 1.2 Minería metálica
+- Hierro, bauxita, cobre [F]
+### 1.3 Otros recursos
+- Madera cruda (sector forestal) [F]
+- Agua industrial [S]
+- Hidrocarburos y derivados [F]
+## 2. Manufactura de materiales
+### 2.1 Cemento, concreto y prefabricados
+- Cemento (gris, blanco, especial) y clinker [F]
+- Concreto premezclado y morteros [F]
+- Cal y yeso [F]
+- Bloques, adoquines y tuberías de concreto [F]
+- Vigas pretensadas y losacero [F]
+### 2.2 Cerámica, vidrio y sistemas livianos
+- Ladrillos y tejas [F]
+- Baldosas y porcelanatos [F]
+- Piezas sanitarias [F]
+- Vidrio (plano, templado, laminado) [F]
+- Drywall y fibrocemento [F]
+### 2.3 Acero y metalurgia
+- Cabillas, mallas y estribos [F]
+- Perfiles y planchas estructurales [F]
+- Láminas de techo (galvanizadas, termoacústicas, zinc) [F]
+- Aluminio para ventanas [F]
+- Clavos, tornillos y anclajes [F]
+### 2.4 Plásticos y química
+- Tuberías PVC, CPVC, PEAD y PPR [F]
+- Tanques de polietileno [F]
+- Pinturas, masillas y anticorrosivos [F]
+- Impermeabilizantes, mantos asfálticos y selladores [F]
+- Aditivos, pegamentos y resinas [F]
+### 2.5 Material eléctrico
+- Cables (baja, media y alta tensión) [F]
+- Canalizaciones (EMT, IMC, bandejas) [F]
+- Tableros y breakers [F]
+- Tomacorrientes, apagadores y luminarias [F]
+### 2.6 Madera y derivados
+- Madera para encofrado y andamiaje [F]
+- Tableros (plywood, MDF, MDP) [F]
+- Puertas, marcos y carpintería [F]
+### 2.7 Prefabricación y ensamblaje
+- Estructuras modulares y paneles SIP [F]
+- Fachadas y ventanas preensambladas [F]
+## 3. Distribución y comercio de materiales
+### 3.1 Ferreterías y depósitos de materiales [D]
+### 3.2 Distribuidores especializados
+- Acero [D]
+- Material eléctrico [D]
+- Sanitarios y grifería [D]
+- Pinturas [D]
+- Acabados [D]
+### 3.3 Importadores [D]
+### 3.4 Transporte y fletes de carga [A]
+## 4. Servicios profesionales y técnicos
+### 4.1 Estudios previos
+- Topografía y geotecnia [S]
+- Estudios ambientales [S]
+### 4.2 Diseño e ingeniería
+- Arquitectura y BIM [S]
+- Cálculo estructural [S]
+- Proyectos MEP [S]
+### 4.3 Gestión y control
+- Permisos y licencias [S]
+- Gerencia e inspección de obra [S]
+- Laboratorios de control de calidad [S]
+- Seguridad industrial y dotación (EPP) [S]
+## 5. Ejecución de obra
+### 5.1 Tipos de contratista
+- Edificación residencial y no residencial [C]
+- Obras civiles e infraestructura [C]
+- Subcontratistas por especialidad [C]
+### 5.2 Etapas de obra
+- Preliminares y cimentación (movimiento de tierras, pilotes, zapatas) [C]
+- Obra negra: estructura, columnas, vigas y losas [C]
+- Obra gris: instalaciones MEP, HVAC, domótica y cableado [C]
+- Obra blanca: pisos, estucos, pintura, carpintería y paisajismo [C]
+## 6. Equipos, maquinaria y suministros especiales
+### 6.1 Maquinaria pesada
+- Grúas, excavadoras, mezcladoras [F/A]
+### 6.2 Andamios y encofrados [F/A]
+### 6.3 Equipos de edificación
+- Ascensores y escaleras mecánicas [F/S]
+- HVAC [F/S]
+- Bombas e hidroneumáticos [F/S]
+- Transformadores [F/S]
+## 7. Financiamiento y comercialización
+### 7.1 Banca, fiducias y créditos puente [S]
+### 7.2 Seguros (todo riesgo) [S]
+### 7.3 Inmobiliarias, corretaje y avalúos [S]
+### 7.4 Notarías y registros [S]
+## 8. Operación y fin de ciclo
+### 8.1 Facility management y mantenimiento [S]
+### 8.2 Demolición técnica [C]
+### 8.3 Reciclaje de residuos (RCD), retorna a la rama 2 [F/S]
+## 9. Demanda final
+### Quién compra
+- Familias
+- Sector público: gobernación, alcaldías y ministerios
+- Empresas privadas e industria
+## 10. Referencia territorial: Carabobo
+### Municipios y zonas
+- Valencia
+- Los Guayos
+- Guacara
+- San Diego
+- Puerto Cabello
+- Otros municipios
+`;
+
+const ACT = { F: 'Fabricante', D: 'Distribuidor', C: 'Contratista', S: 'Servicio profesional', A: 'Alquiler / logística' };
+const MUNIS = ['Bejuma', 'Carlos Arvelo', 'Diego Ibarra', 'Guacara', 'Juan José Mora', 'Libertador', 'Los Guayos', 'Miranda', 'Montalbán', 'Naguanagua', 'Puerto Cabello', 'San Diego', 'San Joaquín', 'Valencia'];
+const TAGRE = /\s*\[([FDCSA](?:\/[FDCSA])*)\]\s*$/;
+const FIELDS = [
+  { k: 'direccion', l: 'Dirección', t: 'text' },
+  { k: 'municipio', l: 'Municipio', t: 'muni' },
+  { k: 'lat', l: 'Latitud', t: 'text', ph: 'Ej: 10.1620 (o pega «lat, lng» copiado de Google Maps)' },
+  { k: 'lng', l: 'Longitud', t: 'text', ph: 'Ej: -68.0077' },
+  { k: 'productos', l: 'Productos', t: 'area' },
+  { k: 'servicios', l: 'Servicios', t: 'area' },
+  { k: 'marca', l: 'Marca', t: 'text' },
+  { k: 'telefono', l: 'Teléfono', t: 'tel' },
+  { k: 'correo', l: 'Correo', t: 'email' }
+];
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const norm = (s) => [...s].map(c => c.normalize('NFD')[0]).join('').toLowerCase();
+const slugify = (s) => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) || 'item';
+
+const BYSLUG = {};
+function parse(raw) {
+  const data = []; let b = null, g = null;
+  const split = (s) => { const m = s.match(TAGRE); return m ? { t: s.replace(TAGRE, '').trim(), tags: m[1].split('/') } : { t: s.trim(), tags: [] }; };
+  raw.split('\n').forEach(l => {
+    if (l.startsWith('## ')) { const m = l.slice(3).match(/^(\d+)\.\s*(.*)$/); b = { id: m[1], name: m[2], groups: [] }; data.push(b); }
+    else if (l.startsWith('### ')) { const s = split(l.slice(4)); g = { name: s.t, tags: s.tags, items: [], leaf: false }; b.groups.push(g); }
+    else if (l.startsWith('- ')) { g.items.push(split(l.slice(2))); }
+  });
+  data.forEach(b => b.groups.forEach(g => { if (!g.items.length) { g.leaf = true; g.items = [{ t: g.name, tags: g.tags }]; } }));
+  const seen = {};
+  data.forEach(b => b.groups.forEach(g => g.items.forEach(it => {
+    let s = slugify(it.t);
+    if (seen[s]) { seen[s]++; s += '-' + seen[s]; } else seen[s] = 1;
+    it.slug = s; it.b = b; it.g = g; BYSLUG[s] = it;
+  })));
+  return data;
+}
+const DATA = parse(RAW);
+
+const state = { sel: 'all', q: '', acts: new Set(), open: null, cat: null, editId: null, delId: null };
+let DB = null, dbStatus = 'loading', COMP = [], COUNTS = {}, renderedCat = null, savedY = 0;
+const openSet = new Set();
+
+function hl(text, nq) {
+  if (!nq) return esc(text);
+  const n = norm(text); let out = '', i = 0;
+  while (true) {
+    const j = n.indexOf(nq, i);
+    if (j < 0) break;
+    out += esc(text.slice(i, j)) + '<mark>' + esc(text.slice(j, j + nq.length)) + '</mark>';
+    i = j + nq.length;
+  }
+  return out + esc(text.slice(i));
+}
+const tagsHtml = (tags) => tags.length ? '<span class="tags">' + tags.map(t => `<span class="tg" title="${ACT[t]}">${t}</span>`).join('') + '</span>' : '';
+const ecHtml = (slug) => { const n = COUNTS[slug] || 0; return n ? `<span class="ec on">${n} ${n === 1 ? 'empresa' : 'empresas'}</span>` : ''; };
+const itemLink = (it, inner) => `<a class="it" href="#/c/${it.slug}" data-c="${it.slug}">${inner}</a>`;
+
+function counts() {
+  const c = {}; Object.keys(ACT).forEach(k => c[k] = 0);
+  DATA.forEach(b => b.groups.forEach(g => g.items.forEach(it => it.tags.forEach(t => c[t]++))));
+  return c;
+}
+
+function updateStats() {
+  const total = DATA.reduce((n, b) => n + b.groups.reduce((m, g) => m + g.items.length, 0), 0);
+  let t = `${DATA.length} ramas · ${total} subcategorías`;
+  if (dbStatus === 'ready') t += ` · ${COMP.length} ${COMP.length === 1 ? 'empresa registrada' : 'empresas registradas'}`;
+  $('stats').textContent = t;
+}
+
+function buildChips() {
+  const c = counts();
+  $('chips').innerHTML = Object.keys(ACT).map(k =>
+    `<button type="button" class="chip" data-a="${k}" aria-pressed="false"><span class="k">${k}</span>${ACT[k]}<span class="n">${c[k]}</span></button>`).join('');
+}
+
+/* ---------- Índice ---------- */
+function render() {
+  const nq = norm(state.q.trim());
+  const filtering = !!nq || state.acts.size > 0;
+  const view = DATA.map(b => {
+    const groups = b.groups.map(g => {
+      const gm = nq && norm(g.name).includes(nq);
+      const items = g.items.filter(it => (!nq || gm || norm(it.t).includes(nq)) && (!state.acts.size || it.tags.some(t => state.acts.has(t))));
+      return { g, items };
+    }).filter(x => x.items.length);
+    return { b, groups, n: groups.reduce((m, x) => m + x.items.length, 0) };
+  });
+
+  $('nav').innerHTML =
+    `<button type="button" class="nb" data-b="all" ${state.sel === 'all' ? 'aria-current="true"' : ''}><span class="num">•</span><span>Todas las ramas</span><span class="cnt">${view.reduce((m, v) => m + v.n, 0)}</span></button>` +
+    view.map(v => `<button type="button" class="nb ${v.n ? '' : 'zero'}" data-b="${v.b.id}" ${state.sel === v.b.id ? 'aria-current="true"' : ''}><span class="num">${v.b.id}</span><span>${esc(v.b.name.replace(/:.*$/, ''))}</span><span class="cnt">${v.n}</span></button>`).join('');
+
+  const shown = view.filter(v => v.n && (state.sel === 'all' || state.sel === v.b.id));
+  const openAll = state.open === null ? (state.sel !== 'all' || filtering) : state.open;
+
+  if (!shown.length) {
+    $('main').innerHTML = `<div class="empty"><p>No hay resultados con esta búsqueda o estos filtros.</p><button type="button" class="btn" id="clear">Limpiar búsqueda y filtros</button></div>`;
+    return;
+  }
+  $('main').innerHTML = shown.map(({ b, groups, n }) => {
+    const body = groups.map(({ g, items }) => {
+      const m = g.name.match(/^(\d+\.\d+)\s+(.*)$/);
+      const num = m ? m[1] : '', name = m ? m[2] : g.name;
+      if (g.leaf) return `<div class="leaf"><span>${num ? `<span class="gn">${num}</span> ` : ''}${itemLink(g.items[0], hl(name, nq))}${ecHtml(g.items[0].slug)}</span>${tagsHtml(g.tags)}</div>`;
+      const union = [...new Set(items.flatMap(i => i.tags))];
+      const isOpen = openAll || openSet.has(g.name);
+      return `<details class="g" data-g="${esc(g.name)}" ${isOpen ? 'open' : ''}><summary>${num ? `<span class="gn">${num}</span>` : ''}<span>${hl(name, nq)}</span>${tagsHtml(union)}<span class="gc">${items.length}</span></summary>
+        <ul class="items">${items.map(it => `<li><span>${itemLink(it, hl(it.t, nq))}${ecHtml(it.slug)}</span>${tagsHtml(it.tags)}</li>`).join('')}</ul></details>`;
+    }).join('');
+    return `<section class="br" id="b${b.id}"><h2><span class="num">${b.id}</span>${esc(b.name)}<span class="cnt">${n}</span></h2>${body}</section>`;
+  }).join('');
+}
+
+function syncChips() { document.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', state.acts.has(c.dataset.a))); }
+
+/* ---------- Vista de subcategoría ---------- */
+function fieldVal(f, v) {
+  if (f.k === 'correo') return `<a href="mailto:${esc(v)}">${esc(v)}</a>`;
+  if (f.k === 'telefono') return `<a href="tel:${esc(String(v).replace(/[^\d+]/g, ''))}">${esc(v)}</a>`;
+  return esc(v);
+}
+
+function cardHtml(c) {
+  const rows = FIELDS.filter(f => c[f.k]).map(f => `<dt>${f.l}</dt><dd>${fieldVal(f, c[f.k])}</dd>`).join('');
+  const acts = state.delId === c.id
+    ? `<span class="cob">¿Eliminar esta empresa? <button type="button" class="btn danger" data-delyes>Sí, eliminar</button><button type="button" class="btn" data-delno>Cancelar</button></span>`
+    : `<span class="cob"><button type="button" class="btn" data-edit>Editar</button><button type="button" class="btn" data-del>Eliminar</button></span>`;
+  return `<article class="co" data-id="${esc(c.id)}"><div class="coh"><h4>${esc(c.nombre)}</h4>${acts}</div>${rows ? `<dl>${rows}</dl>` : '<p class="none">Sin datos adicionales.</p>'}</article>`;
+}
+
+function renderList() {
+  const box = $('list'); if (!box) return;
+  const rows = COMP.filter(c => c.cat === state.cat).sort((a, b) => String(a.nombre).localeCompare(String(b.nombre), 'es'));
+  let head = `<h3 class="lh">Empresas registradas <span class="ec on">${rows.length}</span></h3>`;
+  if (dbStatus === 'none') head += `<p class="warn">La base de datos no está disponible en esta vista, así que no se pueden ver ni guardar empresas.</p>`;
+  else if (dbStatus === 'loading') head += `<p class="empty">Cargando empresas…</p>`;
+  else if (!rows.length) head += `<p class="empty">Aún no hay empresas registradas en esta subcategoría. Usa el formulario de abajo para agregar la primera.</p>`;
+  box.innerHTML = head + rows.map(cardHtml).join('');
+}
+
+function renderForm(c) {
+  const box = $('formBox'); if (!box) return;
+  state.editId = c ? c.id : null;
+  const optHtml = FIELDS.map(f => {
+    const on = c && c[f.k];
+    const input = f.t === 'area'
+      ? `<textarea id="f_${f.k}" rows="2" maxlength="500">${on ? esc(c[f.k]) : ''}</textarea>`
+      : f.t === 'muni'
+        ? `<select id="f_${f.k}"><option value="">Elige un municipio</option>${MUNIS.map(m => `<option ${on && c[f.k] === m ? 'selected' : ''}>${m}</option>`).join('')}</select>`
+        : `<input id="f_${f.k}" type="${f.t}" maxlength="200" placeholder="${esc(f.ph || '')}" value="${on ? esc(c[f.k]) : ''}">`;
+    return `<label class="opt" data-f="${f.k}" ${on ? '' : 'hidden'}>${f.l}${input}</label>`;
+  }).join('');
+  const chipHtml = FIELDS.map(f => `<label class="tick"><input type="checkbox" id="c_${f.k}" data-tick="${f.k}" ${c && c[f.k] ? 'checked' : ''}> ${f.l}</label>`).join('');
+  box.innerHTML = `<form id="cf" novalidate>
+    <h3 class="lh">${c ? 'Editar empresa' : 'Agregar empresa'}</h3>
+    <label class="req">Nombre de la empresa <em>(obligatorio)</em>
+      <input id="f_nombre" type="text" maxlength="120" value="${c ? esc(c.nombre) : ''}" autocomplete="off"></label>
+    <fieldset><legend>Datos opcionales: marca solo los que quieras cargar</legend>
+      <div class="ticks">${chipHtml}</div>
+      <div class="optbox">${optHtml}</div>
+    </fieldset>
+    <div class="frow">
+      <button type="submit" class="primary" id="save">${c ? 'Guardar cambios' : 'Guardar empresa'}</button>
+      ${c ? '<button type="button" class="btn" id="cancel">Cancelar edición</button>' : ''}
+      <span id="msg" role="status"></span>
+    </div>
+  </form>`;
+}
+
+function setMsg(t, err) { const m = $('msg'); if (m) { m.textContent = t; m.className = err ? 'bad' : 'ok'; } }
+
+async function submitForm() {
+  const nombre = $('f_nombre').value.trim();
+  if (!nombre) { setMsg('Escribe el nombre de la empresa: es el único dato obligatorio.', true); $('f_nombre').focus(); return; }
+  if (!DB) { setMsg('La base de datos no está disponible, no se puede guardar.', true); return; }
+  const prev = state.editId ? COMP.find(c => c.id === state.editId) : null;
+  const data = { cat: state.cat, nombre, creado: prev && prev.creado ? prev.creado : Date.now() };
+  FIELDS.forEach(f => {
+    if (f.k === 'lat' || f.k === 'lng') return;
+    if ($('c_' + f.k).checked) { const v = $('f_' + f.k).value.trim(); if (v) data[f.k] = v; }
+  });
+  const cl = $('c_lat').checked, cg = $('c_lng').checked;
+  if (cl || cg) {
+    const r = parseCoord(cl ? $('f_lat').value : '', cg ? $('f_lng').value : '');
+    if (r === 'err') { setMsg('Coordenadas inválidas: escribe latitud y longitud como números (por ejemplo 10.1620 y -68.0077) dentro de Venezuela.', true); return; }
+    if (r) { data.lat = r.lat; data.lng = r.lng; }
+  }
+  const btn = $('save'); btn.disabled = true;
+  try {
+    if (state.editId) await DB.doc('empresas/' + state.editId).set(data);
+    else await DB.collection('empresas').add(data);
+    const edited = !!state.editId;
+    renderForm(null);
+    setMsg(edited ? 'Cambios guardados.' : 'Empresa guardada.', false);
+  } catch (e) {
+    btn.disabled = false;
+    const code = e && e.code;
+    setMsg(code === 'invalid_argument' ? 'No tienes permiso para guardar empresas en esta página.'
+      : code === 'quota_exceeded' ? 'Se alcanzó el límite de documentos de la base de datos.'
+      : 'No se pudo guardar. Intenta de nuevo en unos segundos.', true);
+  }
+}
+
+function renderCat() {
+  const it = BYSLUG[state.cat];
+  if (!it) { state.cat = null; return route(); }
+  const b = it.b, g = it.g;
+  const crumbs = `<a href="#" data-home>Cadena</a> › ${esc(b.id + '. ' + b.name.replace(/:.*$/, ''))}${g.leaf ? '' : ' › ' + esc(g.name)}`;
+  $('vCat').innerHTML = `<div class="crumbs">${crumbs}</div>
+    <h2 class="ct">${esc(it.t)} ${tagsHtml(it.tags)}</h2>
+    <div id="list"></div><div id="formBox"></div>`;
+  renderList(); renderForm(null);
+}
+
+/* ---------- Navegación ---------- */
+function setHash(h) { try { if (location.hash !== h) location.hash = h; } catch (e) { } }
+function route() {
+  if (state.cat) {
+    $('vIndex').hidden = true; $('vCat').hidden = false;
+    if (renderedCat !== state.cat) { renderedCat = state.cat; state.delId = null; renderCat(); window.scrollTo(0, 0); }
+  } else {
+    $('vCat').hidden = true; $('vIndex').hidden = false; renderedCat = null; render(); window.scrollTo(0, savedY);
+  }
+}
+function go(slug) { if (!state.cat) savedY = window.scrollY; state.cat = slug; setHash('#/c/' + slug); route(); }
+function home() { state.cat = null; setHash(''); route(); }
+function readHash() {
+  const m = (location.hash || '').match(/^#\/c\/([a-z0-9-]+)$/);
+  return m && BYSLUG[m[1]] ? m[1] : null;
+}
+window.addEventListener('hashchange', () => { const s = readHash(); if (s !== state.cat) { if (s && !state.cat) savedY = window.scrollY; state.cat = s; route(); } });
+
+/* ---------- Eventos ---------- */
+$('chips').addEventListener('click', e => {
+  const c = e.target.closest('.chip'); if (!c) return;
+  const a = c.dataset.a; state.acts.has(a) ? state.acts.delete(a) : state.acts.add(a);
+  state.open = null; syncChips(); render();
+});
+$('nav').addEventListener('click', e => {
+  const b = e.target.closest('.nb'); if (!b) return;
+  state.sel = b.dataset.b; state.open = null; openSet.clear(); render(); window.scrollTo({ top: 0 });
+});
+$('q').addEventListener('input', e => { state.q = e.target.value; state.open = null; render(); });
+$('expand').addEventListener('click', () => { state.open = true; render(); });
+$('collapse').addEventListener('click', () => { state.open = false; openSet.clear(); render(); });
+$('homeLink').addEventListener('click', e => { e.preventDefault(); if (state.cat) home(); });
+
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[data-c]');
+  if (a) { e.preventDefault(); go(a.dataset.c); return; }
+  if (e.target.closest('[data-home]')) { e.preventDefault(); home(); return; }
+  if (e.target.id === 'clear') { state.q = ''; state.acts.clear(); state.open = null; $('q').value = ''; syncChips(); render(); return; }
+  const sm = e.target.closest('summary');
+  if (sm) { const d = sm.parentElement; setTimeout(() => { d.open ? openSet.add(d.dataset.g) : openSet.delete(d.dataset.g); }, 0); return; }
+  const card = e.target.closest('.co');
+  if (card) {
+    const id = card.dataset.id;
+    if (e.target.closest('[data-edit]')) { const c = COMP.find(x => x.id === id); if (c) { renderForm(c); $('formBox').scrollIntoView({ behavior: 'smooth', block: 'start' }); } }
+    else if (e.target.closest('[data-del]')) { state.delId = id; renderList(); }
+    else if (e.target.closest('[data-delno]')) { state.delId = null; renderList(); }
+    else if (e.target.closest('[data-delyes]')) {
+      state.delId = null;
+      if (DB) DB.doc('empresas/' + id).delete().catch(() => { const l = $('list'); if (l) l.insertAdjacentHTML('afterbegin', '<p class="warn">No se pudo eliminar. Intenta de nuevo.</p>'); });
+      renderList();
+    }
+    return;
+  }
+  if (e.target.id === 'cancel') { renderForm(null); }
+});
+document.addEventListener('change', e => {
+  const k = e.target.dataset && e.target.dataset.tick; if (!k) return;
+  const lab = document.querySelector(`label.opt[data-f="${k}"]`);
+  lab.hidden = !e.target.checked;
+  if (e.target.checked) { const i = $('f_' + k); if (i) i.focus(); }
+});
+document.addEventListener('submit', e => { if (e.target.id === 'cf') { e.preventDefault(); submitForm(); } });
+
+/* ---------- Base de datos ---------- */
+async function initDb() {
+  try { DB = (window.claude && window.claude.use) ? await window.claude.use('db') : null; } catch (e) { DB = null; }
+  if (!DB) { dbStatus = 'none'; updateStats(); if (state.cat) renderList(); return; }
+  DB.collection('empresas').onSnapshot(snap => {
+    dbStatus = 'ready';
+    COMP = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+    COUNTS = {}; COMP.forEach(c => { COUNTS[c.cat] = (COUNTS[c.cat] || 0) + 1; });
+    updateStats();
+    if (state.cat) renderList(); else render();
+  }, () => { dbStatus = 'none'; updateStats(); if (state.cat) renderList(); });
+}
+
+buildChips(); updateStats();
+state.cat = readHash();
+route();
+initDb();
+
+function parseCoord(a, b) {
+  a = String(a).trim(); b = String(b).trim();
+  if (!a && !b) return null;
+  if (a && !b) { const p = a.split(/[,;\s]+/).filter(Boolean); if (p.length === 2) { a = p[0]; b = p[1]; } }
+  const num = (x) => parseFloat(String(x).replace(',', '.'));
+  const lat = num(a), lng = num(b);
+  if (!isFinite(lat) || !isFinite(lng)) return 'err';
+  if (lat < 0.5 || lat > 12.6 || lng < -73.5 || lng > -59.5) return 'err';
+  return { lat: Math.round(lat * 1e6) / 1e6, lng: Math.round(lng * 1e6) / 1e6 };
+}
+
+/* ---------- Exportar a Excel ---------- */
+function xmsg(t, err) { const m = $('xmsg'); m.textContent = t; m.className = err ? 'bad' : 'ok'; }
+$('xls').addEventListener('click', async () => {
+  if (typeof XLSX === 'undefined') { xmsg('No se pudo cargar el generador de Excel.', true); return; }
+  if (!COMP.length) { xmsg('Aún no hay empresas registradas para exportar.', true); return; }
+  const order = {}; let n = 0;
+  DATA.forEach(b => b.groups.forEach(g => g.items.forEach(it => { order[it.slug] = n++; })));
+  const rows = COMP.slice().sort((a, b) => (order[a.cat] ?? 9999) - (order[b.cat] ?? 9999) || String(a.nombre).localeCompare(String(b.nombre), 'es'))
+    .map(c => {
+      const it = BYSLUG[c.cat];
+      return {
+        'Rama': it ? it.b.id + '. ' + it.b.name : '(no encontrada)',
+        'Grupo': it ? it.g.name : '',
+        'Subcategoría': it ? it.t : c.cat,
+        'Tipo de actor': it ? it.tags.map(t => ACT[t]).join(' / ') : '',
+        'Empresa': c.nombre || '',
+        'Dirección': c.direccion || '',
+        'Municipio': c.municipio || '',
+        'Latitud': c.lat ?? '',
+        'Longitud': c.lng ?? '',
+        'Productos': c.productos || '',
+        'Servicios': c.servicios || '',
+        'Marca': c.marca || '',
+        'Teléfono': c.telefono || '',
+        'Correo': c.correo || ''
+      };
+    });
+  const wsE = XLSX.utils.json_to_sheet(rows);
+  wsE['!cols'] = [28, 34, 34, 20, 30, 34, 18, 12, 12, 34, 34, 20, 18, 28].map(w => ({ wch: w }));
+  const cad = [];
+  DATA.forEach(b => b.groups.forEach(g => g.items.forEach(it => cad.push({
+    'Rama': b.id + '. ' + b.name, 'Grupo': g.name, 'Subcategoría': it.t,
+    'Tipo de actor': it.tags.map(t => ACT[t]).join(' / '), 'Empresas registradas': COUNTS[it.slug] || 0
+  }))));
+  const wsC = XLSX.utils.json_to_sheet(cad);
+  wsC['!cols'] = [40, 40, 50, 22, 20].map(w => ({ wch: w }));
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, wsE, 'Empresas');
+  XLSX.utils.book_append_sheet(wb, wsC, 'Cadena');
+  const buf = XLSX.write(wb, { type: 'array', bookType: 'xlsx' });
+  let dl = null;
+  try { dl = (window.claude && window.claude.use) ? await window.claude.use('downloads') : null; } catch (e) { }
+  if (!dl) { xmsg('La descarga no está disponible en esta vista.', true); return; }
+  try {
+    await dl.save({ filename: 'empresas-construccion-carabobo.xlsx', data: buf });
+    xmsg('Excel descargado.', false);
+  } catch (e) {
+    xmsg(e && e.code === 'declined' ? 'Descarga cancelada.' : 'No se pudo descargar el archivo.', e && e.code !== 'declined');
+  }
+});
+
+/* ---------- Importar desde Excel ---------- */
+const ALLITEMS = Object.values(BYSLUG);
+let pending = null;
+const HEAD = { subcategoria: 'sub', empresa: 'nombre', nombre: 'nombre', direccion: 'direccion', municipio: 'municipio', latitud: 'lat', lat: 'lat', longitud: 'lng', lng: 'lng', lon: 'lng', productos: 'productos', servicios: 'servicios', marca: 'marca', telefono: 'telefono', correo: 'correo', email: 'correo' };
+
+function findItem(t) {
+  const raw = String(t).trim(); if (!raw) return null;
+  const n = norm(raw);
+  return ALLITEMS.find(it => norm(it.t) === n) || BYSLUG[slugify(raw)] || null;
+}
+function parseRows(rows) {
+  const ok = [], errs = []; let dup = 0;
+  const seen = new Set(COMP.map(c => c.cat + '|' + norm(String(c.nombre || '').trim())));
+  rows.forEach((r, i) => {
+    const o = {};
+    Object.keys(r).forEach(k => { const f = HEAD[norm(String(k)).trim()]; if (f) o[f] = String(r[k]).trim(); });
+    const line = i + 2;
+    if (!o.nombre) { if (Object.values(o).some(v => v)) errs.push(`Fila ${line}: falta el nombre de la empresa.`); return; }
+    let it = o.sub ? findItem(o.sub) : (state.cat ? BYSLUG[state.cat] : null);
+    if (!it) { errs.push(`Fila ${line} (${o.nombre}): ${o.sub ? 'la subcategoría "' + o.sub + '" no existe' : 'no indica subcategoría'}.`); return; }
+    const key = it.slug + '|' + norm(o.nombre);
+    if (seen.has(key)) { dup++; return; }
+    const cr = parseCoord(o.lat || '', o.lng || '');
+    if (cr === 'err') { errs.push(`Fila ${line} (${o.nombre}): coordenadas inválidas.`); return; }
+    seen.add(key);
+    const d = { cat: it.slug, nombre: o.nombre, creado: Date.now() };
+    ['direccion', 'productos', 'servicios', 'marca', 'telefono', 'correo'].forEach(k => { if (o[k]) d[k] = o[k]; });
+    const mm = MUNIS.find(m => norm(m) === norm(o.municipio || ''));
+    if (mm) d.municipio = mm;
+    if (cr) { d.lat = cr.lat; d.lng = cr.lng; }
+    ok.push(d);
+  });
+  return { ok, dup, errs };
+}
+function impRender(name, total, res) {
+  const box = $('impBox'); pending = res.ok; box.hidden = false;
+  box.innerHTML = `<b>${esc(name)}</b> · ${total} ${total === 1 ? 'fila leída' : 'filas leídas'}
+    <ul><li>${res.ok.length} ${res.ok.length === 1 ? 'empresa nueva lista' : 'empresas nuevas listas'} para importar</li>
+    ${res.dup ? `<li>${res.dup} ya existían en esa subcategoría y se omiten</li>` : ''}
+    ${res.errs.length ? `<li class="bad">${res.errs.length} con problemas y se omiten:<ul>${res.errs.slice(0, 8).map(e => `<li>${esc(e)}</li>`).join('')}${res.errs.length > 8 ? `<li>y ${res.errs.length - 8} más</li>` : ''}</ul></li>` : ''}</ul>
+    <div class="row">${res.ok.length ? `<button type="button" class="primary" id="impGo">Importar ${res.ok.length} ${res.ok.length === 1 ? 'empresa' : 'empresas'}</button>` : ''}<button type="button" class="btn" id="impNo">${res.ok.length ? 'Cancelar' : 'Cerrar'}</button><span id="impProg" role="status"></span></div>`;
+}
+$('imp').addEventListener('click', () => {
+  if (!DB) { xmsg('La base de datos no está disponible, no se puede importar.', true); return; }
+  $('file').click();
+});
+$('file').addEventListener('change', async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  if (typeof XLSX === 'undefined') { xmsg('No se pudo cargar el lector de Excel.', true); return; }
+  try {
+    const wb = XLSX.read(await f.arrayBuffer(), { type: 'array' });
+    const ws = wb.Sheets['Empresas'] || wb.Sheets[wb.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(ws, { defval: '' });
+    xmsg('', false);
+    impRender(f.name, rows.length, parseRows(rows));
+    window.scrollTo(0, 0);
+  } catch (err) { xmsg('No se pudo leer el archivo. Usa un .xlsx o .csv con la plantilla.', true); }
+});
+$('impBox').addEventListener('click', async e => {
+  if (e.target.id === 'impNo') { pending = null; $('impBox').hidden = true; return; }
+  if (e.target.id !== 'impGo' || !pending || !DB) return;
+  const list = pending; e.target.disabled = true; let done = 0;
+  const prog = $('impProg');
+  try {
+    for (const d of list) { await DB.collection('empresas').add(d); done++; prog.textContent = `Importando ${done} de ${list.length}…`; }
+    pending = null;
+    $('impBox').innerHTML = `<b>Importación lista:</b> ${done} ${done === 1 ? 'empresa agregada' : 'empresas agregadas'}. <button type="button" class="btn" id="impNo">Cerrar</button>`;
+  } catch (err) {
+    prog.textContent = `Se detuvo tras ${done} de ${list.length}. ${err && err.code === 'invalid_argument' ? 'No tienes permiso para guardar empresas.' : err && err.code === 'quota_exceeded' ? 'Se alcanzó el límite de la base de datos.' : 'Error al guardar.'}`;
+    prog.className = 'bad'; pending = list.slice(done); e.target.disabled = false;
+  }
+});
+$('tpl').addEventListener('click', async () => {
+  if (typeof XLSX === 'undefined') { xmsg('No se pudo cargar el generador de Excel.', true); return; }
+  const heads = ['Subcategoría', 'Empresa', 'Dirección', 'Municipio', 'Latitud', 'Longitud', 'Productos', 'Servicios', 'Marca', 'Teléfono', 'Correo'];
+  const wsE = XLSX.utils.aoa_to_sheet([heads]);
+  wsE['!cols'] = [40, 30, 34, 18, 12, 12, 34, 34, 20, 18, 28].map(w => ({ wch: w }));
+  const wsV = XLSX.utils.aoa_to_sheet([['Subcategorías válidas (copia el nombre exacto)', 'Rama', 'Grupo']].concat(ALLITEMS.map(it => [it.t, it.b.id + '. ' + it.b.name, it.g.name])));
+  wsV['!cols'] = [60, 40, 40].map(w => ({ wch: w }));
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, wsE, 'Empresas');
+  XLSX.utils.book_append_sheet(wb, wsV, 'Subcategorías válidas');
+  const buf = XLSX.write(wb, { type: 'array', bookType: 'xlsx' });
+  let dl = null;
+  try { dl = (window.claude && window.claude.use) ? await window.claude.use('downloads') : null; } catch (e) { }
+  if (!dl) { xmsg('La descarga no está disponible en esta vista.', true); return; }
+  try { await dl.save({ filename: 'plantilla-empresas.xlsx', data: buf }); xmsg('Plantilla descargada.', false); }
+  catch (e) { xmsg(e && e.code === 'declined' ? 'Descarga cancelada.' : 'No se pudo descargar la plantilla.', e && e.code !== 'declined'); }
+});
+</script>

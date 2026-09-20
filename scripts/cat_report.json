@@ -1,0 +1,1097 @@
+{
+  "reportCategories": [
+    {
+      "codigo": "1.1.1",
+      "nombre": "Áridos (grava, arena y piedra picada)",
+      "rama": "1. Extracción y recursos primarios",
+      "grupo": "1.1 Minería no metálica",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "aridos-grava-arena",
+        "nombre": "Áridos (grava, arena)",
+        "rama": "Extracción y recursos primarios",
+        "grupo": "1.1 Minería no metálica"
+      }
+    },
+    {
+      "codigo": "1.1.2",
+      "nombre": "Rocas ornamentales (granito y mármol)",
+      "rama": "1. Extracción y recursos primarios",
+      "grupo": "1.1 Minería no metálica",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "rocas-ornamentales-granito-marmol",
+        "nombre": "Rocas ornamentales (granito, mármol)",
+        "rama": "Extracción y recursos primarios",
+        "grupo": "1.1 Minería no metálica"
+      }
+    },
+    {
+      "codigo": "1.1.3",
+      "nombre": "Calizas y arcillas",
+      "rama": "1. Extracción y recursos primarios",
+      "grupo": "1.1 Minería no metálica",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "calizas-y-arcillas",
+        "nombre": "Calizas y arcillas",
+        "rama": "Extracción y recursos primarios",
+        "grupo": "1.1 Minería no metálica"
+      }
+    },
+    {
+      "codigo": "1.2.1",
+      "nombre": "Minerales de hierro, bauxita y cobre",
+      "rama": "1. Extracción y recursos primarios",
+      "grupo": "1.2 Minería metálica",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "hierro-bauxita-cobre",
+        "nombre": "Hierro, bauxita, cobre",
+        "rama": "Extracción y recursos primarios",
+        "grupo": "1.2 Minería metálica"
+      }
+    },
+    {
+      "codigo": "1.3.1",
+      "nombre": "Madera cruda (sector forestal)",
+      "rama": "1. Extracción y recursos primarios",
+      "grupo": "1.3 Otros recursos primarios",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "madera-cruda-sector-forestal",
+        "nombre": "Madera cruda (sector forestal)",
+        "rama": "Extracción y recursos primarios",
+        "grupo": "1.3 Otros recursos"
+      }
+    },
+    {
+      "codigo": "1.3.2",
+      "nombre": "Agua industrial",
+      "rama": "1. Extracción y recursos primarios",
+      "grupo": "1.3 Otros recursos primarios",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "agua-industrial",
+        "nombre": "Agua industrial",
+        "rama": "Extracción y recursos primarios",
+        "grupo": "1.3 Otros recursos"
+      }
+    },
+    {
+      "codigo": "1.3.3",
+      "nombre": "Hidrocarburos y derivados de soporte",
+      "rama": "1. Extracción y recursos primarios",
+      "grupo": "1.3 Otros recursos primarios",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "hidrocarburos-y-derivados",
+        "nombre": "Hidrocarburos y derivados",
+        "rama": "Extracción y recursos primarios",
+        "grupo": "1.3 Otros recursos"
+      }
+    },
+    {
+      "codigo": "2.1.1",
+      "nombre": "Cemento y clínker",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.1 Cemento, concreto y prefabricados",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "cemento-gris-blanco-especial-y-clinker",
+        "nombre": "Cemento (gris, blanco, especial) y clinker",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.1 Cemento, concreto y prefabricados"
+      }
+    },
+    {
+      "codigo": "2.1.2",
+      "nombre": "Concreto premezclado y morteros",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.1 Cemento, concreto y prefabricados",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "concreto-premezclado-y-morteros",
+        "nombre": "Concreto premezclado y morteros",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.1 Cemento, concreto y prefabricados"
+      }
+    },
+    {
+      "codigo": "2.1.3",
+      "nombre": "Cal y yeso",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.1 Cemento, concreto y prefabricados",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "cal-y-yeso",
+        "nombre": "Cal y yeso",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.1 Cemento, concreto y prefabricados"
+      }
+    },
+    {
+      "codigo": "2.1.4",
+      "nombre": "Bloques, adoquines y tubos de concreto",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.1 Cemento, concreto y prefabricados",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "concreto-premezclado-y-morteros",
+        "nombre": "Concreto premezclado y morteros",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.1 Cemento, concreto y prefabricados"
+      }
+    },
+    {
+      "codigo": "2.1.5",
+      "nombre": "Vigas pretensadas y losacero",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.1 Cemento, concreto y prefabricados",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "vigas-pretensadas-y-losacero",
+        "nombre": "Vigas pretensadas y losacero",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.1 Cemento, concreto y prefabricados"
+      }
+    },
+    {
+      "codigo": "2.2.1",
+      "nombre": "Ladrillos, tejas y arcilla",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.2 Cerámica, vidrio y sistemas livianos",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "ladrillos-y-tejas",
+        "nombre": "Ladrillos y tejas",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.2 Cerámica, vidrio y sistemas livianos"
+      }
+    },
+    {
+      "codigo": "2.2.2",
+      "nombre": "Baldosas y porcelanatos",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.2 Cerámica, vidrio y sistemas livianos",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "baldosas-y-porcelanatos",
+        "nombre": "Baldosas y porcelanatos",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.2 Cerámica, vidrio y sistemas livianos"
+      }
+    },
+    {
+      "codigo": "2.2.3",
+      "nombre": "Piezas sanitarias",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.2 Cerámica, vidrio y sistemas livianos",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "piezas-sanitarias",
+        "nombre": "Piezas sanitarias",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.2 Cerámica, vidrio y sistemas livianos"
+      }
+    },
+    {
+      "codigo": "2.2.4",
+      "nombre": "Vidrio plano, templado y laminado",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.2 Cerámica, vidrio y sistemas livianos",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "2.2.5",
+      "nombre": "Drywall y fibrocemento",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.2 Cerámica, vidrio y sistemas livianos",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "drywall-y-fibrocemento",
+        "nombre": "Drywall y fibrocemento",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.2 Cerámica, vidrio y sistemas livianos"
+      }
+    },
+    {
+      "codigo": "2.3.1",
+      "nombre": "Cabillas, mallas y estribos de refuerzo",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.3 Acero y metalurgia",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "cabillas-mallas-y-estribos",
+        "nombre": "Cabillas, mallas y estribos",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.3 Acero y metalurgia"
+      }
+    },
+    {
+      "codigo": "2.3.2",
+      "nombre": "Perfiles y planchas estructurales",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.3 Acero y metalurgia",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "perfiles-y-planchas-estructurales",
+        "nombre": "Perfiles y planchas estructurales",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.3 Acero y metalurgia"
+      }
+    },
+    {
+      "codigo": "2.3.3",
+      "nombre": "Láminas de techo (galvanizadas, termoacústicas, zinc)",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.3 Acero y metalurgia",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "laminas-de-techo-galvanizadas-termoacusticas-zinc",
+        "nombre": "Láminas de techo (galvanizadas, termoacústicas, zinc)",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.3 Acero y metalurgia"
+      }
+    },
+    {
+      "codigo": "2.3.4",
+      "nombre": "Aluminio para ventanas y cerramientos",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.3 Acero y metalurgia",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "aluminio-para-ventanas",
+        "nombre": "Aluminio para ventanas",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.3 Acero y metalurgia"
+      }
+    },
+    {
+      "codigo": "2.3.5",
+      "nombre": "Fabricación de clavos, tornillos y anclajes",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.3 Acero y metalurgia",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "clavos-tornillos-y-anclajes",
+        "nombre": "Clavos, tornillos y anclajes",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.3 Acero y metalurgia"
+      }
+    },
+    {
+      "codigo": "2.4.1",
+      "nombre": "Tuberías PVC, CPVC, PEAD, PPR y tanques",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "bloques-adoquines-y-tuberias-de-concreto",
+        "nombre": "Bloques, adoquines y tuberías de concreto",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.1 Cemento, concreto y prefabricados"
+      }
+    },
+    {
+      "codigo": "2.4.2",
+      "nombre": "Fabricación de pinturas, masillas y anticorrosivos",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "pinturas-masillas-y-anticorrosivos",
+        "nombre": "Pinturas, masillas y anticorrosivos",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.4 Plásticos y química"
+      }
+    },
+    {
+      "codigo": "2.4.3",
+      "nombre": "Impermeabilizantes, mantos asfálticos y selladores",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "impermeabilizantes-mantos-asfalticos-y-selladores",
+        "nombre": "Impermeabilizantes, mantos asfálticos y selladores",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.4 Plásticos y química"
+      }
+    },
+    {
+      "codigo": "2.4.4",
+      "nombre": "Aditivos para concreto, resinas y pegos",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "concreto-premezclado-y-morteros",
+        "nombre": "Concreto premezclado y morteros",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.1 Cemento, concreto y prefabricados"
+      }
+    },
+    {
+      "codigo": "2.5.1",
+      "nombre": "Cables eléctricos (baja, media y alta tensión)",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.5 Material eléctrico",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "2.5.2",
+      "nombre": "Canalizaciones EMT, IMC y bandejas portacables",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.5 Material eléctrico",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "canalizaciones-emt-imc-bandejas",
+        "nombre": "Canalizaciones (EMT, IMC, bandejas)",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.5 Material eléctrico"
+      }
+    },
+    {
+      "codigo": "2.5.3",
+      "nombre": "Tableros eléctricos y breakers",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.5 Material eléctrico",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "tableros-y-breakers",
+        "nombre": "Tableros y breakers",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.5 Material eléctrico"
+      }
+    },
+    {
+      "codigo": "2.5.4",
+      "nombre": "Tomacorrientes, apagadores y luminarias",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.5 Material eléctrico",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "tomacorrientes-apagadores-y-luminarias",
+        "nombre": "Tomacorrientes, apagadores y luminarias",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.5 Material eléctrico"
+      }
+    },
+    {
+      "codigo": "2.6.1",
+      "nombre": "Madera para encofrado y andamiaje",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.6 Madera y derivados",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "madera-para-encofrado-y-andamiaje",
+        "nombre": "Madera para encofrado y andamiaje",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.6 Madera y derivados"
+      }
+    },
+    {
+      "codigo": "2.6.2",
+      "nombre": "Tableros (plywood, MDF, MDP)",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.6 Madera y derivados",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "tableros-plywood-mdf-mdp",
+        "nombre": "Tableros (plywood, MDF, MDP)",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.6 Madera y derivados"
+      }
+    },
+    {
+      "codigo": "2.6.3",
+      "nombre": "Puertas, marcos y carpintería arquitectónica",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.6 Madera y derivados",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "puertas-marcos-y-carpinteria",
+        "nombre": "Puertas, marcos y carpintería",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.6 Madera y derivados"
+      }
+    },
+    {
+      "codigo": "2.7.1",
+      "nombre": "Estructuras modulares y paneles SIP",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.7 Prefabricación y ensamblaje",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "estructuras-modulares-y-paneles-sip",
+        "nombre": "Estructuras modulares y paneles SIP",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.7 Prefabricación y ensamblaje"
+      }
+    },
+    {
+      "codigo": "2.7.2",
+      "nombre": "Fachadas y ventanas preensambladas",
+      "rama": "2. Manufactura de materiales",
+      "grupo": "2.7 Prefabricación y ensamblaje",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "fachadas-y-ventanas-preensambladas",
+        "nombre": "Fachadas y ventanas preensambladas",
+        "rama": "Manufactura de materiales",
+        "grupo": "2.7 Prefabricación y ensamblaje"
+      }
+    },
+    {
+      "codigo": "3.1.1",
+      "nombre": "Ferreterías industriales y generales",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.1 Ferreterías y depósitos de materiales",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "3-1-ferreterias-y-depositos-de-materiales",
+        "nombre": "3.1 Ferreterías y depósitos de materiales",
+        "rama": "Distribución y comercio de materiales",
+        "grupo": "3.1 Ferreterías y depósitos de materiales"
+      }
+    },
+    {
+      "codigo": "3.1.2",
+      "nombre": "Depósitos y patios de materiales de construcción",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.1 Ferreterías y depósitos de materiales",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "3-1-ferreterias-y-depositos-de-materiales",
+        "nombre": "3.1 Ferreterías y depósitos de materiales",
+        "rama": "Distribución y comercio de materiales",
+        "grupo": "3.1 Ferreterías y depósitos de materiales"
+      }
+    },
+    {
+      "codigo": "3.2.1",
+      "nombre": "Distribución de acero, cabillas y perfiles",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "acero",
+        "nombre": "Acero",
+        "rama": "Distribución y comercio de materiales",
+        "grupo": "3.2 Distribuidores especializados"
+      }
+    },
+    {
+      "codigo": "3.2.2",
+      "nombre": "Distribución de pinturas y recubrimientos",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "pinturas",
+        "nombre": "Pinturas",
+        "rama": "Distribución y comercio de materiales",
+        "grupo": "3.2 Distribuidores especializados"
+      }
+    },
+    {
+      "codigo": "3.2.3",
+      "nombre": "Distribución de materiales eléctricos e iluminación",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "material-electrico",
+        "nombre": "Material eléctrico",
+        "rama": "Distribución y comercio de materiales",
+        "grupo": "3.2 Distribuidores especializados"
+      }
+    },
+    {
+      "codigo": "3.2.4",
+      "nombre": "Distribución hidrosanitaria, tuberías y sanitarios",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "sanitarios-y-griferia",
+        "nombre": "Sanitarios y grifería",
+        "rama": "Distribución y comercio de materiales",
+        "grupo": "3.2 Distribuidores especializados"
+      }
+    },
+    {
+      "codigo": "3.2.5",
+      "nombre": "Distribución de cerámicas, pisos y acabados",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "acabados",
+        "nombre": "Acabados",
+        "rama": "Distribución y comercio de materiales",
+        "grupo": "3.2 Distribuidores especializados"
+      }
+    },
+    {
+      "codigo": "3.2.6",
+      "nombre": "Distribución de maderas y tableros",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "3.2.7",
+      "nombre": "Distribución de cemento, cal y pegos",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "3.2.8",
+      "nombre": "Distribución de techos y cerramientos",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.2 Distribuidores especializados",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "3.3.1",
+      "nombre": "Importación de insumos y equipos de construcción",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.3 Importadores de materiales",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "3.4.1",
+      "nombre": "Transporte de carga y materiales de construcción",
+      "rama": "3. Distribución y comercio de materiales",
+      "grupo": "3.4 Transporte y fletes de carga",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "material-electrico",
+        "nombre": "Material eléctrico",
+        "rama": "Distribución y comercio de materiales",
+        "grupo": "3.2 Distribuidores especializados"
+      }
+    },
+    {
+      "codigo": "4.1.1",
+      "nombre": "Topografía y geotecnia",
+      "rama": "4. Servicios profesionales y técnicos",
+      "grupo": "4.1 Estudios previos",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "topografia-y-geotecnia",
+        "nombre": "Topografía y geotecnia",
+        "rama": "Servicios profesionales y técnicos",
+        "grupo": "4.1 Estudios previos"
+      }
+    },
+    {
+      "codigo": "4.1.2",
+      "nombre": "Estudios de impacto ambiental",
+      "rama": "4. Servicios profesionales y técnicos",
+      "grupo": "4.1 Estudios previos",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "estudios-ambientales",
+        "nombre": "Estudios ambientales",
+        "rama": "Servicios profesionales y técnicos",
+        "grupo": "4.1 Estudios previos"
+      }
+    },
+    {
+      "codigo": "4.2.1",
+      "nombre": "Arquitectura y BIM",
+      "rama": "4. Servicios profesionales y técnicos",
+      "grupo": "4.2 Diseño e ingeniería",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "arquitectura-y-bim",
+        "nombre": "Arquitectura y BIM",
+        "rama": "Servicios profesionales y técnicos",
+        "grupo": "4.2 Diseño e ingeniería"
+      }
+    },
+    {
+      "codigo": "4.2.2",
+      "nombre": "Cálculo estructural",
+      "rama": "4. Servicios profesionales y técnicos",
+      "grupo": "4.2 Diseño e ingeniería",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "calculo-estructural",
+        "nombre": "Cálculo estructural",
+        "rama": "Servicios profesionales y técnicos",
+        "grupo": "4.2 Diseño e ingeniería"
+      }
+    },
+    {
+      "codigo": "4.2.3",
+      "nombre": "Proyectos MEP (eléctricos, sanitarios, mecánicos)",
+      "rama": "4. Servicios profesionales y técnicos",
+      "grupo": "4.2 Diseño e ingeniería",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "proyectos-mep",
+        "nombre": "Proyectos MEP",
+        "rama": "Servicios profesionales y técnicos",
+        "grupo": "4.2 Diseño e ingeniería"
+      }
+    },
+    {
+      "codigo": "4.3.1",
+      "nombre": "Permisología, licencias y trámites legales",
+      "rama": "4. Servicios profesionales y técnicos",
+      "grupo": "4.3 Gestión y control",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "4.3.2",
+      "nombre": "Gerencia e inspección de obras",
+      "rama": "4. Servicios profesionales y técnicos",
+      "grupo": "4.3 Gestión y control",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "gerencia-e-inspeccion-de-obra",
+        "nombre": "Gerencia e inspección de obra",
+        "rama": "Servicios profesionales y técnicos",
+        "grupo": "4.3 Gestión y control"
+      }
+    },
+    {
+      "codigo": "4.3.3",
+      "nombre": "Laboratorios de control de calidad y ensayos",
+      "rama": "4. Servicios profesionales y técnicos",
+      "grupo": "4.3 Gestión y control",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "laboratorios-de-control-de-calidad",
+        "nombre": "Laboratorios de control de calidad",
+        "rama": "Servicios profesionales y técnicos",
+        "grupo": "4.3 Gestión y control"
+      }
+    },
+    {
+      "codigo": "4.3.4",
+      "nombre": "Seguridad industrial y dotación (EPP)",
+      "rama": "4. Servicios profesionales y técnicos",
+      "grupo": "4.3 Gestión y control",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "seguridad-industrial-y-dotacion-epp",
+        "nombre": "Seguridad industrial y dotación (EPP)",
+        "rama": "Servicios profesionales y técnicos",
+        "grupo": "4.3 Gestión y control"
+      }
+    },
+    {
+      "codigo": "5.1.1",
+      "nombre": "Edificación residencial y comercial",
+      "rama": "5. Ejecución de obra",
+      "grupo": "5.1 Constructoras y contratistas generales",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "edificacion-residencial-y-no-residencial",
+        "nombre": "Edificación residencial y no residencial",
+        "rama": "Ejecución de obra",
+        "grupo": "5.1 Tipos de contratista"
+      }
+    },
+    {
+      "codigo": "5.1.2",
+      "nombre": "Obras civiles e infraestructura vial e industrial",
+      "rama": "5. Ejecución de obra",
+      "grupo": "5.1 Constructoras y contratistas generales",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "obras-civiles-e-infraestructura",
+        "nombre": "Obras civiles e infraestructura",
+        "rama": "Ejecución de obra",
+        "grupo": "5.1 Tipos de contratista"
+      }
+    },
+    {
+      "codigo": "5.2.1",
+      "nombre": "Movimiento de tierras, excavación y fundaciones",
+      "rama": "5. Ejecución de obra",
+      "grupo": "5.2 Subcontratistas por especialidad",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "preliminares-y-cimentacion-movimiento-de-tierras-pilotes-zap",
+        "nombre": "Preliminares y cimentación (movimiento de tierras, pilotes, zapatas)",
+        "rama": "Ejecución de obra",
+        "grupo": "5.2 Etapas de obra"
+      }
+    },
+    {
+      "codigo": "5.2.2",
+      "nombre": "Estructuras y obra negra",
+      "rama": "5. Ejecución de obra",
+      "grupo": "5.2 Subcontratistas por especialidad",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "obras-civiles-e-infraestructura",
+        "nombre": "Obras civiles e infraestructura",
+        "rama": "Ejecución de obra",
+        "grupo": "5.1 Tipos de contratista"
+      }
+    },
+    {
+      "codigo": "5.2.3",
+      "nombre": "Instalaciones MEP, HVAC y cableado estructurado",
+      "rama": "5. Ejecución de obra",
+      "grupo": "5.2 Subcontratistas por especialidad",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "obra-gris-instalaciones-mep-hvac-domotica-y-cableado",
+        "nombre": "Obra gris: instalaciones MEP, HVAC, domótica y cableado",
+        "rama": "Ejecución de obra",
+        "grupo": "5.2 Etapas de obra"
+      }
+    },
+    {
+      "codigo": "5.2.4",
+      "nombre": "Acabados, pintura, pisos, techos y paisajismo",
+      "rama": "5. Ejecución de obra",
+      "grupo": "5.2 Subcontratistas por especialidad",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "6.1.1",
+      "nombre": "Venta de maquinaria pesada y equipos",
+      "rama": "6. Equipos, maquinaria y suministros especiales",
+      "grupo": "6.1 Maquinaria pesada y equipos",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "6.1.2",
+      "nombre": "Alquiler de maquinaria pesada y equipos",
+      "rama": "6. Equipos, maquinaria y suministros especiales",
+      "grupo": "6.1 Maquinaria pesada y equipos",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "6.2.1",
+      "nombre": "Venta y alquiler de andamios y encofrados",
+      "rama": "6. Equipos, maquinaria y suministros especiales",
+      "grupo": "6.2 Andamios y encofrados",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "6.3.1",
+      "nombre": "Ascensores y escaleras mecánicas",
+      "rama": "6. Equipos, maquinaria y suministros especiales",
+      "grupo": "6.3 Equipos de edificación y electromecánicos",
+      "matchType": "CONSERVA_NOMBRE",
+      "oldInfo": {
+        "slug": "ascensores-y-escaleras-mecanicas",
+        "nombre": "Ascensores y escaleras mecánicas",
+        "rama": "Equipos, maquinaria y suministros especiales",
+        "grupo": "6.3 Equipos de edificación"
+      }
+    },
+    {
+      "codigo": "6.3.2",
+      "nombre": "Climatización y HVAC industrial",
+      "rama": "6. Equipos, maquinaria y suministros especiales",
+      "grupo": "6.3 Equipos de edificación y electromecánicos",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "hvac",
+        "nombre": "HVAC",
+        "rama": "Equipos, maquinaria y suministros especiales",
+        "grupo": "6.3 Equipos de edificación"
+      }
+    },
+    {
+      "codigo": "6.3.3",
+      "nombre": "Bombas de agua e hidroneumáticos",
+      "rama": "6. Equipos, maquinaria y suministros especiales",
+      "grupo": "6.3 Equipos de edificación y electromecánicos",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "6.3.4",
+      "nombre": "Transformadores y subestaciones",
+      "rama": "6. Equipos, maquinaria y suministros especiales",
+      "grupo": "6.3 Equipos de edificación y electromecánicos",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "transformadores",
+        "nombre": "Transformadores",
+        "rama": "Equipos, maquinaria y suministros especiales",
+        "grupo": "6.3 Equipos de edificación"
+      }
+    },
+    {
+      "codigo": "7.1.1",
+      "nombre": "Banca, fiducias y crédito constructor",
+      "rama": "7. Financiamiento y comercialización",
+      "grupo": "7.1 Financiamiento y seguros",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "7-1-banca-fiducias-y-creditos-puente",
+        "nombre": "7.1 Banca, fiducias y créditos puente",
+        "rama": "Financiamiento y comercialización",
+        "grupo": "7.1 Banca, fiducias y créditos puente"
+      }
+    },
+    {
+      "codigo": "7.1.2",
+      "nombre": "Seguros todo riesgo de construcción",
+      "rama": "7. Financiamiento y comercialización",
+      "grupo": "7.1 Financiamiento y seguros",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "7-2-seguros-todo-riesgo",
+        "nombre": "7.2 Seguros (todo riesgo)",
+        "rama": "Financiamiento y comercialización",
+        "grupo": "7.2 Seguros (todo riesgo)"
+      }
+    },
+    {
+      "codigo": "7.2.1",
+      "nombre": "Inmobiliarias y comercialización de proyectos",
+      "rama": "7. Financiamiento y comercialización",
+      "grupo": "7.2 Inmobiliarias y corretaje",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "7-3-inmobiliarias-corretaje-y-avaluos",
+        "nombre": "7.3 Inmobiliarias, corretaje y avalúos",
+        "rama": "Financiamiento y comercialización",
+        "grupo": "7.3 Inmobiliarias, corretaje y avalúos"
+      }
+    },
+    {
+      "codigo": "7.2.2",
+      "nombre": "Avalúos y tasaciones inmobiliarias",
+      "rama": "7. Financiamiento y comercialización",
+      "grupo": "7.2 Inmobiliarias y corretaje",
+      "matchType": "NUEVA",
+      "oldInfo": null
+    },
+    {
+      "codigo": "8.1.1",
+      "nombre": "Facility management y mantenimiento de edificios",
+      "rama": "8. Operación y fin de ciclo",
+      "grupo": "8.1 Facility management y mantenimiento",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "8-1-facility-management-y-mantenimiento",
+        "nombre": "8.1 Facility management y mantenimiento",
+        "rama": "Operación y fin de ciclo",
+        "grupo": "8.1 Facility management y mantenimiento"
+      }
+    },
+    {
+      "codigo": "8.2.1",
+      "nombre": "Demolición técnica de estructuras",
+      "rama": "8. Operación y fin de ciclo",
+      "grupo": "8.2 Demolición y gestión de residuos",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "8-2-demolicion-tecnica",
+        "nombre": "8.2 Demolición técnica",
+        "rama": "Operación y fin de ciclo",
+        "grupo": "8.2 Demolición técnica"
+      }
+    },
+    {
+      "codigo": "8.2.2",
+      "nombre": "Reciclaje de escombros (RCD) y disposición final",
+      "rama": "8. Operación y fin de ciclo",
+      "grupo": "8.2 Demolición y gestión de residuos",
+      "matchType": "RENOMBRADA / AJUSTADA",
+      "oldInfo": {
+        "slug": "8-3-reciclaje-de-residuos-rcd-retorna-a-la-rama-2",
+        "nombre": "8.3 Reciclaje de residuos (RCD), retorna a la rama 2",
+        "rama": "Operación y fin de ciclo",
+        "grupo": "8.3 Reciclaje de residuos (RCD), retorna a la rama 2"
+      }
+    }
+  ],
+  "disappearingOld": [
+    {
+      "slug": "vidrio-plano-templado-laminado",
+      "nombre": "Vidrio (plano, templado, laminado)",
+      "rama": "Manufactura de materiales",
+      "grupo": "2.2 Cerámica, vidrio y sistemas livianos",
+      "rama_id": 2
+    },
+    {
+      "slug": "tuberias-pvc-cpvc-pead-y-ppr",
+      "nombre": "Tuberías PVC, CPVC, PEAD y PPR",
+      "rama": "Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "rama_id": 2
+    },
+    {
+      "slug": "tanques-de-polietileno",
+      "nombre": "Tanques de polietileno",
+      "rama": "Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "rama_id": 2
+    },
+    {
+      "slug": "aditivos-pegamentos-y-resinas",
+      "nombre": "Aditivos, pegamentos y resinas",
+      "rama": "Manufactura de materiales",
+      "grupo": "2.4 Plásticos y química",
+      "rama_id": 2
+    },
+    {
+      "slug": "cables-baja-media-y-alta-tension",
+      "nombre": "Cables (baja, media y alta tensión)",
+      "rama": "Manufactura de materiales",
+      "grupo": "2.5 Material eléctrico",
+      "rama_id": 2
+    },
+    {
+      "slug": "3-3-importadores",
+      "nombre": "3.3 Importadores",
+      "rama": "Distribución y comercio de materiales",
+      "grupo": "3.3 Importadores",
+      "rama_id": 3
+    },
+    {
+      "slug": "3-4-transporte-y-fletes-de-carga",
+      "nombre": "3.4 Transporte y fletes de carga",
+      "rama": "Distribución y comercio de materiales",
+      "grupo": "3.4 Transporte y fletes de carga",
+      "rama_id": 3
+    },
+    {
+      "slug": "permisos-y-licencias",
+      "nombre": "Permisos y licencias",
+      "rama": "Servicios profesionales y técnicos",
+      "grupo": "4.3 Gestión y control",
+      "rama_id": 4
+    },
+    {
+      "slug": "subcontratistas-por-especialidad",
+      "nombre": "Subcontratistas por especialidad",
+      "rama": "Ejecución de obra",
+      "grupo": "5.1 Tipos de contratista",
+      "rama_id": 5
+    },
+    {
+      "slug": "obra-negra-estructura-columnas-vigas-y-losas",
+      "nombre": "Obra negra: estructura, columnas, vigas y losas",
+      "rama": "Ejecución de obra",
+      "grupo": "5.2 Etapas de obra",
+      "rama_id": 5
+    },
+    {
+      "slug": "obra-blanca-pisos-estucos-pintura-carpinteria-y-paisajismo",
+      "nombre": "Obra blanca: pisos, estucos, pintura, carpintería y paisajismo",
+      "rama": "Ejecución de obra",
+      "grupo": "5.2 Etapas de obra",
+      "rama_id": 5
+    },
+    {
+      "slug": "gruas-excavadoras-mezcladoras",
+      "nombre": "Grúas, excavadoras, mezcladoras",
+      "rama": "Equipos, maquinaria y suministros especiales",
+      "grupo": "6.1 Maquinaria pesada",
+      "rama_id": 6
+    },
+    {
+      "slug": "6-2-andamios-y-encofrados",
+      "nombre": "6.2 Andamios y encofrados",
+      "rama": "Equipos, maquinaria y suministros especiales",
+      "grupo": "6.2 Andamios y encofrados",
+      "rama_id": 6
+    },
+    {
+      "slug": "bombas-e-hidroneumaticos",
+      "nombre": "Bombas e hidroneumáticos",
+      "rama": "Equipos, maquinaria y suministros especiales",
+      "grupo": "6.3 Equipos de edificación",
+      "rama_id": 6
+    },
+    {
+      "slug": "7-4-notarias-y-registros",
+      "nombre": "7.4 Notarías y registros",
+      "rama": "Financiamiento y comercialización",
+      "grupo": "7.4 Notarías y registros",
+      "rama_id": 7
+    },
+    {
+      "slug": "familias",
+      "nombre": "Familias",
+      "rama": "Demanda final",
+      "grupo": "Quién compra",
+      "rama_id": 9
+    },
+    {
+      "slug": "sector-publico-gobernacion-alcaldias-y-ministerios",
+      "nombre": "Sector público: gobernación, alcaldías y ministerios",
+      "rama": "Demanda final",
+      "grupo": "Quién compra",
+      "rama_id": 9
+    },
+    {
+      "slug": "empresas-privadas-e-industria",
+      "nombre": "Empresas privadas e industria",
+      "rama": "Demanda final",
+      "grupo": "Quién compra",
+      "rama_id": 9
+    },
+    {
+      "slug": "valencia",
+      "nombre": "Valencia",
+      "rama": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "rama_id": 10
+    },
+    {
+      "slug": "los-guayos",
+      "nombre": "Los Guayos",
+      "rama": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "rama_id": 10
+    },
+    {
+      "slug": "guacara",
+      "nombre": "Guacara",
+      "rama": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "rama_id": 10
+    },
+    {
+      "slug": "san-diego",
+      "nombre": "San Diego",
+      "rama": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "rama_id": 10
+    },
+    {
+      "slug": "puerto-cabello",
+      "nombre": "Puerto Cabello",
+      "rama": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "rama_id": 10
+    },
+    {
+      "slug": "otros-municipios",
+      "nombre": "Otros municipios",
+      "rama": "Referencia territorial: Carabobo",
+      "grupo": "Municipios y zonas",
+      "rama_id": 10
+    }
+  ]
+}

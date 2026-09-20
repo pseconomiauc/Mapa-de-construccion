@@ -1,0 +1,648 @@
+{
+  "resumen": {
+    "totalRamas": 8,
+    "totalGrupos": 26,
+    "totalSubcats": 76,
+    "totalRegistros": 93,
+    "totalEmpresasReales": 89,
+    "totalReferenciasGenericas": 4,
+    "totalAsociaciones": 106,
+    "totalPorRevisar": 42
+  },
+  "desgloseRamas": [
+    {
+      "id": 1,
+      "nombre": "Extracción y recursos primarios",
+      "totalSubcategorias": 7,
+      "totalAsociaciones": 0,
+      "subcategorias": [
+        {
+          "codigo": "1.1.1",
+          "nombre": "Áridos (grava, arena y piedra picada)",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "1.1.2",
+          "nombre": "Rocas ornamentales (granito y mármol)",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "1.1.3",
+          "nombre": "Calizas y arcillas",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "1.2.1",
+          "nombre": "Minerales de hierro, bauxita y cobre",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "1.3.1",
+          "nombre": "Madera cruda (sector forestal)",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "1.3.2",
+          "nombre": "Agua industrial",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "1.3.3",
+          "nombre": "Hidrocarburos y derivados de soporte",
+          "empresasRegistradas": 0
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "nombre": "Manufactura de materiales",
+      "totalSubcategorias": 28,
+      "totalAsociaciones": 45,
+      "subcategorias": [
+        {
+          "codigo": "2.1.1",
+          "nombre": "Cemento y clínker",
+          "empresasRegistradas": 1
+        },
+        {
+          "codigo": "2.1.2",
+          "nombre": "Concreto premezclado y morteros",
+          "empresasRegistradas": 11
+        },
+        {
+          "codigo": "2.1.3",
+          "nombre": "Cal y yeso",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.1.4",
+          "nombre": "Bloques, adoquines y tubos de concreto",
+          "empresasRegistradas": 4
+        },
+        {
+          "codigo": "2.1.5",
+          "nombre": "Vigas pretensadas y losacero",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.2.1",
+          "nombre": "Ladrillos, tejas y arcilla",
+          "empresasRegistradas": 3
+        },
+        {
+          "codigo": "2.2.2",
+          "nombre": "Baldosas y porcelanatos",
+          "empresasRegistradas": 3
+        },
+        {
+          "codigo": "2.2.3",
+          "nombre": "Piezas sanitarias",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.2.4",
+          "nombre": "Vidrio plano, templado y laminado",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.2.5",
+          "nombre": "Drywall y fibrocemento",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.3.1",
+          "nombre": "Cabillas, mallas y estribos de refuerzo",
+          "empresasRegistradas": 4
+        },
+        {
+          "codigo": "2.3.2",
+          "nombre": "Perfiles y planchas estructurales",
+          "empresasRegistradas": 6
+        },
+        {
+          "codigo": "2.3.3",
+          "nombre": "Láminas de techo (galvanizadas, termoacústicas, zinc)",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.3.4",
+          "nombre": "Aluminio para ventanas y cerramientos",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.3.5",
+          "nombre": "Fabricación de clavos, tornillos y anclajes",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.4.1",
+          "nombre": "Tuberías PVC, CPVC, PEAD, PPR y tanques",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.4.2",
+          "nombre": "Fabricación de pinturas, masillas y anticorrosivos",
+          "empresasRegistradas": 7
+        },
+        {
+          "codigo": "2.4.3",
+          "nombre": "Impermeabilizantes, mantos asfálticos y selladores",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.4.4",
+          "nombre": "Aditivos para concreto, resinas y pegos",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.5.1",
+          "nombre": "Cables eléctricos (baja, media y alta tensión)",
+          "empresasRegistradas": 5
+        },
+        {
+          "codigo": "2.5.2",
+          "nombre": "Canalizaciones EMT, IMC y bandejas portacables",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.5.3",
+          "nombre": "Tableros eléctricos y breakers",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.5.4",
+          "nombre": "Tomacorrientes, apagadores y luminarias",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.6.1",
+          "nombre": "Madera para encofrado y andamiaje",
+          "empresasRegistradas": 1
+        },
+        {
+          "codigo": "2.6.2",
+          "nombre": "Tableros (plywood, MDF, MDP)",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.6.3",
+          "nombre": "Puertas, marcos y carpintería arquitectónica",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.7.1",
+          "nombre": "Estructuras modulares y paneles SIP",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "2.7.2",
+          "nombre": "Fachadas y ventanas preensambladas",
+          "empresasRegistradas": 0
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "nombre": "Distribución y comercio de materiales",
+      "totalSubcategorias": 12,
+      "totalAsociaciones": 61,
+      "subcategorias": [
+        {
+          "codigo": "3.1.1",
+          "nombre": "Ferreterías industriales y generales",
+          "empresasRegistradas": 16
+        },
+        {
+          "codigo": "3.1.2",
+          "nombre": "Depósitos y patios de materiales de construcción",
+          "empresasRegistradas": 1
+        },
+        {
+          "codigo": "3.2.1",
+          "nombre": "Distribución de acero, cabillas y perfiles",
+          "empresasRegistradas": 15
+        },
+        {
+          "codigo": "3.2.2",
+          "nombre": "Distribución de pinturas y recubrimientos",
+          "empresasRegistradas": 7
+        },
+        {
+          "codigo": "3.2.3",
+          "nombre": "Distribución de materiales eléctricos e iluminación",
+          "empresasRegistradas": 7
+        },
+        {
+          "codigo": "3.2.4",
+          "nombre": "Distribución hidrosanitaria, tuberías y sanitarios",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "3.2.5",
+          "nombre": "Distribución de cerámicas, pisos y acabados",
+          "empresasRegistradas": 5
+        },
+        {
+          "codigo": "3.2.6",
+          "nombre": "Distribución de maderas y tableros",
+          "empresasRegistradas": 7
+        },
+        {
+          "codigo": "3.2.7",
+          "nombre": "Distribución de cemento, cal y pegos",
+          "empresasRegistradas": 3
+        },
+        {
+          "codigo": "3.2.8",
+          "nombre": "Distribución de techos y cerramientos",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "3.3.1",
+          "nombre": "Importación de insumos y equipos de construcción",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "3.4.1",
+          "nombre": "Transporte de carga y materiales de construcción",
+          "empresasRegistradas": 0
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "nombre": "Servicios profesionales y técnicos",
+      "totalSubcategorias": 9,
+      "totalAsociaciones": 0,
+      "subcategorias": [
+        {
+          "codigo": "4.1.1",
+          "nombre": "Topografía y geotecnia",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "4.1.2",
+          "nombre": "Estudios de impacto ambiental",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "4.2.1",
+          "nombre": "Arquitectura y BIM",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "4.2.2",
+          "nombre": "Cálculo estructural",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "4.2.3",
+          "nombre": "Proyectos MEP (eléctricos, sanitarios, mecánicos)",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "4.3.1",
+          "nombre": "Permisología, licencias y trámites legales",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "4.3.2",
+          "nombre": "Gerencia e inspección de obras",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "4.3.3",
+          "nombre": "Laboratorios de control de calidad y ensayos",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "4.3.4",
+          "nombre": "Seguridad industrial y dotación (EPP)",
+          "empresasRegistradas": 0
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "nombre": "Ejecución de obra",
+      "totalSubcategorias": 6,
+      "totalAsociaciones": 0,
+      "subcategorias": [
+        {
+          "codigo": "5.1.1",
+          "nombre": "Edificación residencial y comercial",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "5.1.2",
+          "nombre": "Obras civiles e infraestructura vial e industrial",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "5.2.1",
+          "nombre": "Movimiento de tierras, excavación y fundaciones",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "5.2.2",
+          "nombre": "Estructuras y obra negra",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "5.2.3",
+          "nombre": "Instalaciones MEP, HVAC y cableado estructurado",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "5.2.4",
+          "nombre": "Acabados, pintura, pisos, techos y paisajismo",
+          "empresasRegistradas": 0
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "nombre": "Equipos, maquinaria y suministros especiales",
+      "totalSubcategorias": 7,
+      "totalAsociaciones": 0,
+      "subcategorias": [
+        {
+          "codigo": "6.1.1",
+          "nombre": "Venta de maquinaria pesada y equipos",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "6.1.2",
+          "nombre": "Alquiler de maquinaria pesada y equipos",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "6.2.1",
+          "nombre": "Venta y alquiler de andamios y encofrados",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "6.3.1",
+          "nombre": "Ascensores y escaleras mecánicas",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "6.3.2",
+          "nombre": "Climatización y HVAC industrial",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "6.3.3",
+          "nombre": "Bombas de agua e hidroneumáticos",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "6.3.4",
+          "nombre": "Transformadores y subestaciones",
+          "empresasRegistradas": 0
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "nombre": "Financiamiento y comercialización",
+      "totalSubcategorias": 4,
+      "totalAsociaciones": 0,
+      "subcategorias": [
+        {
+          "codigo": "7.1.1",
+          "nombre": "Banca, fiducias y crédito constructor",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "7.1.2",
+          "nombre": "Seguros todo riesgo de construcción",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "7.2.1",
+          "nombre": "Inmobiliarias y comercialización de proyectos",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "7.2.2",
+          "nombre": "Avalúos y tasaciones inmobiliarias",
+          "empresasRegistradas": 0
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "nombre": "Operación y fin de ciclo",
+      "totalSubcategorias": 3,
+      "totalAsociaciones": 0,
+      "subcategorias": [
+        {
+          "codigo": "8.1.1",
+          "nombre": "Facility management y mantenimiento de edificios",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "8.2.1",
+          "nombre": "Demolición técnica de estructuras",
+          "empresasRegistradas": 0
+        },
+        {
+          "codigo": "8.2.2",
+          "nombre": "Reciclaje de escombros (RCD) y disposición final",
+          "empresasRegistradas": 0
+        }
+      ]
+    }
+  ],
+  "registrosRevisarPorMotivo": {
+    "referenciasGenericas": [
+      {
+        "nombre": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+        "nota": "Referencia genérica: identificar la empresa real"
+      },
+      {
+        "nombre": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+        "nota": "Referencia genérica: identificar la empresa real"
+      },
+      {
+        "nombre": "Ferretería y Materiales de Construcción en la zona de Bejuma",
+        "nota": "Referencia genérica: identificar la empresa real"
+      },
+      {
+        "nombre": "Suministros y Materiales de Construcción operando en la zona (Ferremateriales locales)",
+        "nota": "Referencia genérica: identificar la empresa real"
+      }
+    ],
+    "telefonosSospechosos": [
+      {
+        "nombre": "Concreto 7G",
+        "tel": "+58 241 8710000",
+        "nota": "Teléfono con patrón sospechoso: +58 241 8710000"
+      },
+      {
+        "nombre": "Estructuras Metálicas Carabobo (Estructurca)",
+        "tel": "+58 241 8712345",
+        "nota": "Teléfono con patrón sospechoso: +58 241 8712345"
+      },
+      {
+        "nombre": "Metalúrgica M&G 2000, C.A.",
+        "tel": "+58 245 5641234",
+        "nota": "Teléfono con patrón sospechoso: +58 245 5641234"
+      },
+      {
+        "nombre": "Corimon Pinturas Montana, C.A.",
+        "tel": "+58 241 8391111",
+        "nota": "Teléfono con patrón sospechoso: +58 241 8391111. WhatsApp con patrón sospechoso: +58 412 0001122"
+      },
+      {
+        "nombre": "Pinturasarsa (Pinturas Antillas / ARSA)",
+        "tel": "+58 241 8381234",
+        "nota": "Teléfono con patrón sospechoso: +58 241 8381234"
+      },
+      {
+        "nombre": "Sherwin-Williams de Venezuela (Planta Los Guayos)",
+        "tel": "+58 241 8301111",
+        "nota": "Teléfono con patrón sospechoso: +58 241 8301111"
+      },
+      {
+        "nombre": "Conductores Cabel, C.A.",
+        "tel": "+58 245 5611111",
+        "nota": "Teléfono con patrón sospechoso: +58 245 5611111"
+      },
+      {
+        "nombre": "Ferretería EPA San Diego",
+        "tel": "+58 500 3720000",
+        "nota": "Teléfono con patrón sospechoso: +58 500 3720000"
+      },
+      {
+        "nombre": "Tornillos Valencia, C.A.",
+        "tel": "+58 241 8324567",
+        "nota": "Teléfono con patrón sospechoso: +58 241 8324567"
+      },
+      {
+        "nombre": "Acero de Carabobo, C.A. (Acerocara)",
+        "tel": "+58 241 8321111",
+        "nota": "Teléfono con patrón sospechoso: +58 241 8321111"
+      },
+      {
+        "nombre": "Acero de Occidente, C.A. (Acerooccidente)",
+        "tel": "+58 241 8661234",
+        "nota": "Teléfono con patrón sospechoso: +58 241 8661234"
+      },
+      {
+        "nombre": "Ferretería Carvajal, C.A.",
+        "tel": "+58 241 8341234",
+        "nota": "Teléfono con patrón sospechoso: +58 241 8341234"
+      },
+      {
+        "nombre": "Ferretería y Materiales Naguanagua 2000",
+        "tel": "+58 241 8615555",
+        "nota": "Teléfono con patrón sospechoso: +58 241 8615555"
+      },
+      {
+        "nombre": "Mundo Cerámico",
+        "tel": "+58 241 8081234",
+        "nota": "Teléfono con patrón sospechoso: +58 241 8081234"
+      },
+      {
+        "nombre": "Sherwin Williams - Tienda San Diego",
+        "tel": "+58 245 5651111",
+        "nota": "Marcado para revisión en archivo fuente. Teléfono con patrón sospechoso: +58 245 5651111"
+      }
+    ],
+    "mariara": [
+      {
+        "nombre": "Ferretería y Materiales Mariara",
+        "muni": "Diego Ibarra",
+        "nota": "Municipio registrado originalmente como Mariara (capital del Municipio Diego Ibarra). Requiere verificación.. Municipio corregido de Mariara a Diego Ibarra"
+      }
+    ],
+    "revisionOriginalExcel": [
+      {
+        "nombre": "Bloquera Los Guayos",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Bloquera y Concretera San Diego",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Concreto Los Andes",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Concreto Miranda, C.A.",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Preconcretos, C.A.",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Premezclados Carabobo",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Inversiones R&G C.A.",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Conduven",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Inversiones R&G (Representaciones y Gaskets / Suministros Industriales)",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Inversiones Aceros Guayos, C.A.",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Inversiones y Suministros Metalúrgicos (Insurnet)",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Ferretería y Materiales San Diego",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Ferretería y Materiales de Construcción (Directorio Comercial Local)",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Inversiones Ceramicas",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Inversiones Gres, C.A.",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Inversiones y Maderas C.A.",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Maderas y Acabados Los Pinos",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Maderas y Aserradero Bejuma",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Inversiones y Suministros Eléctricos (INSELEC)",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Cocinas y Diseños Domésticos Valencia",
+        "nota": "Marcado para revisión en archivo fuente"
+      },
+      {
+        "nombre": "Sherwin Williams - Tienda San Diego",
+        "nota": "Marcado para revisión en archivo fuente. Teléfono con patrón sospechoso: +58 245 5651111"
+      }
+    ]
+  }
+}

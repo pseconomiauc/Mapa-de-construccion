@@ -1,0 +1,807 @@
+{
+  "totalFilas": 106,
+  "totalEmpresas": 93,
+  "ramasCount": {
+    "2. Manufactura de materiales": 45,
+    "3. Distribución y comercio de materiales": 61
+  },
+  "catalogo": {
+    "totalRamas": 8,
+    "totalGrupos": 26,
+    "totalSubcats": 76,
+    "subcatsConEmpresas": [
+      "Bloques, adoquines y tubos de concreto",
+      "Cemento y clínker",
+      "Concreto premezclado y morteros",
+      "Baldosas y porcelanatos",
+      "Ladrillos, tejas y arcilla",
+      "Cabillas, mallas y estribos de refuerzo",
+      "Perfiles y planchas estructurales",
+      "Fabricación de pinturas, masillas y anticorrosivos",
+      "Cables eléctricos (baja, media y alta tensión)",
+      "Madera para encofrado y andamiaje",
+      "Depósitos y patios de materiales de construcción",
+      "Ferreterías industriales y generales",
+      "Distribución de acero, cabillas y perfiles",
+      "Distribución de cemento, cal y pegos",
+      "Distribución de cerámicas, pisos y acabados",
+      "Distribución de maderas y tableros",
+      "Distribución de materiales eléctricos e iluminación",
+      "Distribución de pinturas y recubrimientos"
+    ],
+    "subcatsVaciasCount": 58
+  },
+  "vacias": {
+    "serviciosCount": 0,
+    "marcaCount": 0,
+    "latCount": 0,
+    "lonCount": 0
+  },
+  "llenas": {
+    "whatsappCount": 6,
+    "correoCount": 5
+  },
+  "revisar": {
+    "filas": 29,
+    "empresas": 26,
+    "list": [
+      {
+        "empresa": "Bloquera Los Guayos",
+        "subcat": "Bloques, adoquines y tubos de concreto"
+      },
+      {
+        "empresa": "Bloquera y Concretera San Diego",
+        "subcat": "Bloques, adoquines y tubos de concreto"
+      },
+      {
+        "empresa": "Concreto Los Andes",
+        "subcat": "Concreto premezclado y morteros"
+      },
+      {
+        "empresa": "Concreto Miranda, C.A.",
+        "subcat": "Concreto premezclado y morteros"
+      },
+      {
+        "empresa": "Preconcretos, C.A.",
+        "subcat": "Concreto premezclado y morteros"
+      },
+      {
+        "empresa": "Premezclados Carabobo",
+        "subcat": "Concreto premezclado y morteros"
+      },
+      {
+        "empresa": "Inversiones R&G C.A.",
+        "subcat": "Perfiles y planchas estructurales"
+      },
+      {
+        "empresa": "Conduven",
+        "subcat": "Cables eléctricos (baja, media y alta tensión)"
+      },
+      {
+        "empresa": "Ferretería y Materiales Mariara",
+        "subcat": "Ferreterías industriales y generales"
+      },
+      {
+        "empresa": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+        "subcat": "Ferreterías industriales y generales"
+      },
+      {
+        "empresa": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+        "subcat": "Ferreterías industriales y generales"
+      },
+      {
+        "empresa": "Inversiones R&G (Representaciones y Gaskets / Suministros Industriales)",
+        "subcat": "Ferreterías industriales y generales"
+      },
+      {
+        "empresa": "Ferretería y Materiales de Construcción en la zona de Bejuma",
+        "subcat": "Distribución de acero, cabillas y perfiles"
+      },
+      {
+        "empresa": "Inversiones Aceros Guayos, C.A.",
+        "subcat": "Distribución de acero, cabillas y perfiles"
+      },
+      {
+        "empresa": "Inversiones y Suministros Metalúrgicos (Insurnet)",
+        "subcat": "Distribución de acero, cabillas y perfiles"
+      },
+      {
+        "empresa": "Ferretería y Materiales San Diego",
+        "subcat": "Distribución de cemento, cal y pegos"
+      },
+      {
+        "empresa": "Ferretería y Materiales de Construcción (Directorio Comercial Local)",
+        "subcat": "Distribución de cemento, cal y pegos"
+      },
+      {
+        "empresa": "Ferretería y Materiales de Construcción en la zona de Bejuma",
+        "subcat": "Distribución de cemento, cal y pegos"
+      },
+      {
+        "empresa": "Inversiones Ceramicas",
+        "subcat": "Distribución de cerámicas, pisos y acabados"
+      },
+      {
+        "empresa": "Inversiones Gres, C.A.",
+        "subcat": "Distribución de cerámicas, pisos y acabados"
+      },
+      {
+        "empresa": "Suministros y Materiales de Construcción operando en la zona (Ferremateriales locales)",
+        "subcat": "Distribución de cerámicas, pisos y acabados"
+      },
+      {
+        "empresa": "Inversiones y Maderas C.A.",
+        "subcat": "Distribución de maderas y tableros"
+      },
+      {
+        "empresa": "Maderas y Acabados Los Pinos",
+        "subcat": "Distribución de maderas y tableros"
+      },
+      {
+        "empresa": "Maderas y Aserradero Bejuma",
+        "subcat": "Distribución de maderas y tableros"
+      },
+      {
+        "empresa": "Inversiones y Suministros Eléctricos (INSELEC)",
+        "subcat": "Distribución de materiales eléctricos e iluminación"
+      },
+      {
+        "empresa": "Cocinas y Diseños Domésticos Valencia",
+        "subcat": "Distribución de pinturas y recubrimientos"
+      },
+      {
+        "empresa": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+        "subcat": "Distribución de pinturas y recubrimientos"
+      },
+      {
+        "empresa": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+        "subcat": "Distribución de pinturas y recubrimientos"
+      },
+      {
+        "empresa": "Sherwin Williams - Tienda San Diego",
+        "subcat": "Distribución de pinturas y recubrimientos"
+      }
+    ]
+  },
+  "dirGenericas": [
+    {
+      "empresa": "Bloquera Los Guayos",
+      "dir": "Municipio Los Guayos, Estado Carabobo",
+      "muni": "Los Guayos"
+    },
+    {
+      "empresa": "Bloquera y Concretera San Diego",
+      "dir": "Municipio San Diego, Estado Carabobo",
+      "muni": "San Diego"
+    },
+    {
+      "empresa": "Concreto Miranda, C.A.",
+      "dir": "Municipio Miranda, Estado Carabobo",
+      "muni": "Miranda"
+    },
+    {
+      "empresa": "Premezclados Carabobo",
+      "dir": "Municipio San Diego, Carabobo",
+      "muni": "San Diego"
+    },
+    {
+      "empresa": "Inversiones R&G C.A.",
+      "dir": "Municipio San Diego, Estado Carabobo",
+      "muni": "San Diego"
+    },
+    {
+      "empresa": "Ferretería y Materiales Mariara",
+      "dir": "Municipio Mariara, Estado Carabobo",
+      "muni": "Mariara"
+    },
+    {
+      "empresa": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+      "dir": "Municipio Montalbán, Estado Carabobo",
+      "muni": "Montalbán"
+    },
+    {
+      "empresa": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+      "dir": "Municipio Bejuma, Estado Carabobo",
+      "muni": "Bejuma"
+    },
+    {
+      "empresa": "Inversiones R&G (Representaciones y Gaskets / Suministros Industriales)",
+      "dir": "Municipio San Diego, Estado Carabobo",
+      "muni": "San Diego"
+    },
+    {
+      "empresa": "Inversiones Aceros Guayos, C.A.",
+      "dir": "Municipio Los Guayos, Estado Carabobo",
+      "muni": "Los Guayos"
+    },
+    {
+      "empresa": "Inversiones y Suministros Metalúrgicos (Insurnet)",
+      "dir": "Municipio Los Guayos, Estado Carabobo.",
+      "muni": "Los Guayos"
+    },
+    {
+      "empresa": "Ferretería y Materiales San Diego",
+      "dir": "Municipio San Diego, Estado Carabobo",
+      "muni": "San Diego"
+    },
+    {
+      "empresa": "Ferretería y Materiales de Construcción (Directorio Comercial Local)",
+      "dir": "Municipio Naguanagua, Estado Carabobo",
+      "muni": "Naguanagua"
+    },
+    {
+      "empresa": "Inversiones Ceramicas",
+      "dir": "Municipio Diego Ibarra, Estado Carabobo",
+      "muni": "Diego Ibarra"
+    },
+    {
+      "empresa": "Suministros y Materiales de Construcción operando en la zona (Ferremateriales locales)",
+      "dir": "Municipio Juan José Mora (Morón), Estado Carabobo",
+      "muni": "Juan José Mora"
+    },
+    {
+      "empresa": "Inversiones y Maderas C.A.",
+      "dir": "Municipio Carlos Arvelo, Estado Carabobo",
+      "muni": "Carlos Arvelo"
+    },
+    {
+      "empresa": "Maderas y Acabados Los Pinos",
+      "dir": "Municipio Naguanagua, Estado Carabobo",
+      "muni": "Naguanagua"
+    },
+    {
+      "empresa": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+      "dir": "Municipio Montalbán, Estado Carabobo",
+      "muni": "Montalbán"
+    },
+    {
+      "empresa": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+      "dir": "Municipio Bejuma, Estado Carabobo",
+      "muni": "Bejuma"
+    },
+    {
+      "empresa": "Sherwin Williams - Tienda San Diego",
+      "dir": "Municipio San Diego, Estado Carabobo",
+      "muni": "San Diego"
+    }
+  ],
+  "prodConPipe": [
+    {
+      "empresa": "Concretera de Occidente, C.A. (Concroca)",
+      "prod": "Planta de producción de concreto premezclado y elementos de concreto, operando en la zona industrial de Guacara. | Planta de producción y comercialización de concreto premezclado y servicios afines."
+    },
+    {
+      "empresa": "Corporación Cemento Nacional (Corpcemven) / Operaciones Planta Morón",
+      "prod": "Planta de producción y molienda de cemento vinculada al sector cementero estatal venezolano ubicada en la zona industrial de Morón. | cemento"
+    },
+    {
+      "empresa": "Concretera de Occidente, C.A. (Concroca)",
+      "prod": "Planta de producción de concreto premezclado y elementos de concreto, operando en la zona industrial de Guacara. | Planta de producción y comercialización de concreto premezclado y servicios afines."
+    },
+    {
+      "empresa": "Concreto 7G",
+      "prod": "Empresa dedicada a la fabricación y comercialización de prefabricados de concreto, incluyendo bloques, tabelones y otros elementos para la construcción. | Planta de producción y comercialización de concreto premezclado y servicios de bombeo."
+    },
+    {
+      "empresa": "Preconcretos, C.A.",
+      "prod": "Empresa dedicada a la fabricación, venta y suministro de concreto premezclado y despacho con camionesmixter. | Planta de producción y suministro de concreto premezclado y bombeo de concreto en la región central."
+    },
+    {
+      "empresa": "Cerámica Carabobo",
+      "prod": "Comercialización y distribución de pisos, porcelanatos, piezas sanitarias y grifería. | Fabricante de revestimientos cerámicos, pisos y productos de arcilla para la construcción. | Fabricante y distribuidor de cables eléctricos de baja y media tensión."
+    },
+    {
+      "empresa": "Cerámica Carabobo",
+      "prod": "Comercialización y distribución de pisos, porcelanatos, piezas sanitarias y grifería. | Fabricante de revestimientos cerámicos, pisos y productos de arcilla para la construcción. | Fabricante y distribuidor de cables eléctricos de baja y media tensión."
+    },
+    {
+      "empresa": "Sidor - Planta Guacara (Centro de Distribución / Operaciones)",
+      "prod": "Centro operativo y de distribución asociado a la principal siderúrgica del país para la entrega de productos de acero. | Fabricante y distribuidor de productos siderúrgicos."
+    },
+    {
+      "empresa": "Corimon Pinturas Montana, C.A.",
+      "prod": "Comercialización de pinturas arquitectónicas, esmaltes, impermeabilizantes y recubrimientos. | Esmaltes | Línea industrial y marina | Masillas | Pintura arquitectónica | Planta de fabricación de pinturas, esmaltes, impermeabilizantes y recubrimientos de la corporación Corimon. | Venta de pinturas tipo caucho, esmaltes, anticorrosivos y productos para la construcción."
+    },
+    {
+      "empresa": "Pinturas Flamuko, C.A.",
+      "prod": "Esmaltes sintéticos | Fondos anticorrosivos | Pintura epóxica | Pinturas de caucho"
+    },
+    {
+      "empresa": "Sherwin-Williams de Venezuela (Planta Los Guayos)",
+      "prod": "Fabricación y comercialización de pinturas arquitectónicas, industriales, automotrices y recubrimientos en general. | Planta de fabricación, distribución y comercialización de pinturas arquitectónicas, industriales, automotrices y recubrimientos."
+    },
+    {
+      "empresa": "Cerámica Carabobo",
+      "prod": "Comercialización y distribución de pisos, porcelanatos, piezas sanitarias y grifería. | Fabricante de revestimientos cerámicos, pisos y productos de arcilla para la construcción. | Fabricante y distribuidor de cables eléctricos de baja y media tensión."
+    },
+    {
+      "empresa": "Ferretería EPA, C.A.",
+      "prod": "Clavos y pernos | Herrajes | Herramientas eléctricas | Tornillos y anclajes"
+    },
+    {
+      "empresa": "Ferretería La Campana Naguanagua",
+      "prod": "Cerraduras | Clavos para concreto | Herramientas manuales | Tornillos autorroscantes"
+    },
+    {
+      "empresa": "Tornillos Carabobo, C.A.",
+      "prod": "Empresa especializada en la venta y distribución de tornillería industrial, anclajes, tuercas, arandelas y herramientas para el sector industrial y automotriz. | tornillos"
+    },
+    {
+      "empresa": "Tornillos Valencia, C.A.",
+      "prod": "Arandelas | Espárragos B7 | Tornillería industrial grado 5 y 8 | Tuercas hexagonales"
+    },
+    {
+      "empresa": "Tornillos e Inversiones Valencia, C.A. (Tornival)",
+      "prod": "Comercialización de tornillería en general, pernos, espárragos, anclajes mecánicos y químicos, y herramientas de fijación industrial. | fijaciones | tornillos"
+    },
+    {
+      "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+      "prod": "Empresa dedicada a la comercialización y distribución de productos siderúrgicos, perfiles y acero para la construcción. | Empresa dedicada al procesamiento, distribución y comercialización de productos siderúrgicos y perfiles de acero. | Fabricante de conductores eléctricos de aluminio y aleaciones para el sector eléctrico. | Fabricante y comercializador de pinturas arquitectónicas, industriales, automotrices y recubrimientos."
+    },
+    {
+      "empresa": "Aceros de Carabobo, C.A.",
+      "prod": "Empresa dedicada al procesamiento, venta y distribución de acero, perfiles metálicos y planchas. | acero | materiales ferreteros"
+    },
+    {
+      "empresa": "Mundo Cerámico",
+      "prod": "Aserradero, comercialización de madera y derivados para la construcción y carpintería. | Comercialización de pisos, porcelanatos, revestimientos cerámicos y piezas sanitarias."
+    },
+    {
+      "empresa": "Ferretería EPA - Los Guayos",
+      "prod": "Fabricante de tubos de acero y perfiles, con presencia y operaciones industriales en la zona de Carabobo, suministrando materiales para la industria eléctrica y de construcción. | Fabricante y distribuidor líder en Venezuela de revestimientos cerámicos, pisos, paredes y piezas sanitarias. | Gran centro de suministros para la construcción, hogar y ferretería, que incluye departamentos de pisos, revestimientos cerámicos, porcelanatos y piezas sanitarias."
+    },
+    {
+      "empresa": "Mundo Cerámico",
+      "prod": "Aserradero, comercialización de madera y derivados para la construcción y carpintería. | Comercialización de pisos, porcelanatos, revestimientos cerámicos y piezas sanitarias."
+    },
+    {
+      "empresa": "Mundo Cerámico",
+      "prod": "Aserradero, comercialización de madera y derivados para la construcción y carpintería. | Comercialización de pisos, porcelanatos, revestimientos cerámicos y piezas sanitarias."
+    },
+    {
+      "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+      "prod": "Empresa dedicada a la comercialización y distribución de productos siderúrgicos, perfiles y acero para la construcción. | Empresa dedicada al procesamiento, distribución y comercialización de productos siderúrgicos y perfiles de acero. | Fabricante de conductores eléctricos de aluminio y aleaciones para el sector eléctrico. | Fabricante y comercializador de pinturas arquitectónicas, industriales, automotrices y recubrimientos."
+    },
+    {
+      "empresa": "Ferretería EPA - Los Guayos",
+      "prod": "Fabricante de tubos de acero y perfiles, con presencia y operaciones industriales en la zona de Carabobo, suministrando materiales para la industria eléctrica y de construcción. | Fabricante y distribuidor líder en Venezuela de revestimientos cerámicos, pisos, paredes y piezas sanitarias. | Gran centro de suministros para la construcción, hogar y ferretería, que incluye departamentos de pisos, revestimientos cerámicos, porcelanatos y piezas sanitarias."
+    },
+    {
+      "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+      "prod": "Empresa dedicada a la comercialización y distribución de productos siderúrgicos, perfiles y acero para la construcción. | Empresa dedicada al procesamiento, distribución y comercialización de productos siderúrgicos y perfiles de acero. | Fabricante de conductores eléctricos de aluminio y aleaciones para el sector eléctrico. | Fabricante y comercializador de pinturas arquitectónicas, industriales, automotrices y recubrimientos."
+    },
+    {
+      "empresa": "Cocinas y Diseños Domésticos Valencia",
+      "prod": "Gabinetes de cocina | Topes de granito residencial"
+    },
+    {
+      "empresa": "Sherwin Williams - Tienda San Diego",
+      "prod": "Comercialización y distribución de pinturas arquitectónicas, industriales, esmaltes y recubrimientos. | Fabricante y comercializador de pinturas arquitectónicas, industriales, automotrices y recubrimientos. | Planta de fabricación y centro de distribución de pinturas, esmaltes y recubrimientos arquitectónicos e industriales."
+    },
+    {
+      "empresa": "Tienda Pinturas Montana Naguanagua",
+      "prod": "Brochas y rodillos | Pinturas caucho profesional | Thinner y solventes"
+    }
+  ],
+  "nombresGenericos": [
+    {
+      "nombre": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+      "existe": true
+    },
+    {
+      "nombre": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+      "existe": true
+    },
+    {
+      "nombre": "Ferretería y Materiales de Construcción en la zona de Bejuma",
+      "existe": true
+    },
+    {
+      "nombre": "Suministros y Materiales de Construcción operando en la zona (Ferremateriales locales)",
+      "existe": true
+    }
+  ],
+  "mariaraRows": [
+    {
+      "Rama": "3. Distribución y comercio de materiales",
+      "Grupo": "3.1 Ferreterías y depósitos de materiales",
+      "Subcategoría": "Ferreterías industriales y generales",
+      "Tipo de actor": "Distribuidor",
+      "Empresa": "Ferretería y Materiales Mariara",
+      "Municipio": "Mariara",
+      "Dirección": "Municipio Mariara, Estado Carabobo",
+      "Teléfono": "",
+      "WhatsApp": "",
+      "Correo": "",
+      "Productos": "Comercialización de materiales de construcción, ferretería general, tornillería y herramientas para la industria y el hogar.",
+      "Servicios": "",
+      "Marca": "",
+      "Latitud": "",
+      "Longitud": "",
+      "Revisar": "Sí"
+    }
+  ],
+  "telefonos": {
+    "total": 43,
+    "sospechosos": [
+      {
+        "empresa": "Concreto 7G",
+        "tel": "+58 241 8710000"
+      },
+      {
+        "empresa": "Estructuras Metálicas Carabobo (Estructurca)",
+        "tel": "+58 241 8712345"
+      },
+      {
+        "empresa": "Metalúrgica M&G 2000, C.A.",
+        "tel": "+58 245 5641234"
+      },
+      {
+        "empresa": "Corimon Pinturas Montana, C.A.",
+        "tel": "+58 241 8391111"
+      },
+      {
+        "empresa": "Pinturasarsa (Pinturas Antillas / ARSA)",
+        "tel": "+58 241 8381234"
+      },
+      {
+        "empresa": "Sherwin-Williams de Venezuela (Planta Los Guayos)",
+        "tel": "+58 241 8301111"
+      },
+      {
+        "empresa": "Conductores Cabel, C.A.",
+        "tel": "+58 245 5611111"
+      },
+      {
+        "empresa": "Ferretería EPA San Diego",
+        "tel": "+58 500 3720000"
+      },
+      {
+        "empresa": "Tornillos Valencia, C.A.",
+        "tel": "+58 241 8324567"
+      },
+      {
+        "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+        "tel": "+58 241 8321111"
+      },
+      {
+        "empresa": "Acero de Occidente, C.A. (Acerooccidente)",
+        "tel": "+58 241 8661234"
+      },
+      {
+        "empresa": "Ferretería Carvajal, C.A.",
+        "tel": "+58 241 8341234"
+      },
+      {
+        "empresa": "Ferretería y Materiales Naguanagua 2000",
+        "tel": "+58 241 8615555"
+      },
+      {
+        "empresa": "Mundo Cerámico",
+        "tel": "+58 241 8081234"
+      },
+      {
+        "empresa": "Mundo Cerámico",
+        "tel": "+58 241 8081234"
+      },
+      {
+        "empresa": "Mundo Cerámico",
+        "tel": "+58 241 8081234"
+      },
+      {
+        "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+        "tel": "+58 241 8321111"
+      },
+      {
+        "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+        "tel": "+58 241 8321111"
+      },
+      {
+        "empresa": "Sherwin Williams - Tienda San Diego",
+        "tel": "+58 245 5651111"
+      }
+    ],
+    "todos": [
+      {
+        "empresa": "Concreto 7G",
+        "tel": "+58 241 8710000"
+      },
+      {
+        "empresa": "Concreto Premezclado C.A. (Conpreca)",
+        "tel": "+58 241 8323811"
+      },
+      {
+        "empresa": "Cerámica Carabobo",
+        "tel": "+58 241 8303111"
+      },
+      {
+        "empresa": "Cerámica Carabobo",
+        "tel": "+58 241 8303111"
+      },
+      {
+        "empresa": "Estructuras Metálicas Carabobo (Estructurca)",
+        "tel": "+58 241 8712345"
+      },
+      {
+        "empresa": "Metalúrgica M&G 2000, C.A.",
+        "tel": "+58 245 5641234"
+      },
+      {
+        "empresa": "Corimon Pinturas Montana, C.A.",
+        "tel": "+58 241 8391111"
+      },
+      {
+        "empresa": "Pineco (Pinturas Pineco)",
+        "tel": "+58 241 8342415"
+      },
+      {
+        "empresa": "Pinturas Flamuko, C.A.",
+        "tel": "+58 241 8741500"
+      },
+      {
+        "empresa": "Pinturas Montana (Corimon)",
+        "tel": "+58 241 8711011"
+      },
+      {
+        "empresa": "Pinturasarsa (Pinturas Antillas / ARSA)",
+        "tel": "+58 241 8381234"
+      },
+      {
+        "empresa": "Sherwin-Williams de Venezuela (Planta Los Guayos)",
+        "tel": "+58 241 8301111"
+      },
+      {
+        "empresa": "Alambres y Cables Venezolanos, C.A. (Alcave)",
+        "tel": "+58 245 5712311"
+      },
+      {
+        "empresa": "Cerámica Carabobo",
+        "tel": "+58 241 8303111"
+      },
+      {
+        "empresa": "Conductores Cabel, C.A.",
+        "tel": "+58 245 5611111"
+      },
+      {
+        "empresa": "Conduven",
+        "tel": "58243911"
+      },
+      {
+        "empresa": "Distribuidora Ferretera Central (Diferca)",
+        "tel": "+58 241 8716522"
+      },
+      {
+        "empresa": "Ferretería Beco, C.A.",
+        "tel": "+58 241 8328111"
+      },
+      {
+        "empresa": "Ferretería EPA San Diego",
+        "tel": "+58 500 3720000"
+      },
+      {
+        "empresa": "Ferretería EPA, C.A.",
+        "tel": "+58 241 8131000"
+      },
+      {
+        "empresa": "Ferretería Industrial La Guacamaya, C.A.",
+        "tel": "+58 241 8583011"
+      },
+      {
+        "empresa": "Ferretería La Campana Naguanagua",
+        "tel": "+58 241 8671122"
+      },
+      {
+        "empresa": "Tornillos Carabobo, C.A.",
+        "tel": "+58 241 8321288"
+      },
+      {
+        "empresa": "Tornillos Valencia, C.A.",
+        "tel": "+58 241 8324567"
+      },
+      {
+        "empresa": "Tornillos e Inversiones Valencia, C.A. (Tornival)",
+        "tel": "+58 241 8241512"
+      },
+      {
+        "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+        "tel": "+58 241 8321111"
+      },
+      {
+        "empresa": "Acero de Occidente, C.A. (Acerooccidente)",
+        "tel": "+58 241 8661234"
+      },
+      {
+        "empresa": "Acero de Valencia, C.A.",
+        "tel": "+58 241 8345511"
+      },
+      {
+        "empresa": "Acero de Valencia, C.A. (Acerival)",
+        "tel": "+58 241 8328811"
+      },
+      {
+        "empresa": "Ferretería Carvajal, C.A.",
+        "tel": "+58 241 8341234"
+      },
+      {
+        "empresa": "Ferretería y Materiales Naguanagua 2000",
+        "tel": "+58 241 8615555"
+      },
+      {
+        "empresa": "Mundo Cerámico",
+        "tel": "+58 241 8081234"
+      },
+      {
+        "empresa": "Ferretería EPA - Los Guayos",
+        "tel": "+58 241 8740111"
+      },
+      {
+        "empresa": "Inversiones Gres, C.A.",
+        "tel": "58241871"
+      },
+      {
+        "empresa": "Mundo Cerámico",
+        "tel": "+58 241 8081234"
+      },
+      {
+        "empresa": "Maderas y Tableros C.A. (Madtica)",
+        "tel": "+58 241 8324411"
+      },
+      {
+        "empresa": "Mundo Cerámico",
+        "tel": "+58 241 8081234"
+      },
+      {
+        "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+        "tel": "+58 241 8321111"
+      },
+      {
+        "empresa": "Ferretería EPA - Los Guayos",
+        "tel": "+58 241 8740111"
+      },
+      {
+        "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+        "tel": "+58 241 8321111"
+      },
+      {
+        "empresa": "Cocinas y Diseños Domésticos Valencia",
+        "tel": "+58 241 8990011"
+      },
+      {
+        "empresa": "Sherwin Williams - Tienda San Diego",
+        "tel": "+58 245 5651111"
+      },
+      {
+        "empresa": "Tienda Pinturas Montana Naguanagua",
+        "tel": "+58 241 8683344"
+      }
+    ]
+  },
+  "whatsapps": {
+    "total": 6,
+    "sospechosos": [
+      {
+        "empresa": "Corimon Pinturas Montana, C.A.",
+        "wa": "+58 412 0001122"
+      },
+      {
+        "empresa": "Pinturas Flamuko, C.A.",
+        "wa": "+58 414 4332211"
+      },
+      {
+        "empresa": "Ferretería EPA, C.A.",
+        "wa": "+58 414 3410000"
+      }
+    ],
+    "todos": [
+      {
+        "empresa": "Corimon Pinturas Montana, C.A.",
+        "wa": "+58 412 0001122"
+      },
+      {
+        "empresa": "Pinturas Flamuko, C.A.",
+        "wa": "+58 414 4332211"
+      },
+      {
+        "empresa": "Ferretería EPA, C.A.",
+        "wa": "+58 414 3410000"
+      },
+      {
+        "empresa": "Ferretería La Campana Naguanagua",
+        "wa": "+58 424 4005566"
+      },
+      {
+        "empresa": "Tornillos Valencia, C.A.",
+        "wa": "+58 414 4123344"
+      },
+      {
+        "empresa": "Tienda Pinturas Montana Naguanagua",
+        "wa": "+58 424 4119988"
+      }
+    ]
+  },
+  "multiSubcatEmpresas": [
+    {
+      "empresa": "Concretera de Occidente, C.A. (Concroca)",
+      "totalFilas": 2,
+      "subcategorias": [
+        "Bloques, adoquines y tubos de concreto",
+        "Concreto premezclado y morteros"
+      ]
+    },
+    {
+      "empresa": "Cerámica Carabobo",
+      "totalFilas": 3,
+      "subcategorias": [
+        "Baldosas y porcelanatos",
+        "Ladrillos, tejas y arcilla",
+        "Cables eléctricos (baja, media y alta tensión)"
+      ]
+    },
+    {
+      "empresa": "Construarca",
+      "totalFilas": 2,
+      "subcategorias": [
+        "Baldosas y porcelanatos",
+        "Ladrillos, tejas y arcilla"
+      ]
+    },
+    {
+      "empresa": "Inversiones Terracotta, C.A.",
+      "totalFilas": 2,
+      "subcategorias": [
+        "Baldosas y porcelanatos",
+        "Ladrillos, tejas y arcilla"
+      ]
+    },
+    {
+      "empresa": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+      "totalFilas": 2,
+      "subcategorias": [
+        "Ferreterías industriales y generales",
+        "Distribución de pinturas y recubrimientos"
+      ]
+    },
+    {
+      "empresa": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+      "totalFilas": 2,
+      "subcategorias": [
+        "Ferreterías industriales y generales",
+        "Distribución de pinturas y recubrimientos"
+      ]
+    },
+    {
+      "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+      "totalFilas": 3,
+      "subcategorias": [
+        "Distribución de acero, cabillas y perfiles",
+        "Distribución de materiales eléctricos e iluminación",
+        "Distribución de pinturas y recubrimientos"
+      ]
+    },
+    {
+      "empresa": "Ferretería y Materiales de Construcción en la zona de Bejuma",
+      "totalFilas": 2,
+      "subcategorias": [
+        "Distribución de acero, cabillas y perfiles",
+        "Distribución de cemento, cal y pegos"
+      ]
+    },
+    {
+      "empresa": "Mundo Cerámico",
+      "totalFilas": 3,
+      "subcategorias": [
+        "Distribución de acero, cabillas y perfiles",
+        "Distribución de cerámicas, pisos y acabados",
+        "Distribución de maderas y tableros"
+      ]
+    },
+    {
+      "empresa": "Ferretería EPA - Los Guayos",
+      "totalFilas": 2,
+      "subcategorias": [
+        "Distribución de cerámicas, pisos y acabados",
+        "Distribución de materiales eléctricos e iluminación"
+      ]
+    }
+  ]
+}

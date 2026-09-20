@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cadena de la Construcción en Carabobo</title>
+<style>
+* { margin: 0; padding: 0; }
+html, body { height: 100%; font-family: ui-sans-serif, system-ui, sans-serif; }
+.markmap { position: relative; width: 100vw; height: 100vh; }
+.markmap > svg { width: 100%; height: 100%; }
+#leyenda { position: fixed; top: 10px; left: 12px; font-size: 12px; background: rgba(255,255,255,.9); border: 1px solid #ccc; border-radius: 6px; padding: 6px 10px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div id="leyenda"><b>Tipo de actor:</b> [F] Fabricante · [D] Distribuidor · [C] Contratista · [S] Servicio profesional · [A] Alquiler/Logística</div>
+<div class="markmap">
+<script type="text/template">
+---
+markmap:
+  initialExpandLevel: 3
+  maxWidth: 380
+---
+# Cadena de la Construcción en Carabobo
+
+## 1. Extracción y recursos primarios
+### 1.1 Minería no metálica
+- Áridos (grava, arena) [F]
+- Rocas ornamentales (granito, mármol) [F]
+- Calizas y arcillas [F]
+### 1.2 Minería metálica
+- Hierro, bauxita, cobre [F]
+### 1.3 Otros recursos
+- Madera cruda (sector forestal) [F]
+- Agua industrial [S]
+- Hidrocarburos y derivados [F]
+
+## 2. Manufactura de materiales
+### 2.1 Cemento, concreto y prefabricados
+- Cemento (gris, blanco, especial) y clinker [F]
+- Concreto premezclado y morteros [F]
+- Cal y yeso [F]
+- Bloques, adoquines y tuberías de concreto [F]
+- Vigas pretensadas y losacero [F]
+### 2.2 Cerámica, vidrio y sistemas livianos
+- Ladrillos y tejas [F]
+- Baldosas y porcelanatos [F]
+- Piezas sanitarias [F]
+- Vidrio (plano, templado, laminado) [F]
+- Drywall y fibrocemento [F]
+### 2.3 Acero y metalurgia
+- Cabillas, mallas y estribos [F]
+- Perfiles y planchas estructurales [F]
+- Láminas de techo (galvanizadas, termoacústicas, zinc) [F]
+- Aluminio para ventanas [F]
+- Clavos, tornillos y anclajes [F]
+### 2.4 Plásticos y química
+- Tuberías PVC, CPVC, PEAD y PPR [F]
+- Tanques de polietileno [F]
+- Pinturas, masillas y anticorrosivos [F]
+- Impermeabilizantes, mantos asfálticos y selladores [F]
+- Aditivos, pegamentos y resinas [F]
+### 2.5 Material eléctrico
+- Cables (baja, media y alta tensión) [F]
+- Canalizaciones (EMT, IMC, bandejas) [F]
+- Tableros y breakers [F]
+- Tomacorrientes, apagadores y luminarias [F]
+### 2.6 Madera y derivados
+- Madera para encofrado y andamiaje [F]
+- Tableros (plywood, MDF, MDP) [F]
+- Puertas, marcos y carpintería [F]
+### 2.7 Prefabricación y ensamblaje
+- Estructuras modulares y paneles SIP [F]
+- Fachadas y ventanas preensambladas [F]
+
+## 3. Distribución y comercio de materiales
+### 3.1 Ferreterías y depósitos de materiales [D]
+### 3.2 Distribuidores especializados
+- Acero, eléctrico, sanitario, pinturas, acabados [D]
+### 3.3 Importadores [D]
+### 3.4 Transporte y fletes de carga [A]
+
+## 4. Servicios profesionales y técnicos
+### 4.1 Estudios previos
+- Topografía y geotecnia [S]
+- Estudios ambientales [S]
+### 4.2 Diseño e ingeniería
+- Arquitectura y BIM [S]
+- Cálculo estructural [S]
+- Proyectos MEP [S]
+### 4.3 Gestión y control
+- Permisos y licencias [S]
+- Gerencia e inspección de obra [S]
+- Laboratorios de control de calidad [S]
+- Seguridad industrial y dotación (EPP) [S]
+
+## 5. Ejecución de obra
+### 5.1 Tipos de contratista
+- Edificación residencial y no residencial [C]
+- Obras civiles e infraestructura [C]
+- Subcontratistas por especialidad [C]
+### 5.2 Etapas
+- Preliminares y cimentación (movimiento de tierras, pilotes, zapatas) [C]
+- Obra negra: estructura, columnas, vigas y losas [C]
+- Obra gris: instalaciones MEP, HVAC, domótica y cableado [C]
+- Obra blanca: pisos, estucos, pintura, carpintería y paisajismo [C]
+
+## 6. Equipos, maquinaria y suministros especiales
+### 6.1 Maquinaria pesada
+- Grúas, excavadoras, mezcladoras [F/A]
+### 6.2 Andamios y encofrados [F/A]
+### 6.3 Equipos de edificación
+- Ascensores y escaleras mecánicas [F/S]
+- HVAC [F/S]
+- Bombas e hidroneumáticos [F/S]
+- Transformadores [F/S]
+
+## 7. Financiamiento y comercialización
+### 7.1 Banca, fiducias y créditos puente [S]
+### 7.2 Seguros (todo riesgo) [S]
+### 7.3 Inmobiliarias, corretaje y avalúos [S]
+### 7.4 Notarías y registros [S]
+
+## 8. Operación y fin de ciclo
+### 8.1 Facility management y mantenimiento [S]
+### 8.2 Demolición técnica [C]
+### 8.3 Reciclaje de residuos (RCD), retorna a la rama 2 [F/S]
+
+## 9. Demanda final
+- Familias
+- Sector público: gobernación, alcaldías y ministerios
+- Empresas privadas e industria
+
+## 10. Referencia territorial: Carabobo
+- Valencia
+- Los Guayos
+- Guacara
+- San Diego
+- Puerto Cabello
+- Otros municipios
+</script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.18"></script>
+</body>
+</html>

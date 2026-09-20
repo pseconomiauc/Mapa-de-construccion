@@ -1,0 +1,577 @@
+{
+  "totalRegistros": 93,
+  "totalEmpresasReales": 89,
+  "reporteGenericos": [
+    {
+      "id": "emp-049",
+      "nombre": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+      "motivo": "Nombre genérico comercial"
+    },
+    {
+      "id": "emp-050",
+      "nombre": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+      "motivo": "Nombre genérico comercial"
+    },
+    {
+      "id": "emp-067",
+      "nombre": "Ferretería y Materiales de Construcción en la zona de Bejuma",
+      "motivo": "Nombre genérico comercial"
+    },
+    {
+      "id": "emp-078",
+      "nombre": "Suministros y Materiales de Construcción operando en la zona (Ferremateriales locales)",
+      "motivo": "Nombre genérico comercial"
+    }
+  ],
+  "reporteTelefonosSospechosos": [
+    {
+      "id": "emp-006",
+      "nombre": "Concreto 7G",
+      "telefono": "+58 241 8710000"
+    },
+    {
+      "id": "emp-024",
+      "nombre": "Estructuras Metálicas Carabobo (Estructurca)",
+      "telefono": "+58 241 8712345"
+    },
+    {
+      "id": "emp-027",
+      "nombre": "Metalúrgica M&G 2000, C.A.",
+      "telefono": "+58 245 5641234"
+    },
+    {
+      "id": "emp-029",
+      "nombre": "Corimon Pinturas Montana, C.A.",
+      "telefono": "+58 241 8391111"
+    },
+    {
+      "id": "emp-034",
+      "nombre": "Pinturasarsa (Pinturas Antillas / ARSA)",
+      "telefono": "+58 241 8381234"
+    },
+    {
+      "id": "emp-035",
+      "nombre": "Sherwin-Williams de Venezuela (Planta Los Guayos)",
+      "telefono": "+58 241 8301111"
+    },
+    {
+      "id": "emp-038",
+      "nombre": "Conductores Cabel, C.A.",
+      "telefono": "+58 245 5611111"
+    },
+    {
+      "id": "emp-044",
+      "nombre": "Ferretería EPA San Diego",
+      "telefono": "+58 500 3720000"
+    },
+    {
+      "id": "emp-056",
+      "nombre": "Tornillos Valencia, C.A.",
+      "telefono": "+58 241 8324567"
+    },
+    {
+      "id": "emp-058",
+      "nombre": "Acero de Carabobo, C.A. (Acerocara)",
+      "telefono": "+58 241 8321111"
+    },
+    {
+      "id": "emp-061",
+      "nombre": "Acero de Occidente, C.A. (Acerooccidente)",
+      "telefono": "+58 241 8661234"
+    },
+    {
+      "id": "emp-065",
+      "nombre": "Ferretería Carvajal, C.A.",
+      "telefono": "+58 241 8341234"
+    },
+    {
+      "id": "emp-066",
+      "nombre": "Ferretería y Materiales Naguanagua 2000",
+      "telefono": "+58 241 8615555"
+    },
+    {
+      "id": "emp-072",
+      "nombre": "Mundo Cerámico",
+      "telefono": "+58 241 8081234"
+    },
+    {
+      "id": "emp-092",
+      "nombre": "Sherwin Williams - Tienda San Diego",
+      "telefono": "+58 245 5651111"
+    }
+  ],
+  "reporteWhatsAppSospechosos": [
+    {
+      "id": "emp-029",
+      "nombre": "Corimon Pinturas Montana, C.A.",
+      "whatsapp": "+58 412 0001122"
+    },
+    {
+      "id": "emp-032",
+      "nombre": "Pinturas Flamuko, C.A.",
+      "whatsapp": "+58 414 4332211"
+    },
+    {
+      "id": "emp-045",
+      "nombre": "Ferretería EPA, C.A.",
+      "whatsapp": "+58 414 3410000"
+    }
+  ],
+  "reporteDireccionesGenericas": [
+    {
+      "id": "emp-002",
+      "nombre": "Bloquera Los Guayos",
+      "direccion": "Municipio Los Guayos, Estado Carabobo"
+    },
+    {
+      "id": "emp-003",
+      "nombre": "Bloquera y Concretera San Diego",
+      "direccion": "Municipio San Diego, Estado Carabobo"
+    },
+    {
+      "id": "emp-010",
+      "nombre": "Concreto Miranda, C.A.",
+      "direccion": "Municipio Miranda, Estado Carabobo"
+    },
+    {
+      "id": "emp-014",
+      "nombre": "Preconcretos, C.A.",
+      "direccion": "Valencia, Estado Carabobo"
+    },
+    {
+      "id": "emp-015",
+      "nombre": "Premezclados Carabobo",
+      "direccion": "Municipio San Diego, Carabobo"
+    },
+    {
+      "id": "emp-026",
+      "nombre": "Inversiones R&G C.A.",
+      "direccion": "Municipio San Diego, Estado Carabobo"
+    },
+    {
+      "id": "emp-048",
+      "nombre": "Ferretería y Materiales Mariara",
+      "direccion": "Municipio Mariara, Estado Carabobo"
+    },
+    {
+      "id": "emp-049",
+      "nombre": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+      "direccion": "Municipio Montalbán, Estado Carabobo"
+    },
+    {
+      "id": "emp-050",
+      "nombre": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+      "direccion": "Municipio Bejuma, Estado Carabobo"
+    },
+    {
+      "id": "emp-054",
+      "nombre": "Inversiones R&G (Representaciones y Gaskets / Suministros Industriales)",
+      "direccion": "Municipio San Diego, Estado Carabobo"
+    },
+    {
+      "id": "emp-068",
+      "nombre": "Inversiones Aceros Guayos, C.A.",
+      "direccion": "Municipio Los Guayos, Estado Carabobo"
+    },
+    {
+      "id": "emp-070",
+      "nombre": "Inversiones y Suministros Metalúrgicos (Insurnet)",
+      "direccion": "Municipio Los Guayos, Estado Carabobo."
+    },
+    {
+      "id": "emp-073",
+      "nombre": "Ferretería y Materiales San Diego",
+      "direccion": "Municipio San Diego, Estado Carabobo"
+    },
+    {
+      "id": "emp-074",
+      "nombre": "Ferretería y Materiales de Construcción (Directorio Comercial Local)",
+      "direccion": "Municipio Naguanagua, Estado Carabobo"
+    },
+    {
+      "id": "emp-076",
+      "nombre": "Inversiones Ceramicas",
+      "direccion": "Municipio Diego Ibarra, Estado Carabobo"
+    },
+    {
+      "id": "emp-080",
+      "nombre": "Inversiones y Maderas C.A.",
+      "direccion": "Municipio Carlos Arvelo, Estado Carabobo"
+    },
+    {
+      "id": "emp-081",
+      "nombre": "Maderas y Acabados Los Pinos",
+      "direccion": "Municipio Naguanagua, Estado Carabobo"
+    },
+    {
+      "id": "emp-082",
+      "nombre": "Maderas y Acabados Los Pinos (Referencia regional Carabobo)",
+      "direccion": "Estado Carabobo (Operaciones regionales)"
+    },
+    {
+      "id": "emp-083",
+      "nombre": "Maderas y Aserradero Bejuma",
+      "direccion": "Bejuma, Estado Carabobo"
+    },
+    {
+      "id": "emp-089",
+      "nombre": "Inversiones y Suministros Eléctricos (INSELEC)",
+      "direccion": "Valencia, Estado Carabobo"
+    },
+    {
+      "id": "emp-091",
+      "nombre": "Distribuidora El Pincel de Oro",
+      "direccion": null
+    },
+    {
+      "id": "emp-092",
+      "nombre": "Sherwin Williams - Tienda San Diego",
+      "direccion": "Municipio San Diego, Estado Carabobo"
+    }
+  ],
+  "reporteMariara": [
+    {
+      "id": "emp-048",
+      "nombre": "Ferretería y Materiales Mariara"
+    }
+  ],
+  "totalRevisarFinal": 42,
+  "listaRevisarFinal": [
+    {
+      "id": "emp-002",
+      "nombre": "Bloquera Los Guayos",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-003",
+      "nombre": "Bloquera y Concretera San Diego",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-006",
+      "nombre": "Concreto 7G",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 241 8710000",
+      "telefono": "+58 241 8710000",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-009",
+      "nombre": "Concreto Los Andes",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-010",
+      "nombre": "Concreto Miranda, C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-014",
+      "nombre": "Preconcretos, C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-015",
+      "nombre": "Premezclados Carabobo",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-024",
+      "nombre": "Estructuras Metálicas Carabobo (Estructurca)",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 241 8712345",
+      "telefono": "+58 241 8712345",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-026",
+      "nombre": "Inversiones R&G C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-027",
+      "nombre": "Metalúrgica M&G 2000, C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 245 5641234",
+      "telefono": "+58 245 5641234",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-029",
+      "nombre": "Corimon Pinturas Montana, C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 241 8391111. WhatsApp con patrón sospechoso: +58 412 0001122",
+      "telefono": "+58 241 8391111",
+      "whatsapp": "+58 412 0001122"
+    },
+    {
+      "id": "emp-032",
+      "nombre": "Pinturas Flamuko, C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "WhatsApp con patrón sospechoso: +58 414 4332211",
+      "telefono": "+58 241 8741500",
+      "whatsapp": "+58 414 4332211"
+    },
+    {
+      "id": "emp-034",
+      "nombre": "Pinturasarsa (Pinturas Antillas / ARSA)",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 241 8381234",
+      "telefono": "+58 241 8381234",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-035",
+      "nombre": "Sherwin-Williams de Venezuela (Planta Los Guayos)",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 241 8301111",
+      "telefono": "+58 241 8301111",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-038",
+      "nombre": "Conductores Cabel, C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 245 5611111",
+      "telefono": "+58 245 5611111",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-039",
+      "nombre": "Conduven",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": "58243911",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-044",
+      "nombre": "Ferretería EPA San Diego",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 500 3720000",
+      "telefono": "+58 500 3720000",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-045",
+      "nombre": "Ferretería EPA, C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "WhatsApp con patrón sospechoso: +58 414 3410000",
+      "telefono": "+58 241 8131000",
+      "whatsapp": "+58 414 3410000"
+    },
+    {
+      "id": "emp-048",
+      "nombre": "Ferretería y Materiales Mariara",
+      "tipo_registro": "empresa",
+      "nota_revision": "Municipio registrado originalmente como Mariara (capital del Municipio Diego Ibarra). Requiere verificación.. Municipio corregido de Mariara a Diego Ibarra",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-049",
+      "nombre": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+      "tipo_registro": "referencia_generica",
+      "nota_revision": "Referencia genérica: identificar la empresa real",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-050",
+      "nombre": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+      "tipo_registro": "referencia_generica",
+      "nota_revision": "Referencia genérica: identificar la empresa real",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-054",
+      "nombre": "Inversiones R&G (Representaciones y Gaskets / Suministros Industriales)",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-056",
+      "nombre": "Tornillos Valencia, C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 241 8324567",
+      "telefono": "+58 241 8324567",
+      "whatsapp": "+58 414 4123344"
+    },
+    {
+      "id": "emp-058",
+      "nombre": "Acero de Carabobo, C.A. (Acerocara)",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 241 8321111",
+      "telefono": "+58 241 8321111",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-061",
+      "nombre": "Acero de Occidente, C.A. (Acerooccidente)",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 241 8661234",
+      "telefono": "+58 241 8661234",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-065",
+      "nombre": "Ferretería Carvajal, C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 241 8341234",
+      "telefono": "+58 241 8341234",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-066",
+      "nombre": "Ferretería y Materiales Naguanagua 2000",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 241 8615555",
+      "telefono": "+58 241 8615555",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-067",
+      "nombre": "Ferretería y Materiales de Construcción en la zona de Bejuma",
+      "tipo_registro": "referencia_generica",
+      "nota_revision": "Referencia genérica: identificar la empresa real",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-068",
+      "nombre": "Inversiones Aceros Guayos, C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-070",
+      "nombre": "Inversiones y Suministros Metalúrgicos (Insurnet)",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-072",
+      "nombre": "Mundo Cerámico",
+      "tipo_registro": "empresa",
+      "nota_revision": "Teléfono con patrón sospechoso: +58 241 8081234",
+      "telefono": "+58 241 8081234",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-073",
+      "nombre": "Ferretería y Materiales San Diego",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-074",
+      "nombre": "Ferretería y Materiales de Construcción (Directorio Comercial Local)",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-076",
+      "nombre": "Inversiones Ceramicas",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-077",
+      "nombre": "Inversiones Gres, C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": "58241871",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-078",
+      "nombre": "Suministros y Materiales de Construcción operando en la zona (Ferremateriales locales)",
+      "tipo_registro": "referencia_generica",
+      "nota_revision": "Referencia genérica: identificar la empresa real",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-080",
+      "nombre": "Inversiones y Maderas C.A.",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-081",
+      "nombre": "Maderas y Acabados Los Pinos",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-083",
+      "nombre": "Maderas y Aserradero Bejuma",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-089",
+      "nombre": "Inversiones y Suministros Eléctricos (INSELEC)",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": null,
+      "whatsapp": null
+    },
+    {
+      "id": "emp-090",
+      "nombre": "Cocinas y Diseños Domésticos Valencia",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente",
+      "telefono": "+58 241 8990011",
+      "whatsapp": null
+    },
+    {
+      "id": "emp-092",
+      "nombre": "Sherwin Williams - Tienda San Diego",
+      "tipo_registro": "empresa",
+      "nota_revision": "Marcado para revisión en archivo fuente. Teléfono con patrón sospechoso: +58 245 5651111",
+      "telefono": "+58 245 5651111",
+      "whatsapp": null
+    }
+  ]
+}

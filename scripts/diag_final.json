@@ -1,0 +1,935 @@
+{
+  "dirGenericas": [
+    {
+      "fila": 3,
+      "empresa": "Bloquera Los Guayos",
+      "municipio": "Los Guayos",
+      "direccion": "Municipio Los Guayos, Estado Carabobo"
+    },
+    {
+      "fila": 4,
+      "empresa": "Bloquera y Concretera San Diego",
+      "municipio": "San Diego",
+      "direccion": "Municipio San Diego, Estado Carabobo"
+    },
+    {
+      "fila": 12,
+      "empresa": "Concreto Miranda, C.A.",
+      "municipio": "Miranda",
+      "direccion": "Municipio Miranda, Estado Carabobo"
+    },
+    {
+      "fila": 17,
+      "empresa": "Premezclados Carabobo",
+      "municipio": "San Diego",
+      "direccion": "Municipio San Diego, Carabobo"
+    },
+    {
+      "fila": 31,
+      "empresa": "Inversiones R&G C.A.",
+      "municipio": "San Diego",
+      "direccion": "Municipio San Diego, Estado Carabobo"
+    },
+    {
+      "fila": 54,
+      "empresa": "Ferretería y Materiales Mariara",
+      "municipio": "Mariara",
+      "direccion": "Municipio Mariara, Estado Carabobo"
+    },
+    {
+      "fila": 55,
+      "empresa": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+      "municipio": "Montalbán",
+      "direccion": "Municipio Montalbán, Estado Carabobo"
+    },
+    {
+      "fila": 56,
+      "empresa": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+      "municipio": "Bejuma",
+      "direccion": "Municipio Bejuma, Estado Carabobo"
+    },
+    {
+      "fila": 60,
+      "empresa": "Inversiones R&G (Representaciones y Gaskets / Suministros Industriales)",
+      "municipio": "San Diego",
+      "direccion": "Municipio San Diego, Estado Carabobo"
+    },
+    {
+      "fila": 74,
+      "empresa": "Inversiones Aceros Guayos, C.A.",
+      "municipio": "Los Guayos",
+      "direccion": "Municipio Los Guayos, Estado Carabobo"
+    },
+    {
+      "fila": 76,
+      "empresa": "Inversiones y Suministros Metalúrgicos (Insurnet)",
+      "municipio": "Los Guayos",
+      "direccion": "Municipio Los Guayos, Estado Carabobo."
+    },
+    {
+      "fila": 79,
+      "empresa": "Ferretería y Materiales San Diego",
+      "municipio": "San Diego",
+      "direccion": "Municipio San Diego, Estado Carabobo"
+    },
+    {
+      "fila": 80,
+      "empresa": "Ferretería y Materiales de Construcción (Directorio Comercial Local)",
+      "municipio": "Naguanagua",
+      "direccion": "Municipio Naguanagua, Estado Carabobo"
+    },
+    {
+      "fila": 83,
+      "empresa": "Inversiones Ceramicas",
+      "municipio": "Diego Ibarra",
+      "direccion": "Municipio Diego Ibarra, Estado Carabobo"
+    },
+    {
+      "fila": 88,
+      "empresa": "Inversiones y Maderas C.A.",
+      "municipio": "Carlos Arvelo",
+      "direccion": "Municipio Carlos Arvelo, Estado Carabobo"
+    },
+    {
+      "fila": 89,
+      "empresa": "Maderas y Acabados Los Pinos",
+      "municipio": "Naguanagua",
+      "direccion": "Municipio Naguanagua, Estado Carabobo"
+    },
+    {
+      "fila": 104,
+      "empresa": "Ferretería y Materiales de Construcción en Montalbán (Comercios locales y distribuidores)",
+      "municipio": "Montalbán",
+      "direccion": "Municipio Montalbán, Estado Carabobo"
+    },
+    {
+      "fila": 105,
+      "empresa": "Ferretería y Pinturas Comercializadoras locales de Bejuma",
+      "municipio": "Bejuma",
+      "direccion": "Municipio Bejuma, Estado Carabobo"
+    },
+    {
+      "fila": 106,
+      "empresa": "Sherwin Williams - Tienda San Diego",
+      "municipio": "San Diego",
+      "direccion": "Municipio San Diego, Estado Carabobo"
+    }
+  ],
+  "dirEspecificas": [
+    {
+      "fila": 2,
+      "empresa": "Bloquera Carabobo",
+      "municipio": "Naguanagua",
+      "direccion": "Zona Industrial Paramacay, Naguanagua, Estado Carabobo"
+    },
+    {
+      "fila": 5,
+      "empresa": "Concretera de Occidente, C.A. (Concroca)",
+      "municipio": "Libertador",
+      "direccion": "Zona Industrial Municipal Norte / Municipio Libertador, Estado Carabobo"
+    },
+    {
+      "fila": 6,
+      "empresa": "Corporación Cemento Nacional (Corpcemven) / Operaciones Planta Morón",
+      "municipio": "Juan José Mora",
+      "direccion": "Planta Morón"
+    },
+    {
+      "fila": 7,
+      "empresa": "Concretera de Occidente, C.A. (Concroca)",
+      "municipio": "Libertador",
+      "direccion": "Zona Industrial Municipal Norte / Municipio Libertador, Estado Carabobo"
+    },
+    {
+      "fila": 8,
+      "empresa": "Concreto 7G",
+      "municipio": "San Diego",
+      "direccion": "Zona Industrial San Diego, Estado Carabobo"
+    },
+    {
+      "fila": 9,
+      "empresa": "Concreto Conoaca, C.A.",
+      "municipio": "Los Guayos",
+      "direccion": "Zona Industrial Los Guayos, Municipio Los Guayos, Estado Carabobo"
+    },
+    {
+      "fila": 10,
+      "empresa": "Concreto Industrial de Venezuela (Cinca)",
+      "municipio": "Guacara",
+      "direccion": "Zona Industrial Guacara, Estado Carabobo"
+    },
+    {
+      "fila": 11,
+      "empresa": "Concreto Los Andes",
+      "municipio": "Libertador",
+      "direccion": "Municipio Libertador, Estado Carabobo, Venezuela"
+    },
+    {
+      "fila": 13,
+      "empresa": "Concreto Nororiental, C.A. (Conorca) - Planta Naguanagua / Carabobo",
+      "municipio": "Naguanagua",
+      "direccion": "Zona Industrial Paramacay, Municipio Naguanagua, Estado Carabobo"
+    },
+    {
+      "fila": 14,
+      "empresa": "Concreto Occidental, C.A. (Conocca)",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Municipal Sur, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 15,
+      "empresa": "Concreto Premezclado C.A. (Conpreca)",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Municipal Sur, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 16,
+      "empresa": "Preconcretos, C.A.",
+      "municipio": "Valencia",
+      "direccion": "Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 18,
+      "empresa": "Cerámica Carabobo",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Municipal Norte, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 19,
+      "empresa": "Construarca",
+      "municipio": "Los Guayos",
+      "direccion": "Zona Industrial Los Guayos, Estado Carabobo"
+    },
+    {
+      "fila": 20,
+      "empresa": "Inversiones Terracotta, C.A.",
+      "municipio": "San Joaquín",
+      "direccion": "Zona Industrial San Joaquín, Estado Carabobo"
+    },
+    {
+      "fila": 21,
+      "empresa": "Cerámica Carabobo",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Municipal Norte, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 22,
+      "empresa": "Construarca",
+      "municipio": "Los Guayos",
+      "direccion": "Zona Industrial Los Guayos, Estado Carabobo"
+    },
+    {
+      "fila": 23,
+      "empresa": "Inversiones Terracotta, C.A.",
+      "municipio": "San Joaquín",
+      "direccion": "Zona Industrial San Joaquín, Estado Carabobo"
+    },
+    {
+      "fila": 24,
+      "empresa": "Aceros de Venezuela (Acervenca)",
+      "municipio": "San Joaquín",
+      "direccion": "Zona Industrial San Joaquín, Estado Carabobo"
+    },
+    {
+      "fila": 25,
+      "empresa": "Sideroca (Siderúrgica Venezolana, S.A.)",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Las Tejerías / Valencia (Carabobo)"
+    },
+    {
+      "fila": 26,
+      "empresa": "Sidetur - Planta Casima / Tocuyito",
+      "municipio": "Libertador",
+      "direccion": "Zona Industrial Tocuyito, Municipio Libertador, Estado Carabobo"
+    },
+    {
+      "fila": 27,
+      "empresa": "Sidor - Planta Guacara (Centro de Distribución / Operaciones)",
+      "municipio": "Guacara",
+      "direccion": "Zona Industrial Guacara, Estado Carabobo"
+    },
+    {
+      "fila": 28,
+      "empresa": "C.A. Proyectos Metalúrgicos Prometa",
+      "municipio": "San Joaquín",
+      "direccion": "Zona Industrial San Joaquín, Estado Carabobo"
+    },
+    {
+      "fila": 29,
+      "empresa": "Estructuras Metálicas Carabobo (Estructurca)",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial El Piñonal / Urbanización Industrial Valencia"
+    },
+    {
+      "fila": 30,
+      "empresa": "Estructuras Metálicas y Galpones (Servicios Generales Industriales)",
+      "municipio": "San Diego",
+      "direccion": "Zona Industrial San Diego, Carabobo"
+    },
+    {
+      "fila": 32,
+      "empresa": "Metalúrgica M&G 2000, C.A.",
+      "municipio": "Guacara",
+      "direccion": "Zona Industrial Guacara, Estado Carabobo"
+    },
+    {
+      "fila": 33,
+      "empresa": "Siderúrgica Venezolana S.A. (Sivensa) - Plantas operativas en la región",
+      "municipio": "Libertador",
+      "direccion": "Estado Carabobo (Zona industrial con influencia en municipio Libertador)"
+    },
+    {
+      "fila": 34,
+      "empresa": "Corimon Pinturas Montana, C.A.",
+      "municipio": "Valencia",
+      "direccion": "Av. Anton Philips, Zona Industrial Los Guayos - Valencia, Carabobo"
+    },
+    {
+      "fila": 35,
+      "empresa": "Mavesa / Pinturas (Operaciones Guacara - Empresas Polar)",
+      "municipio": "Guacara",
+      "direccion": "Autopista Regional del Centro, Kilómetro 134, Zona Industrial Guacara, Edo. Carabobo"
+    },
+    {
+      "fila": 36,
+      "empresa": "Pineco (Pinturas Pineco)",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Municipal Norte, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 37,
+      "empresa": "Pinturas Flamuko, C.A.",
+      "municipio": "Valencia",
+      "direccion": "Parcela B-14, Zona Industrial Municipal Sur, Valencia, Carabobo"
+    },
+    {
+      "fila": 38,
+      "empresa": "Pinturas Montana (Corimon)",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial El Piñonal / Av. Henry Ford, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 39,
+      "empresa": "Pinturasarsa (Pinturas Antillas / ARSA)",
+      "municipio": "Los Guayos",
+      "direccion": "Zona Industrial Los Guayos, Calle 3, Galpón Nro. 4, Municipio Los Guayos, Carabobo"
+    },
+    {
+      "fila": 40,
+      "empresa": "Sherwin-Williams de Venezuela (Planta Los Guayos)",
+      "municipio": "Los Guayos",
+      "direccion": "Zona Industrial Los Guayos, Municipio Los Guayos, Estado Carabobo"
+    },
+    {
+      "fila": 41,
+      "empresa": "Alambres y Cables Venezolanos, C.A. (Alcave)",
+      "municipio": "Guacara",
+      "direccion": "Zona Industrial Guacara, Calle Sur 3, Lote 4, Guacara, Estado Carabobo"
+    },
+    {
+      "fila": 42,
+      "empresa": "Cabelum (Industria Venezolana de Cables Eléctricos, C.A.)",
+      "municipio": "Libertador",
+      "direccion": "Zona Industrial Castillito, Municipio Libertador, Estado Carabobo"
+    },
+    {
+      "fila": 43,
+      "empresa": "Cerámica Carabobo",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Municipal Norte, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 44,
+      "empresa": "Conductores Cabel, C.A.",
+      "municipio": "Guacara",
+      "direccion": "Zona Industrial Guacara, Estado Carabobo"
+    },
+    {
+      "fila": 45,
+      "empresa": "Conduven",
+      "municipio": "San Joaquín",
+      "direccion": "Zona Industrial San Joaquín, Estado Carabobo"
+    },
+    {
+      "fila": 46,
+      "empresa": "Serraser - Aserradero y Maderera (Referencia local Morón / Juan José Mora)",
+      "municipio": "Juan José Mora",
+      "direccion": "Municipio Juan José Mora, Morón, Estado Carabobo"
+    },
+    {
+      "fila": 47,
+      "empresa": "Vencemos (Cementos Sika / Cemex / Plantas de prefabricados asociadas - verificar distribuidor local)",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial El Piñonal / Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 48,
+      "empresa": "Distribuidora Ferretera Central (Diferca)",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Castillito, Valencia/San Diego, Estado Carabobo"
+    },
+    {
+      "fila": 49,
+      "empresa": "Ferretería Beco, C.A.",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Municipal I, Av. Norte-Sur 4, Valencia, Carabobo"
+    },
+    {
+      "fila": 50,
+      "empresa": "Ferretería EPA San Diego",
+      "municipio": "San Diego",
+      "direccion": "Avenida Don Julio Centeno, Municipio San Diego, Estado Carabobo"
+    },
+    {
+      "fila": 51,
+      "empresa": "Ferretería EPA, C.A.",
+      "municipio": "Valencia",
+      "direccion": "Av. Michelena, Distribuidor San Blas, Valencia, Carabobo"
+    },
+    {
+      "fila": 52,
+      "empresa": "Ferretería Industrial La Guacamaya, C.A.",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial La Guacamaya, Valencia, Estado Carabobo, Venezuela"
+    },
+    {
+      "fila": 53,
+      "empresa": "Ferretería La Campana Naguanagua",
+      "municipio": "Naguanagua",
+      "direccion": "Av. Universidad, C.C. La Campana, Naguanagua, Carabobo"
+    },
+    {
+      "fila": 57,
+      "empresa": "Ferretería y Tornillería Industrial (Representaciones y Servicios asociados a la zona industrial de Los Guayos)",
+      "municipio": "Los Guayos",
+      "direccion": "Zona Industrial Los Guayos, Municipio Los Guayos, Estado Carabobo"
+    },
+    {
+      "fila": 58,
+      "empresa": "Ferretería y Tornillería Industrial (Representaciones y Suministros)",
+      "municipio": "Guacara",
+      "direccion": "Zona Industrial Guacara, Estado Carabobo"
+    },
+    {
+      "fila": 59,
+      "empresa": "Ferretería y Tuberías La 190, C.A.",
+      "municipio": "Naguanagua",
+      "direccion": "Avenida 190, Naguanagua, Estado Carabobo"
+    },
+    {
+      "fila": 61,
+      "empresa": "Tornillos Carabobo, C.A.",
+      "municipio": "Valencia",
+      "direccion": "Av. Michelena, C.C. Los Jarales / Zona Industrial San Luis, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 62,
+      "empresa": "Tornillos Valencia, C.A.",
+      "municipio": "Valencia",
+      "direccion": "Av. Ernesto Branger, Galpón 4, Zona Industrial Municipal, Valencia"
+    },
+    {
+      "fila": 63,
+      "empresa": "Tornillos e Inversiones Valencia, C.A. (Tornival)",
+      "municipio": "Valencia",
+      "direccion": "Av. Bolivar Norte, Sector San José, Valencia, Carabobo"
+    },
+    {
+      "fila": 64,
+      "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+      "municipio": "Libertador",
+      "direccion": "Zona Industrial Municipal Sur, Valencia, Estado Carabobo (operando en el eje metropolitano que incluye al municipio Libertador)"
+    },
+    {
+      "fila": 65,
+      "empresa": "Acero de Guayana, C.A. (Acerguay)",
+      "municipio": "Los Guayos",
+      "direccion": "Zona Industrial Los Guayos, Municipio Los Guayos, Estado Carabobo."
+    },
+    {
+      "fila": 66,
+      "empresa": "Acero de Guayana, C.A. (Agunca) / Sucursales y operaciones asociadas en Carabobo",
+      "municipio": "San Diego",
+      "direccion": "Zona Industrial El Recreo, Municipio San Diego, Estado Carabobo"
+    },
+    {
+      "fila": 67,
+      "empresa": "Acero de Occidente, C.A. (Acerooccidente)",
+      "municipio": "Naguanagua",
+      "direccion": "Avenida 100 Bolívar, Zona Industrial Paramacay, Naguanagua, Estado Carabobo"
+    },
+    {
+      "fila": 68,
+      "empresa": "Acero de Valencia, C.A.",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Municipal Sur, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 69,
+      "empresa": "Acero de Valencia, C.A. (Acerival)",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Municipal Norte, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 70,
+      "empresa": "Aceros de Carabobo, C.A.",
+      "municipio": "Los Guayos",
+      "direccion": "Zona Industrial Los Guayos, Estado Carabobo, Venezuela"
+    },
+    {
+      "fila": 71,
+      "empresa": "Ferretería Carvajal, C.A.",
+      "municipio": "Valencia",
+      "direccion": "Av. Las Ferias, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 72,
+      "empresa": "Ferretería y Materiales Naguanagua 2000",
+      "municipio": "Naguanagua",
+      "direccion": "Avenida Universidad, Naguanagua, Estado Carabobo"
+    },
+    {
+      "fila": 73,
+      "empresa": "Ferretería y Materiales de Construcción en la zona de Bejuma",
+      "municipio": "Bejuma",
+      "direccion": "Municipio Bejuma, Estado Carabobo, Venezuela"
+    },
+    {
+      "fila": 75,
+      "empresa": "Inversiones y Suministros Aceroflex, C.A.",
+      "municipio": "Guacara",
+      "direccion": "Carretera Nacional Guacara-Los Guayos, Sector El Cabrito, Guacara, Carabobo"
+    },
+    {
+      "fila": 77,
+      "empresa": "Inversiones y Suministros Metálicos (Suministros Industriales Guacara)",
+      "municipio": "Guacara",
+      "direccion": "Zona Industrial El Nepe, Guacara, Estado Carabobo"
+    },
+    {
+      "fila": 78,
+      "empresa": "Mundo Cerámico",
+      "municipio": "Naguanagua",
+      "direccion": "Avenida Universidad, Naguanagua, Carabobo"
+    },
+    {
+      "fila": 81,
+      "empresa": "Ferretería y Materiales de Construcción en la zona de Bejuma",
+      "municipio": "Bejuma",
+      "direccion": "Municipio Bejuma, Estado Carabobo, Venezuela"
+    },
+    {
+      "fila": 82,
+      "empresa": "Ferretería EPA - Los Guayos",
+      "municipio": "Los Guayos",
+      "direccion": "Autopista Regional del Centro, sector Los Guayos, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 84,
+      "empresa": "Inversiones Gres, C.A.",
+      "municipio": "San Diego",
+      "direccion": "Urbanización Industrial Los Jarales, Municipio San Diego, Estado Carabobo"
+    },
+    {
+      "fila": 85,
+      "empresa": "Mundo Cerámico",
+      "municipio": "Naguanagua",
+      "direccion": "Avenida Universidad, Naguanagua, Carabobo"
+    },
+    {
+      "fila": 86,
+      "empresa": "Suministros y Materiales de Construcción operando en la zona (Ferremateriales locales)",
+      "municipio": "Juan José Mora",
+      "direccion": "Municipio Juan José Mora (Morón), Estado Carabobo"
+    },
+    {
+      "fila": 87,
+      "empresa": "Inversiones Madereras 2000",
+      "municipio": "Valencia",
+      "direccion": "Av. Las Ferias, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 90,
+      "empresa": "Maderas y Acabados Los Pinos (Referencia regional Carabobo)",
+      "municipio": "Diego Ibarra",
+      "direccion": "Estado Carabobo (Operaciones regionales)"
+    },
+    {
+      "fila": 91,
+      "empresa": "Maderas y Aserradero Bejuma",
+      "municipio": "Bejuma",
+      "direccion": "Bejuma, Estado Carabobo"
+    },
+    {
+      "fila": 92,
+      "empresa": "Maderas y Tableros C.A. (Madtica)",
+      "municipio": "Valencia",
+      "direccion": "Zona Industrial Municipal Norte, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 93,
+      "empresa": "Mundo Cerámico",
+      "municipio": "Naguanagua",
+      "direccion": "Avenida Universidad, Naguanagua, Carabobo"
+    },
+    {
+      "fila": 94,
+      "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+      "municipio": "Libertador",
+      "direccion": "Zona Industrial Municipal Sur, Valencia, Estado Carabobo (operando en el eje metropolitano que incluye al municipio Libertador)"
+    },
+    {
+      "fila": 95,
+      "empresa": "C.A. Proyectos y Suministros Eléctricos (Prosyel)",
+      "municipio": "Naguanagua",
+      "direccion": "Avenida Universidad, Naguanagua, Estado Carabobo"
+    },
+    {
+      "fila": 96,
+      "empresa": "Corporación Suministros Eléctricos C.A. (Corposuministros)",
+      "municipio": "San Diego",
+      "direccion": "Zona Industrial La Esmeralda, San Diego, Carabobo."
+    },
+    {
+      "fila": 97,
+      "empresa": "Ferretería EPA - Los Guayos",
+      "municipio": "Los Guayos",
+      "direccion": "Autopista Regional del Centro, sector Los Guayos, Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 98,
+      "empresa": "Ferretotal Morón",
+      "municipio": "Juan José Mora",
+      "direccion": "Municipio Juan José Mora, Morón, Estado Carabobo"
+    },
+    {
+      "fila": 99,
+      "empresa": "Inversiones 1253, C.A.",
+      "municipio": "San Diego",
+      "direccion": "Urbanización Industrial Los Guayabitos, Municipio San Diego, Estado Carabobo."
+    },
+    {
+      "fila": 100,
+      "empresa": "Inversiones y Suministros Eléctricos (INSELEC)",
+      "municipio": "Valencia",
+      "direccion": "Valencia, Estado Carabobo"
+    },
+    {
+      "fila": 101,
+      "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+      "municipio": "Libertador",
+      "direccion": "Zona Industrial Municipal Sur, Valencia, Estado Carabobo (operando en el eje metropolitano que incluye al municipio Libertador)"
+    },
+    {
+      "fila": 102,
+      "empresa": "Cocinas y Diseños Domésticos Valencia",
+      "municipio": "Valencia",
+      "direccion": "C.C. Cristal, Naguanagua/Valencia"
+    },
+    {
+      "fila": 103,
+      "empresa": "Distribuidora El Pincel de Oro",
+      "municipio": "Naguanagua",
+      "direccion": ""
+    },
+    {
+      "fila": 107,
+      "empresa": "Tienda Pinturas Montana Naguanagua",
+      "municipio": "Naguanagua",
+      "direccion": "Av. 190 con Av. Universidad, Naguanagua, Carabobo"
+    }
+  ],
+  "telPairs": [
+    {
+      "fila": 8,
+      "empresa": "Concreto 7G",
+      "telefono": "+58 241 8710000"
+    },
+    {
+      "fila": 15,
+      "empresa": "Concreto Premezclado C.A. (Conpreca)",
+      "telefono": "+58 241 8323811"
+    },
+    {
+      "fila": 18,
+      "empresa": "Cerámica Carabobo",
+      "telefono": "+58 241 8303111"
+    },
+    {
+      "fila": 21,
+      "empresa": "Cerámica Carabobo",
+      "telefono": "+58 241 8303111"
+    },
+    {
+      "fila": 29,
+      "empresa": "Estructuras Metálicas Carabobo (Estructurca)",
+      "telefono": "+58 241 8712345"
+    },
+    {
+      "fila": 32,
+      "empresa": "Metalúrgica M&G 2000, C.A.",
+      "telefono": "+58 245 5641234"
+    },
+    {
+      "fila": 34,
+      "empresa": "Corimon Pinturas Montana, C.A.",
+      "telefono": "+58 241 8391111"
+    },
+    {
+      "fila": 36,
+      "empresa": "Pineco (Pinturas Pineco)",
+      "telefono": "+58 241 8342415"
+    },
+    {
+      "fila": 37,
+      "empresa": "Pinturas Flamuko, C.A.",
+      "telefono": "+58 241 8741500"
+    },
+    {
+      "fila": 38,
+      "empresa": "Pinturas Montana (Corimon)",
+      "telefono": "+58 241 8711011"
+    },
+    {
+      "fila": 39,
+      "empresa": "Pinturasarsa (Pinturas Antillas / ARSA)",
+      "telefono": "+58 241 8381234"
+    },
+    {
+      "fila": 40,
+      "empresa": "Sherwin-Williams de Venezuela (Planta Los Guayos)",
+      "telefono": "+58 241 8301111"
+    },
+    {
+      "fila": 41,
+      "empresa": "Alambres y Cables Venezolanos, C.A. (Alcave)",
+      "telefono": "+58 245 5712311"
+    },
+    {
+      "fila": 43,
+      "empresa": "Cerámica Carabobo",
+      "telefono": "+58 241 8303111"
+    },
+    {
+      "fila": 44,
+      "empresa": "Conductores Cabel, C.A.",
+      "telefono": "+58 245 5611111"
+    },
+    {
+      "fila": 45,
+      "empresa": "Conduven",
+      "telefono": "58243911"
+    },
+    {
+      "fila": 48,
+      "empresa": "Distribuidora Ferretera Central (Diferca)",
+      "telefono": "+58 241 8716522"
+    },
+    {
+      "fila": 49,
+      "empresa": "Ferretería Beco, C.A.",
+      "telefono": "+58 241 8328111"
+    },
+    {
+      "fila": 50,
+      "empresa": "Ferretería EPA San Diego",
+      "telefono": "+58 500 3720000"
+    },
+    {
+      "fila": 51,
+      "empresa": "Ferretería EPA, C.A.",
+      "telefono": "+58 241 8131000"
+    },
+    {
+      "fila": 52,
+      "empresa": "Ferretería Industrial La Guacamaya, C.A.",
+      "telefono": "+58 241 8583011"
+    },
+    {
+      "fila": 53,
+      "empresa": "Ferretería La Campana Naguanagua",
+      "telefono": "+58 241 8671122"
+    },
+    {
+      "fila": 61,
+      "empresa": "Tornillos Carabobo, C.A.",
+      "telefono": "+58 241 8321288"
+    },
+    {
+      "fila": 62,
+      "empresa": "Tornillos Valencia, C.A.",
+      "telefono": "+58 241 8324567"
+    },
+    {
+      "fila": 63,
+      "empresa": "Tornillos e Inversiones Valencia, C.A. (Tornival)",
+      "telefono": "+58 241 8241512"
+    },
+    {
+      "fila": 64,
+      "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+      "telefono": "+58 241 8321111"
+    },
+    {
+      "fila": 67,
+      "empresa": "Acero de Occidente, C.A. (Acerooccidente)",
+      "telefono": "+58 241 8661234"
+    },
+    {
+      "fila": 68,
+      "empresa": "Acero de Valencia, C.A.",
+      "telefono": "+58 241 8345511"
+    },
+    {
+      "fila": 69,
+      "empresa": "Acero de Valencia, C.A. (Acerival)",
+      "telefono": "+58 241 8328811"
+    },
+    {
+      "fila": 71,
+      "empresa": "Ferretería Carvajal, C.A.",
+      "telefono": "+58 241 8341234"
+    },
+    {
+      "fila": 72,
+      "empresa": "Ferretería y Materiales Naguanagua 2000",
+      "telefono": "+58 241 8615555"
+    },
+    {
+      "fila": 78,
+      "empresa": "Mundo Cerámico",
+      "telefono": "+58 241 8081234"
+    },
+    {
+      "fila": 82,
+      "empresa": "Ferretería EPA - Los Guayos",
+      "telefono": "+58 241 8740111"
+    },
+    {
+      "fila": 84,
+      "empresa": "Inversiones Gres, C.A.",
+      "telefono": "58241871"
+    },
+    {
+      "fila": 85,
+      "empresa": "Mundo Cerámico",
+      "telefono": "+58 241 8081234"
+    },
+    {
+      "fila": 92,
+      "empresa": "Maderas y Tableros C.A. (Madtica)",
+      "telefono": "+58 241 8324411"
+    },
+    {
+      "fila": 93,
+      "empresa": "Mundo Cerámico",
+      "telefono": "+58 241 8081234"
+    },
+    {
+      "fila": 94,
+      "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+      "telefono": "+58 241 8321111"
+    },
+    {
+      "fila": 97,
+      "empresa": "Ferretería EPA - Los Guayos",
+      "telefono": "+58 241 8740111"
+    },
+    {
+      "fila": 101,
+      "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+      "telefono": "+58 241 8321111"
+    },
+    {
+      "fila": 102,
+      "empresa": "Cocinas y Diseños Domésticos Valencia",
+      "telefono": "+58 241 8990011"
+    },
+    {
+      "fila": 106,
+      "empresa": "Sherwin Williams - Tienda San Diego",
+      "telefono": "+58 245 5651111"
+    },
+    {
+      "fila": 107,
+      "empresa": "Tienda Pinturas Montana Naguanagua",
+      "telefono": "+58 241 8683344"
+    }
+  ],
+  "waPairs": [
+    {
+      "fila": 34,
+      "empresa": "Corimon Pinturas Montana, C.A.",
+      "whatsapp": "+58 412 0001122"
+    },
+    {
+      "fila": 37,
+      "empresa": "Pinturas Flamuko, C.A.",
+      "whatsapp": "+58 414 4332211"
+    },
+    {
+      "fila": 51,
+      "empresa": "Ferretería EPA, C.A.",
+      "whatsapp": "+58 414 3410000"
+    },
+    {
+      "fila": 53,
+      "empresa": "Ferretería La Campana Naguanagua",
+      "whatsapp": "+58 424 4005566"
+    },
+    {
+      "fila": 62,
+      "empresa": "Tornillos Valencia, C.A.",
+      "whatsapp": "+58 414 4123344"
+    },
+    {
+      "fila": 107,
+      "empresa": "Tienda Pinturas Montana Naguanagua",
+      "whatsapp": "+58 424 4119988"
+    }
+  ],
+  "corPairs": [
+    {
+      "fila": 34,
+      "empresa": "Corimon Pinturas Montana, C.A.",
+      "correo": "atencion@corimon.com"
+    },
+    {
+      "fila": 37,
+      "empresa": "Pinturas Flamuko, C.A.",
+      "correo": "contacto@flamuko.com"
+    },
+    {
+      "fila": 51,
+      "empresa": "Ferretería EPA, C.A.",
+      "correo": "atencionalcliente@ve.epa.biz"
+    },
+    {
+      "fila": 62,
+      "empresa": "Tornillos Valencia, C.A.",
+      "correo": "ventas@tornillosvalencia.com.ve"
+    },
+    {
+      "fila": 107,
+      "empresa": "Tienda Pinturas Montana Naguanagua",
+      "correo": "naguanagua@tiendasmontana.com"
+    }
+  ],
+  "incoherencias": [
+    {
+      "fila": 5,
+      "empresa": "Concretera de Occidente, C.A. (Concroca)",
+      "motivo": "Subcategoría asignada \"Bloques, adoquines y tubos de concreto\", pero en Productos dice \"Planta de producción de concreto premezclado y elementos de concreto, operando en la zona industrial de Guacara. | Planta de producción y comercialización de concreto premezclado y servicios afines.\", Municipio \"Libertador\", y Dirección menciona \"Zona Industrial Municipal Norte / Municipio Libertador, Estado Carabobo\"."
+    },
+    {
+      "fila": 7,
+      "empresa": "Concretera de Occidente, C.A. (Concroca)",
+      "motivo": "Subcategoría asignada \"Concreto premezclado y morteros\", pero en Productos dice \"Planta de producción de concreto premezclado y elementos de concreto, operando en la zona industrial de Guacara. | Planta de producción y comercialización de concreto premezclado y servicios afines.\", Municipio \"Libertador\", y Dirección menciona \"Zona Industrial Municipal Norte / Municipio Libertador, Estado Carabobo\"."
+    },
+    {
+      "fila": 64,
+      "empresa": "Acero de Carabobo, C.A. (Acerocara)",
+      "motivo": "Subcategoría Distribución de acero, cabillas y perfiles pero producto menciona pintura"
+    }
+  ]
+}
