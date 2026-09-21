@@ -1,16 +1,20 @@
 // Función Edge: buscar-empresas
 //
-// Descubre empresas reales para una subcategoría de la Cadena de la Construcción
-// en Carabobo usando ÚNICAMENTE OpenStreetMap / Overpass API: gratis, sin API key
-// y sin necesidad de facturación en Google Cloud.
+// Descubre empresas para una subcategoría de la Cadena de la Construcción en Carabobo
+// usando Gemini como fuente de conocimiento (no como buscador web: Gemini no tiene acceso
+// a internet en tiempo real aquí, así que solo puede "recordar" lo que sabe de su
+// entrenamiento). Esto tiene un riesgo real de alucinación, así que el prompt está diseñado
+// específicamente para minimizarlo:
 //
-// Cómo funciona:
-//   1. Se traduce la RAMA de la subcategoría a un conjunto de etiquetas OSM
-//      (shop=hardware, craft=builder, etc.) — ver OSM_TAGS_POR_RAMA.
-//   2. Se acota la búsqueda al municipio elegido (usando su límite administrativo
-//      real de OSM) o a todo el estado Carabobo si no se eligió ninguno.
-//   3. Overpass devuelve negocios reales ya con nombre, dirección y coordenadas —
-//      no hay extracción de texto libre ni riesgo de datos inventados.
+//   1. Se le prohíbe explícitamente inventar, adivinar o completar datos inciertos.
+//   2. Se le pide preferir una lista vacía o corta antes que arriesgar un dato falso.
+//   3. NUNCA se le pide dirección, teléfono ni coordenadas (no tiene forma de saberlos
+//      con certeza) — solo nombre y, si lo sabe con seguridad, el municipio.
+//   4. Debe autoevaluar su confianza ("alta"/"media") y justificar cada respuesta.
+//
+// Después, se intenta (opcionalmente) geocodificar "nombre + municipio" con Nominatim
+// como sugerencia de partida, pero el frontend SIEMPRE exige confirmar/ajustar el pin
+// manualmente en el mapa antes de guardar — ningún dato de ubicación se guarda a ciegas.
 //
 // Requiere una sesión de Supabase Auth válida (cualquier cuenta registrada).
 
@@ -29,179 +33,145 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 interface RequestBody {
   subcategoriaNombre: string;
   subcategoriaSlug: string;
-  ramaId: number;
   municipioNombre?: string;
 }
 
-interface ResultCompany {
+interface EmpresaSugerida {
   nombre: string;
-  direccion: string | null;
-  lat: number;
-  lng: number;
   municipio: string | null;
+  confianza: 'alta' | 'media';
+  justificacion: string;
+}
+
+interface ResultCompany extends EmpresaSugerida {
+  lat: number | null;
+  lng: number | null;
   ubicacionConfirmada: boolean;
-  fuente: string | null;
+  fuente: null;
 }
 
-// ID de relación OSM de cada municipio de Carabobo (tomados del GeoJSON del propio proyecto:
-// public/data/carabobo_municipios.geojson). Con esto Overpass acota la búsqueda al límite
-// administrativo real, sin depender de nombres ambiguos.
-const MUNICIPIO_OSM_ID: Record<string, number> = {
-  'Puerto Cabello': 2689581,
-  'Juan José Mora': 9997544,
-  Valencia: 10833239,
-  Libertador: 10833240,
-  'Los Guayos': 10833244,
-  'San Diego': 10833245,
-  Guacara: 10833246,
-  'San Joaquín': 10833247,
-  'Diego Ibarra': 10833248,
-  'Carlos Arvelo': 10833249,
-  Naguanagua: 10833250,
-  Bejuma: 10833251,
-  Montalbán: 10833252,
-  Miranda: 10833253
-};
-
-// Mapeo aproximado de rama -> etiquetas OSM relevantes. Es un punto de partida (v1);
-// se puede ir refinando por subcategoría más adelante si la cobertura resulta pobre.
-const OSM_TAGS_POR_RAMA: Record<number, string[]> = {
-  1: ['landuse=quarry', 'craft=sawmill'], // Extracción y recursos primarios
-  2: ['craft=metal_construction', 'shop=doityourself', 'shop=hardware', 'craft=carpenter'], // Manufactura de materiales
-  3: ['shop=hardware', 'shop=doityourself', 'shop=trade'], // Distribución y comercio de materiales
-  4: ['office=engineer', 'office=architect', 'office=surveyor'], // Servicios profesionales y técnicos
-  5: ['craft=builder', 'craft=electrician', 'craft=plumber', 'craft=painter'], // Ejecución de obra
-  6: ['shop=doityourself', 'shop=trade', 'craft=hvac'], // Equipos, maquinaria y suministros especiales
-  7: ['office=insurance', 'office=financial', 'office=estate_agent', 'amenity=bank'], // Financiamiento y comercialización
-  8: ['amenity=recycling', 'craft=metal_construction'] // Operación y fin de ciclo
-};
-
-function buildAreaClause(municipioNombre?: string): string {
-  if (municipioNombre && MUNICIPIO_OSM_ID[municipioNombre]) {
-    const areaId = 3600000000 + MUNICIPIO_OSM_ID[municipioNombre];
-    return `area(${areaId})->.searchArea;`;
-  }
-  return `area["name"="Carabobo"]["admin_level"="4"]->.searchArea;`;
-}
-
-function buildOverpassQuery(tags: string[], areaClause: string): string {
-  const filtros = tags
-    .map((tag) => {
-      const [key, value] = tag.split('=');
-      return `  node["${key}"="${value}"](area.searchArea);\n  way["${key}"="${value}"](area.searchArea);`;
-    })
-    .join('\n');
-
-  return `[out:json][timeout:25];\n${areaClause}\n(\n${filtros}\n);\nout center 40;`;
-}
-
-interface OverpassElement {
-  type: string;
-  id: number;
-  lat?: number;
-  lon?: number;
-  center?: { lat: number; lon: number };
-  tags?: Record<string, string>;
-}
-
-// overpass-api.de responde bien la mayoría de las veces desde Supabase, pero intermitentemente
-// devuelve 406 (probablemente por balanceo entre sus propios servidores/IPs). Como ese fallo es
-// rápido (segundos, no un timeout), probar espejos adicionales después no sale caro en tiempo.
-const OVERPASS_MIRRORS = [
-  'https://overpass-api.de/api/interpreter',
-  'https://overpass.kumi.systems/api/interpreter',
-  'https://overpass.openstreetmap.ru/api/interpreter'
+const MUNICIPIOS_CARABOBO = [
+  'Bejuma',
+  'Carlos Arvelo',
+  'Diego Ibarra',
+  'Guacara',
+  'Juan José Mora',
+  'Libertador',
+  'Los Guayos',
+  'Miranda',
+  'Montalbán',
+  'Naguanagua',
+  'Puerto Cabello',
+  'San Diego',
+  'San Joaquín',
+  'Valencia'
 ];
 
-// Debe ser mayor al [timeout:25] que la propia consulta le pide a Overpass (ver
-// buildOverpassQuery): si el cliente corta antes, cancelamos la petición justo cuando
-// el servidor apenas iba a responder.
-const TIMEOUT_POR_INTENTO_MS = 28000;
+function buildPrompt(subcategoriaNombre: string, municipioNombre?: string): string {
+  const zona = municipioNombre ? `el municipio ${municipioNombre} del estado Carabobo` : 'el estado Carabobo';
 
-async function fetchConTimeout(url: string, options: RequestInit, timeoutMs: number): Promise<Response> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  return `Eres un asistente que ayuda a construir un directorio de empresas REALES del sector construcción en Venezuela. No tienes acceso a internet en esta conversación: solo puedes usar lo que sabes con certeza de tu entrenamiento.
+
+REGLA MÁS IMPORTANTE, POR ENCIMA DE CUALQUIER OTRA COSA: nunca inventes, asumas ni completes un dato que no sepas con certeza que es real. Es preferible responder con una lista vacía o corta antes que incluir una sola empresa de la que no estés genuinamente seguro de que existe y opera en Venezuela. No intentes "ser útil" agregando empresas dudosas: eso causa más daño que una lista corta.
+
+Tarea: menciona ÚNICAMENTE empresas reales, conocidas y establecidas relacionadas con "${subcategoriaNombre}" que tengas conocimiento confiable de que operan en ${zona}, Venezuela. No se espera ni se necesita que la lista sea exhaustiva; 0 a 5 resultados de alta calidad es perfectamente aceptable.
+
+Para cada empresa que incluyas, entrega:
+- "nombre": el nombre exacto de la empresa (razón social o nombre comercial conocido).
+- "municipio": SOLO si sabes con certeza en cuál de estos 14 municipios de Carabobo opera (${MUNICIPIOS_CARABOBO.join(', ')}). Si no lo sabes con certeza, usa null — NO adivines un municipio solo porque "suena probable".
+- "confianza": "alta" solo si estás genuinamente seguro de que la empresa existe y opera en Carabobo; "media" si tienes una duda razonable pero justificada. No incluyas nada por debajo de "media".
+- "justificacion": una frase breve y específica explicando por qué sabes que es real (ejemplo: "Marca nacional de cemento con planta identificada en Carabobo"). Si no puedes justificarlo con algo específico, no la incluyas.
+
+PROHIBIDO incluir: direcciones, teléfonos, correos, sitios web o coordenadas — no tienes forma de verificarlos en este momento, así que no los reportes aunque creas recordarlos.
+
+Responde ÚNICAMENTE con un JSON array válido, sin texto adicional antes ni después, con este formato exacto:
+[{"nombre": "string", "municipio": "string o null", "confianza": "alta" | "media", "justificacion": "string"}]
+
+Si no tienes conocimiento confiable de ninguna empresa real de este tipo en la zona indicada, responde exactamente con: []`;
+}
+
+async function preguntarAGemini(subcategoriaNombre: string, municipioNombre?: string): Promise<EmpresaSugerida[]> {
+  const key = Deno.env.get('GEMINI_API_KEY');
+  if (!key) throw new Error('Falta la credencial GEMINI_API_KEY en los secretos de la función.');
+
+  const prompt = buildPrompt(subcategoriaNombre, municipioNombre);
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${key}`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { responseMimeType: 'application/json', temperature: 0 }
+    })
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Gemini respondió ${res.status}: ${text.slice(0, 300)}`);
+  }
+
+  const data = await res.json();
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) return [];
+
+  let parsed: unknown;
   try {
-    return await fetch(url, { ...options, signal: controller.signal });
-  } finally {
-    clearTimeout(timer);
+    parsed = JSON.parse(text);
+  } catch {
+    return [];
   }
+  if (!Array.isArray(parsed)) return [];
+
+  return parsed
+    .filter(
+      (it): it is Record<string, unknown> =>
+        !!it && typeof it === 'object' && typeof (it as Record<string, unknown>).nombre === 'string'
+    )
+    .filter((it) => it.confianza === 'alta' || it.confianza === 'media')
+    .map((it) => ({
+      nombre: (it.nombre as string).trim(),
+      municipio:
+        typeof it.municipio === 'string' && MUNICIPIOS_CARABOBO.includes(it.municipio) ? (it.municipio as string) : null,
+      confianza: it.confianza as 'alta' | 'media',
+      justificacion: typeof it.justificacion === 'string' ? it.justificacion : ''
+    }));
 }
 
-async function runOverpassQuery(query: string): Promise<OverpassElement[]> {
-  const errores: string[] = [];
+// Intento opcional de geocodificar "nombre + municipio" con Nominatim, solo como sugerencia
+// de partida — el frontend exige confirmar/ajustar el pin a mano antes de guardar, así que
+// un intento fallido o impreciso aquí no es crítico.
+async function intentarGeocodificar(
+  nombre: string,
+  municipioNombre?: string
+): Promise<{ lat: number; lng: number } | null> {
+  const query = municipioNombre ? `${nombre}, ${municipioNombre}, Carabobo, Venezuela` : `${nombre}, Carabobo, Venezuela`;
 
-  for (const endpoint of OVERPASS_MIRRORS) {
-    try {
-      // Apache (mod_negotiation) puede responder 406 si faltan Accept-Language/Accept-Encoding
-      // explícitos, algo que el runtime Deno de Supabase no agrega por defecto a diferencia de
-      // otros entornos. Los incluimos explícitamente junto al resto de headers. Un timeout corto
-      // evita que un espejo caído o lento cuelgue toda la búsqueda.
-      const res = await fetchConTimeout(
-        endpoint,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Accept: '*/*',
-            'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
-            'Accept-Encoding': 'identity',
-            'User-Agent': 'CadenaConstruccionCarabobo/1.0 (contacto@cadenacarabobo.org)'
-          },
-          body: 'data=' + encodeURIComponent(query)
-        },
-        TIMEOUT_POR_INTENTO_MS
-      );
+  const url = new URL('https://nominatim.openstreetmap.org/search');
+  url.searchParams.set('q', query);
+  url.searchParams.set('format', 'json');
+  url.searchParams.set('limit', '1');
+  url.searchParams.set('countrycodes', 've');
+  url.searchParams.set('email', 'contacto@cadenacarabobo.org');
 
-      if (res.ok) {
-        const data = await res.json();
-        return (data.elements || []) as OverpassElement[];
-      }
-
-      const text = await res.text();
-      errores.push(`${endpoint} -> ${res.status}: ${text.slice(0, 150)}`);
-    } catch (err) {
-      const motivo =
-        err instanceof Error && err.name === 'AbortError'
-          ? `sin respuesta en ${TIMEOUT_POR_INTENTO_MS / 1000}s`
-          : err instanceof Error
-          ? err.message
-          : 'error de red';
-      errores.push(`${endpoint} -> ${motivo}`);
-    }
+  try {
+    const res = await fetch(url.toString(), {
+      headers: { 'Accept-Language': 'es', 'User-Agent': 'CadenaConstruccionCarabobo/1.0 (contacto@cadenacarabobo.org)' }
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) return null;
+    return { lat: Number(parseFloat(data[0].lat).toFixed(6)), lng: Number(parseFloat(data[0].lon).toFixed(6)) };
+  } catch {
+    return null;
   }
-
-  throw new Error(`Ningún servidor de Overpass respondió correctamente. Detalle: ${errores.join(' | ')}`);
-}
-
-function elementToCompany(el: OverpassElement, municipioHint?: string): ResultCompany | null {
-  const tags = el.tags || {};
-  const nombre = tags.name;
-  if (!nombre) return null; // Ignoramos elementos sin nombre: no aportan como "empresa"
-
-  const lat = el.type === 'node' ? el.lat : el.center?.lat;
-  const lng = el.type === 'node' ? el.lon : el.center?.lon;
-  if (lat === undefined || lng === undefined) return null;
-
-  const direccionPartes = [
-    tags['addr:street'] && tags['addr:housenumber']
-      ? `${tags['addr:street']} ${tags['addr:housenumber']}`
-      : tags['addr:street'],
-    tags['addr:city']
-  ].filter(Boolean);
-
-  return {
-    nombre,
-    direccion: direccionPartes.length > 0 ? direccionPartes.join(', ') : null,
-    lat: Number(lat.toFixed(6)),
-    lng: Number(lng.toFixed(6)),
-    municipio: municipioHint || tags['addr:city'] || null,
-    ubicacionConfirmada: true,
-    fuente: `https://www.openstreetmap.org/${el.type}/${el.id}`
-  };
 }
 
 Deno.serve(async (req: Request) => {
@@ -224,39 +194,35 @@ Deno.serve(async (req: Request) => {
     }
 
     const body = (await req.json()) as RequestBody;
-    const { ramaId, municipioNombre } = body;
+    const { subcategoriaNombre, municipioNombre } = body;
 
-    const tags = OSM_TAGS_POR_RAMA[ramaId];
-    if (!tags || tags.length === 0) {
-      return json({ error: `No hay un mapeo de etiquetas OSM configurado para la rama ${ramaId}.` }, 400);
+    if (!subcategoriaNombre || !subcategoriaNombre.trim()) {
+      return json({ error: 'Falta el nombre de la subcategoría a buscar.' }, 400);
     }
 
-    const areaClause = buildAreaClause(municipioNombre);
-    const query = buildOverpassQuery(tags, areaClause);
+    const sugeridas = await preguntarAGemini(subcategoriaNombre, municipioNombre);
 
-    const elements = await runOverpassQuery(query);
-    const empresas = elements
-      .map((el) => elementToCompany(el, municipioNombre))
-      .filter((e): e is ResultCompany => e !== null);
-
-    // Overpass puede repetir el mismo negocio por distintos tags; deduplicar por nombre+coords aproximadas
-    const vistos = new Set<string>();
-    const empresasUnicas = empresas.filter((e) => {
-      const key = `${e.nombre.toLowerCase()}|${e.lat.toFixed(3)}|${e.lng.toFixed(3)}`;
-      if (vistos.has(key)) return false;
-      vistos.add(key);
-      return true;
-    });
-
-    if (empresasUnicas.length === 0) {
+    if (sugeridas.length === 0) {
       return json({
         empresas: [],
-        aviso:
-          'OpenStreetMap no tiene negocios etiquetados para esta rama en la zona elegida. La cobertura de OSM en zonas industriales de Carabobo puede ser limitada.'
+        aviso: 'Gemini no reportó ninguna empresa de la que tenga conocimiento confiable para esta subcategoría y zona.'
       });
     }
 
-    return json({ empresas: empresasUnicas });
+    const empresas: ResultCompany[] = [];
+    for (const s of sugeridas) {
+      const geo = await intentarGeocodificar(s.nombre, s.municipio || municipioNombre);
+      empresas.push({
+        ...s,
+        lat: geo?.lat ?? null,
+        lng: geo?.lng ?? null,
+        ubicacionConfirmada: !!geo,
+        fuente: null
+      });
+      await sleep(1100); // respetar límite de 1 solicitud/segundo de Nominatim
+    }
+
+    return json({ empresas });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Error inesperado en la búsqueda.';
     console.error('buscar-empresas error:', message);

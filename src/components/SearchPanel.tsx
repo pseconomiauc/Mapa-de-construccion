@@ -7,12 +7,12 @@ import { Empresa, MunicipioCarabobo, MUNICIPIOS_CARABOBO } from '../types/databa
 
 interface FoundCompany {
   nombre: string;
-  direccion: string | null;
+  municipio: string | null;
+  confianza: 'alta' | 'media';
+  justificacion: string;
   lat: number | null;
   lng: number | null;
-  municipio: string | null;
   ubicacionConfirmada: boolean;
-  fuente: string | null;
 }
 
 interface SubcategoriaResultGroup {
@@ -104,52 +104,31 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
 
     const municipioNombre = municipioZona || undefined;
 
-    // Varias subcategorías de la misma rama usan la misma búsqueda de OSM (las etiquetas
-    // se mapean por rama, no por subcategoría); cacheamos por rama para no repetir llamadas.
-    const cachePorRama = new Map<number, { data?: { empresas?: FoundCompany[]; aviso?: string }; error?: string }>();
-
     for (const [idx, cat] of subcats.entries()) {
+      logStep(`Preguntando a Gemini por "${cat.nombre}"…`);
       try {
-        let resultado = cachePorRama.get(cat.rama_id);
+        const { data, error } = await supabase.functions.invoke('buscar-empresas', {
+          body: { subcategoriaNombre: cat.nombre, subcategoriaSlug: cat.slug, municipioNombre }
+        });
 
-        if (!resultado) {
-          const ramaNombre = BRANCHES.find((b) => b.id === cat.rama_id)?.name || `rama ${cat.rama_id}`;
-          logStep(`Consultando OpenStreetMap para la rama "${ramaNombre}"…`);
-          try {
-            const { data, error } = await supabase.functions.invoke('buscar-empresas', {
-              body: { subcategoriaNombre: cat.nombre, subcategoriaSlug: cat.slug, ramaId: cat.rama_id, municipioNombre }
-            });
-
-            if (error) {
-              // supabase-js solo da un mensaje genérico ("Edge Function returned a non-2xx status code");
-              // el detalle real viene en el cuerpo de la respuesta que guarda en error.context.
-              let detail = error.message;
-              const ctx = (error as { context?: Response }).context;
-              if (ctx && typeof ctx.json === 'function') {
-                try {
-                  const body = await ctx.clone().json();
-                  if (body?.error) detail = body.error;
-                } catch {
-                  // el cuerpo no era JSON; nos quedamos con el mensaje genérico
-                }
-              }
-              throw new Error(detail);
+        if (error) {
+          // supabase-js solo da un mensaje genérico ("Edge Function returned a non-2xx status code");
+          // el detalle real viene en el cuerpo de la respuesta que guarda en error.context.
+          let detail = error.message;
+          const ctx = (error as { context?: Response }).context;
+          if (ctx && typeof ctx.json === 'function') {
+            try {
+              const body = await ctx.clone().json();
+              if (body?.error) detail = body.error;
+            } catch {
+              // el cuerpo no era JSON; nos quedamos con el mensaje genérico
             }
-
-            resultado = { data };
-            const cantidad = data?.empresas?.length || 0;
-            logStep(`"${ramaNombre}": ${cantidad} negocio(s) encontrado(s) en OpenStreetMap.`);
-          } catch (err) {
-            resultado = { error: getErrorMessage(err) };
-            logStep(`"${ramaNombre}": error al consultar OpenStreetMap — ${getErrorMessage(err)}`);
           }
-          cachePorRama.set(cat.rama_id, resultado);
-        } else {
-          logStep(`"${cat.nombre}": usando resultados ya obtenidos para su rama.`);
+          throw new Error(detail);
         }
 
-        if (resultado.error) throw new Error(resultado.error);
-        const data = resultado.data;
+        const cantidad = data?.empresas?.length || 0;
+        logStep(`"${cat.nombre}": ${cantidad} sugerencia(s) de Gemini.`);
 
         setResults((prev) =>
           prev.map((g) =>
@@ -164,6 +143,7 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
           )
         );
       } catch (err) {
+        logStep(`"${cat.nombre}": error — ${getErrorMessage(err)}`);
         setResults((prev) =>
           prev.map((g) => (g.slug === cat.slug ? { ...g, loading: false, error: getErrorMessage(err) } : g))
         );
@@ -176,9 +156,9 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
     setSearching(false);
   };
 
-  // "Agregar" siempre pasa primero por el mapa: la ubicación que sugiere OpenStreetMap
-  // puede corresponder solo al municipio/zona (no a la dirección exacta de la empresa),
-  // así que el humano confirma o ajusta el pin antes de guardar.
+  // "Agregar" siempre pasa primero por el mapa: Gemini nunca reporta dirección ni
+  // coordenadas (solo nombre y, a veces, municipio), así que la ubicación se define
+  // manualmente antes de guardar.
   const handleStartAddCompany = (groupSlug: string, company: FoundCompany) => {
     setPendingLocation({ groupSlug, company });
   };
@@ -199,14 +179,13 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
     try {
       const payload: Partial<Empresa> & { nombre: string } = {
         nombre: company.nombre,
-        direccion: company.direccion,
         municipio: confirmed.municipio || null,
         lat: confirmed.lat,
         lng: confirmed.lng,
         contacto_verificado: false,
         revisar: true,
-        nota_revision: 'Encontrada automáticamente por búsqueda en OpenStreetMap. Verificar datos de contacto.',
-        fuente: company.fuente
+        nota_revision: `Sugerida por Gemini (confianza ${company.confianza}): "${company.justificacion}". No verificado por un humano — confirmar que la empresa exista realmente antes de publicar, y completar dirección/contacto.`,
+        fuente: null
       };
 
       const { data: inserted, error: insErr } = await supabase.from('empresas').insert([payload]).select('id').single();
@@ -264,9 +243,11 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
         Panel de gestión de búsqueda
       </h2>
       <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: 0, marginBottom: '16px' }}>
-        Por cada rama marcada, el sistema busca negocios reales en OpenStreetMap (gratis, sin inventar datos) dentro
-        del municipio o estado elegido. La cobertura de OpenStreetMap en zonas industriales puede ser limitada, así
-        que al agregar una empresa <b>siempre confirmas o ajustas el pin en el mapa</b> antes de guardarla.
+        Por cada subcategoría marcada, se le pregunta a Gemini (IA) qué empresas reales conoce de ese tipo en la zona
+        elegida. Gemini <b>no navega internet</b>: solo puede reportar lo que sabe con certeza, nunca inventa
+        direcciones ni coordenadas, y se le exige indicar su nivel de confianza y justificar cada respuesta. Aun así,
+        una IA puede equivocarse — <b>revisa cada sugerencia</b> y confirma tú mismo la ubicación en el mapa antes de
+        guardarla; todo lo agregado queda marcado como "por revisar".
       </p>
 
       <form onSubmit={handleSubmit}>
@@ -314,9 +295,8 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
           </div>
           {selectedSubcats.size > 0 && (
             <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '8px' }}>
-              Se buscará en OpenStreetMap dentro de {municipioZona || 'todo el estado Carabobo'}, usando las etiquetas
-              típicas de cada rama seleccionada. Los resultados encontrados se agregarán a la subcategoría exacta que
-              marques ({selectedSubcats.size} seleccionada{selectedSubcats.size === 1 ? '' : 's'}).
+              Se hará 1 consulta a Gemini por cada subcategoría marcada ({selectedSubcats.size} en total) sobre "
+              empresas de &lt;subcategoría&gt;" en {municipioZona || 'todo el estado Carabobo'}.
             </div>
           )}
         </fieldset>
@@ -428,7 +408,7 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
               {group.aviso && <p style={{ fontSize: '13px', color: 'var(--muted)' }}>{group.aviso}</p>}
 
               {!group.loading && !group.error && group.empresas.length === 0 && !group.aviso && (
-                <p className="empty">No se encontraron empresas para esta subcategoría.</p>
+                <p className="empty">Gemini no reportó ninguna empresa para esta subcategoría.</p>
               )}
 
               {group.empresas.length > 0 && (
@@ -436,9 +416,9 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
                   <thead>
                     <tr>
                       <th style={thStyle}>Nombre</th>
-                      <th style={thStyle}>Dirección</th>
-                      <th style={thStyle}>Sugerencia OSM</th>
-                      <th style={thStyle}>Fuente</th>
+                      <th style={thStyle}>Confianza</th>
+                      <th style={thStyle}>Justificación de Gemini</th>
+                      <th style={thStyle}>Ubicación sugerida</th>
                       <th style={thStyle}>Acción</th>
                     </tr>
                   </thead>
@@ -448,26 +428,36 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
                         <td style={tdStyle}>
                           <b>{emp.nombre}</b>
                         </td>
-                        <td style={tdStyle}>{emp.direccion || <span style={{ color: 'var(--muted)' }}>—</span>}</td>
+                        <td style={tdStyle}>
+                          <span
+                            style={{
+                              fontSize: '11.5px',
+                              fontWeight: 600,
+                              padding: '2px 6px',
+                              borderRadius: '2px',
+                              color: emp.confianza === 'alta' ? '#166534' : '#856404',
+                              background: emp.confianza === 'alta' ? '#f0fdf4' : '#fdf6e3',
+                              border: `1px solid ${emp.confianza === 'alta' ? '#bbf7d0' : '#f5e0a8'}`
+                            }}
+                          >
+                            {emp.confianza === 'alta' ? 'Alta' : 'Media'}
+                          </span>
+                        </td>
+                        <td style={{ ...tdStyle, fontSize: '12px', color: 'var(--muted)', maxWidth: '260px' }}>
+                          {emp.justificacion || '—'}
+                        </td>
                         <td style={tdStyle}>
                           {emp.ubicacionConfirmada ? (
-                            <span style={{ color: '#856404' }}>
+                            <span style={{ color: '#856404', fontSize: '12px' }}>
                               {emp.lat}, {emp.lng}
                               {emp.municipio && ` (${emp.municipio})`}
                               <br />
                               <em style={{ fontSize: '11px' }}>sin confirmar manualmente</em>
                             </span>
                           ) : (
-                            <span style={{ color: 'var(--muted)' }}>Sin sugerencia — marca a mano</span>
-                          )}
-                        </td>
-                        <td style={tdStyle}>
-                          {emp.fuente ? (
-                            <a href={emp.fuente} target="_blank" rel="noopener noreferrer" style={{ fontSize: '12px' }}>
-                              ver fuente
-                            </a>
-                          ) : (
-                            '—'
+                            <span style={{ color: 'var(--muted)', fontSize: '12px' }}>
+                              Sin sugerencia{emp.municipio ? ` (municipio: ${emp.municipio})` : ''} — marca a mano
+                            </span>
                           )}
                         </td>
                         <td style={tdStyle}>
