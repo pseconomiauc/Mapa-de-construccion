@@ -1,15 +1,17 @@
 // Función Edge: buscar-empresas
 //
 // Descubre empresas reales para una subcategoría de la Cadena de la Construcción
-// en Carabobo, en 3 pasos:
-//   1. Google Custom Search -> resultados web REALES (títulos, enlaces, fragmentos).
-//   2. Gemini -> extrae nombre/dirección ÚNICAMENTE del texto real de esos resultados
-//      (no se le pide que "invente" empresas, solo que estructure lo que ya apareció).
-//   3. Nominatim (OpenStreetMap) -> intenta confirmar coordenadas y municipio de la
-//      dirección extraída.
+// en Carabobo usando ÚNICAMENTE OpenStreetMap / Overpass API: gratis, sin API key
+// y sin necesidad de facturación en Google Cloud.
 //
-// Las 3 credenciales (GOOGLE_CSE_KEY, GOOGLE_CSE_CX, GEMINI_API_KEY) viven como
-// secretos de esta función en Supabase y NUNCA se exponen al navegador.
+// Cómo funciona:
+//   1. Se traduce la RAMA de la subcategoría a un conjunto de etiquetas OSM
+//      (shop=hardware, craft=builder, etc.) — ver OSM_TAGS_POR_RAMA.
+//   2. Se acota la búsqueda al municipio elegido (usando su límite administrativo
+//      real de OSM) o a todo el estado Carabobo si no se eligió ninguno.
+//   3. Overpass devuelve negocios reales ya con nombre, dirección y coordenadas —
+//      no hay extracción de texto libre ni riesgo de datos inventados.
+//
 // Requiere una sesión de Supabase Auth válida (cualquier cuenta registrada).
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
@@ -27,160 +29,139 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 interface RequestBody {
   subcategoriaNombre: string;
   subcategoriaSlug: string;
-  municipioHint?: string;
+  ramaId: number;
+  municipioNombre?: string;
 }
 
-interface GoogleSearchItem {
-  title: string;
-  link: string;
-  snippet: string;
-}
-
-interface ExtractedCompany {
+interface ResultCompany {
   nombre: string;
   direccion: string | null;
-  fuenteIndice: number | null;
-}
-
-interface ResultCompany extends ExtractedCompany {
-  lat: number | null;
-  lng: number | null;
+  lat: number;
+  lng: number;
   municipio: string | null;
   ubicacionConfirmada: boolean;
   fuente: string | null;
 }
 
-// --- Paso 1: Google Custom Search ---
-async function googleSearch(query: string): Promise<GoogleSearchItem[]> {
-  const key = Deno.env.get('GOOGLE_CSE_KEY');
-  const cx = Deno.env.get('GOOGLE_CSE_CX');
-  if (!key || !cx) throw new Error('Faltan las credenciales GOOGLE_CSE_KEY / GOOGLE_CSE_CX en los secretos de la función.');
+// ID de relación OSM de cada municipio de Carabobo (tomados del GeoJSON del propio proyecto:
+// public/data/carabobo_municipios.geojson). Con esto Overpass acota la búsqueda al límite
+// administrativo real, sin depender de nombres ambiguos.
+const MUNICIPIO_OSM_ID: Record<string, number> = {
+  'Puerto Cabello': 2689581,
+  'Juan José Mora': 9997544,
+  Valencia: 10833239,
+  Libertador: 10833240,
+  'Los Guayos': 10833244,
+  'San Diego': 10833245,
+  Guacara: 10833246,
+  'San Joaquín': 10833247,
+  'Diego Ibarra': 10833248,
+  'Carlos Arvelo': 10833249,
+  Naguanagua: 10833250,
+  Bejuma: 10833251,
+  Montalbán: 10833252,
+  Miranda: 10833253
+};
 
-  const url = new URL('https://www.googleapis.com/customsearch/v1');
-  url.searchParams.set('key', key);
-  url.searchParams.set('cx', cx);
-  url.searchParams.set('q', query);
-  url.searchParams.set('num', '10');
-  url.searchParams.set('gl', 've');
-  url.searchParams.set('hl', 'es');
+// Mapeo aproximado de rama -> etiquetas OSM relevantes. Es un punto de partida (v1);
+// se puede ir refinando por subcategoría más adelante si la cobertura resulta pobre.
+const OSM_TAGS_POR_RAMA: Record<number, string[]> = {
+  1: ['landuse=quarry', 'craft=sawmill'], // Extracción y recursos primarios
+  2: ['craft=metal_construction', 'shop=doityourself', 'shop=hardware', 'craft=carpenter'], // Manufactura de materiales
+  3: ['shop=hardware', 'shop=doityourself', 'shop=trade'], // Distribución y comercio de materiales
+  4: ['office=engineer', 'office=architect', 'office=surveyor'], // Servicios profesionales y técnicos
+  5: ['craft=builder', 'craft=electrician', 'craft=plumber', 'craft=painter'], // Ejecución de obra
+  6: ['shop=doityourself', 'shop=trade', 'craft=hvac'], // Equipos, maquinaria y suministros especiales
+  7: ['office=insurance', 'office=financial', 'office=estate_agent', 'amenity=bank'], // Financiamiento y comercialización
+  8: ['amenity=recycling', 'craft=metal_construction'] // Operación y fin de ciclo
+};
 
-  const res = await fetch(url.toString());
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Google Custom Search respondió ${res.status}: ${body.slice(0, 300)}`);
+function buildAreaClause(municipioNombre?: string): string {
+  if (municipioNombre && MUNICIPIO_OSM_ID[municipioNombre]) {
+    const areaId = 3600000000 + MUNICIPIO_OSM_ID[municipioNombre];
+    return `area(${areaId})->.searchArea;`;
   }
-  const data = await res.json();
-  const items = (data.items || []) as Array<{ title?: string; link?: string; snippet?: string }>;
-  return items.map((it) => ({
-    title: it.title || '',
-    link: it.link || '',
-    snippet: it.snippet || ''
-  }));
+  return `area["name"="Carabobo"]["admin_level"="4"]->.searchArea;`;
 }
 
-// --- Paso 2: Gemini extrae SOLO lo que aparece en los resultados reales ---
-async function extractWithGemini(subcategoriaNombre: string, results: GoogleSearchItem[]): Promise<ExtractedCompany[]> {
-  const key = Deno.env.get('GEMINI_API_KEY');
-  if (!key) throw new Error('Falta la credencial GEMINI_API_KEY en los secretos de la función.');
-
-  const fuentesTexto = results
-    .map((r, i) => `[Fuente ${i + 1}] ${r.title}\nURL: ${r.link}\nFragmento: ${r.snippet}`)
-    .join('\n\n');
-
-  const prompt = `Eres un asistente que SOLO extrae información que aparece literalmente en el texto proporcionado. \
-No debes usar tu propio conocimiento ni inventar, adivinar o completar datos que no estén explícitos en el texto.
-
-Estos son resultados reales de una búsqueda web sobre "empresas de ${subcategoriaNombre}" en el estado Carabobo, Venezuela:
-
-${fuentesTexto}
-
-Tarea: identifica empresas o negocios REALES mencionados explícitamente por su nombre propio en el texto de arriba, \
-relacionados con "${subcategoriaNombre}". Para cada una, incluye su dirección SOLO si aparece explícitamente en el texto \
-(si no aparece, usa null). Si un resultado no menciona ninguna empresa con nombre propio, ignóralo.
-
-No incluyas: sitios genéricos de directorios (páginas amarillas, redes sociales sin nombre de empresa específico), \
-ni empresas que no sean de Venezuela/Carabobo.
-
-Para cada empresa, indica también el número de la fuente (1, 2, 3…) de donde la obtuviste, según las etiquetas \
-"[Fuente N]" de arriba.
-
-Responde ÚNICAMENTE con un JSON array válido, sin texto adicional, con este formato exacto:
-[{"nombre": "string", "direccion": "string o null", "fuente_indice": number}]
-
-Si no hay ninguna empresa real identificable, responde con: []`;
-
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
+function buildOverpassQuery(tags: string[], areaClause: string): string {
+  const filtros = tags
+    .map((tag) => {
+      const [key, value] = tag.split('=');
+      return `  node["${key}"="${value}"](area.searchArea);\n  way["${key}"="${value}"](area.searchArea);`;
     })
-  });
+    .join('\n');
 
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Gemini respondió ${res.status}: ${body.slice(0, 300)}`);
-  }
-
-  const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) return [];
-
-  try {
-    const parsed = JSON.parse(text);
-    if (!Array.isArray(parsed)) return [];
-    return parsed
-      .filter((it) => it && typeof it.nombre === 'string' && it.nombre.trim())
-      .map((it) => ({
-        nombre: it.nombre.trim(),
-        direccion: it.direccion && typeof it.direccion === 'string' ? it.direccion.trim() : null,
-        fuenteIndice: typeof it.fuente_indice === 'number' ? it.fuente_indice : null
-      }));
-  } catch {
-    return [];
-  }
+  return `[out:json][timeout:25];\n${areaClause}\n(\n${filtros}\n);\nout center 40;`;
 }
 
-// --- Paso 3: confirmar ubicación con Nominatim (OpenStreetMap) ---
-async function geocodeNominatim(
-  direccion: string,
-  municipioHint?: string
-): Promise<{ lat: number; lng: number; municipio: string | null } | null> {
-  let query = direccion;
-  if (municipioHint && !new RegExp(municipioHint, 'i').test(query)) {
-    query += `, ${municipioHint}`;
+interface OverpassElement {
+  type: string;
+  id: number;
+  lat?: number;
+  lon?: number;
+  center?: { lat: number; lon: number };
+  tags?: Record<string, string>;
+}
+
+async function runOverpassQuery(query: string): Promise<OverpassElement[]> {
+  // El servidor público de Overpass a veces responde 502/503/504 por sobrecarga transitoria;
+  // reintentamos una vez antes de darnos por vencidos.
+  for (let intento = 0; intento < 2; intento++) {
+    // Overpass exige un Accept explícito y un User-Agent identificable; sin ellos responde 406.
+    const res = await fetch('https://overpass-api.de/api/interpreter', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Accept: '*/*',
+        'User-Agent': 'CadenaConstruccionCarabobo/1.0 (contacto@cadenacarabobo.org)'
+      },
+      body: 'data=' + encodeURIComponent(query)
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      return (data.elements || []) as OverpassElement[];
+    }
+
+    const text = await res.text();
+    const esTransitorio = [502, 503, 504].includes(res.status);
+    if (!esTransitorio || intento === 1) {
+      throw new Error(`Overpass respondió ${res.status}: ${text.slice(0, 300)}`);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 3000));
   }
-  if (!/carabobo/i.test(query)) query += ', Carabobo';
-  if (!/venezuela/i.test(query)) query += ', Venezuela';
 
-  const url = new URL('https://nominatim.openstreetmap.org/search');
-  url.searchParams.set('q', query);
-  url.searchParams.set('format', 'json');
-  url.searchParams.set('addressdetails', '1');
-  url.searchParams.set('limit', '1');
-  url.searchParams.set('countrycodes', 've');
-  url.searchParams.set('email', 'contacto@cadenacarabobo.org');
+  return [];
+}
 
-  const res = await fetch(url.toString(), { headers: { 'Accept-Language': 'es' } });
-  if (!res.ok) return null;
-  const data = await res.json();
-  if (!Array.isArray(data) || data.length === 0) return null;
+function elementToCompany(el: OverpassElement, municipioHint?: string): ResultCompany | null {
+  const tags = el.tags || {};
+  const nombre = tags.name;
+  if (!nombre) return null; // Ignoramos elementos sin nombre: no aportan como "empresa"
 
-  const item = data[0];
-  const addr = item.address || {};
+  const lat = el.type === 'node' ? el.lat : el.center?.lat;
+  const lng = el.type === 'node' ? el.lon : el.center?.lon;
+  if (lat === undefined || lng === undefined) return null;
+
+  const direccionPartes = [
+    tags['addr:street'] && tags['addr:housenumber']
+      ? `${tags['addr:street']} ${tags['addr:housenumber']}`
+      : tags['addr:street'],
+    tags['addr:city']
+  ].filter(Boolean);
+
   return {
-    lat: Number(parseFloat(item.lat).toFixed(6)),
-    lng: Number(parseFloat(item.lon).toFixed(6)),
-    municipio: addr.county || addr.city || addr.municipality || addr.town || null
+    nombre,
+    direccion: direccionPartes.length > 0 ? direccionPartes.join(', ') : null,
+    lat: Number(lat.toFixed(6)),
+    lng: Number(lng.toFixed(6)),
+    municipio: municipioHint || tags['addr:city'] || null,
+    ubicacionConfirmada: true,
+    fuente: `https://www.openstreetmap.org/${el.type}/${el.id}`
   };
 }
 
@@ -188,7 +169,6 @@ Deno.serve(async (req: Request) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: CORS_HEADERS });
 
   try {
-    // Exigir sesión real de Supabase Auth (cualquier cuenta registrada, no solo la anon key)
     const authHeader = req.headers.get('Authorization') ?? '';
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -205,47 +185,39 @@ Deno.serve(async (req: Request) => {
     }
 
     const body = (await req.json()) as RequestBody;
-    const { subcategoriaNombre, municipioHint } = body;
+    const { ramaId, municipioNombre } = body;
 
-    if (!subcategoriaNombre || !subcategoriaNombre.trim()) {
-      return json({ error: 'Falta el nombre de la subcategoría a buscar.' }, 400);
+    const tags = OSM_TAGS_POR_RAMA[ramaId];
+    if (!tags || tags.length === 0) {
+      return json({ error: `No hay un mapeo de etiquetas OSM configurado para la rama ${ramaId}.` }, 400);
     }
 
-    const query = municipioHint
-      ? `empresas de ${subcategoriaNombre} en ${municipioHint}, Carabobo, Venezuela`
-      : `empresas de ${subcategoriaNombre} en Carabobo, Venezuela`;
+    const areaClause = buildAreaClause(municipioNombre);
+    const query = buildOverpassQuery(tags, areaClause);
 
-    const searchResults = await googleSearch(query);
-    if (searchResults.length === 0) {
-      return json({ empresas: [], aviso: 'Google no devolvió resultados para esta búsqueda.' });
-    }
+    const elements = await runOverpassQuery(query);
+    const empresas = elements
+      .map((el) => elementToCompany(el, municipioNombre))
+      .filter((e): e is ResultCompany => e !== null);
 
-    const extracted = await extractWithGemini(subcategoriaNombre, searchResults);
+    // Overpass puede repetir el mismo negocio por distintos tags; deduplicar por nombre+coords aproximadas
+    const vistos = new Set<string>();
+    const empresasUnicas = empresas.filter((e) => {
+      const key = `${e.nombre.toLowerCase()}|${e.lat.toFixed(3)}|${e.lng.toFixed(3)}`;
+      if (vistos.has(key)) return false;
+      vistos.add(key);
+      return true;
+    });
 
-    const confirmadas: ResultCompany[] = [];
-    for (const item of extracted) {
-      let geo: { lat: number; lng: number; municipio: string | null } | null = null;
-      if (item.direccion) {
-        geo = await geocodeNominatim(item.direccion, municipioHint);
-        await sleep(1100); // respetar límite de 1 solicitud/segundo de Nominatim
-      }
-      const fuenteItem =
-        item.fuenteIndice && item.fuenteIndice >= 1 && item.fuenteIndice <= searchResults.length
-          ? searchResults[item.fuenteIndice - 1]
-          : searchResults[0];
-
-      confirmadas.push({
-        nombre: item.nombre,
-        direccion: item.direccion,
-        lat: geo?.lat ?? null,
-        lng: geo?.lng ?? null,
-        municipio: geo?.municipio ?? null,
-        ubicacionConfirmada: !!geo,
-        fuente: fuenteItem?.link ?? null
+    if (empresasUnicas.length === 0) {
+      return json({
+        empresas: [],
+        aviso:
+          'OpenStreetMap no tiene negocios etiquetados para esta rama en la zona elegida. La cobertura de OSM en zonas industriales de Carabobo puede ser limitada.'
       });
     }
 
-    return json({ empresas: confirmadas, totalFuentesConsultadas: searchResults.length });
+    return json({ empresas: empresasUnicas });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Error inesperado en la búsqueda.';
     console.error('buscar-empresas error:', message);

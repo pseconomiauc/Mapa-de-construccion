@@ -83,29 +83,47 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
     setResults(initialGroups);
     setSearching(true);
 
-    const municipioHint = municipioZona || undefined;
+    const municipioNombre = municipioZona || undefined;
+
+    // Varias subcategorías de la misma rama usan la misma búsqueda de OSM (las etiquetas
+    // se mapean por rama, no por subcategoría); cacheamos por rama para no repetir llamadas.
+    const cachePorRama = new Map<number, { data?: { empresas?: FoundCompany[]; aviso?: string }; error?: string }>();
 
     for (const cat of subcats) {
       try {
-        const { data, error } = await supabase.functions.invoke('buscar-empresas', {
-          body: { subcategoriaNombre: cat.nombre, subcategoriaSlug: cat.slug, municipioHint }
-        });
+        let resultado = cachePorRama.get(cat.rama_id);
 
-        if (error) {
-          // supabase-js solo da un mensaje genérico ("Edge Function returned a non-2xx status code");
-          // el detalle real viene en el cuerpo de la respuesta que guarda en error.context.
-          let detail = error.message;
-          const ctx = (error as { context?: Response }).context;
-          if (ctx && typeof ctx.json === 'function') {
-            try {
-              const body = await ctx.clone().json();
-              if (body?.error) detail = body.error;
-            } catch {
-              // el cuerpo no era JSON; nos quedamos con el mensaje genérico
+        if (!resultado) {
+          try {
+            const { data, error } = await supabase.functions.invoke('buscar-empresas', {
+              body: { subcategoriaNombre: cat.nombre, subcategoriaSlug: cat.slug, ramaId: cat.rama_id, municipioNombre }
+            });
+
+            if (error) {
+              // supabase-js solo da un mensaje genérico ("Edge Function returned a non-2xx status code");
+              // el detalle real viene en el cuerpo de la respuesta que guarda en error.context.
+              let detail = error.message;
+              const ctx = (error as { context?: Response }).context;
+              if (ctx && typeof ctx.json === 'function') {
+                try {
+                  const body = await ctx.clone().json();
+                  if (body?.error) detail = body.error;
+                } catch {
+                  // el cuerpo no era JSON; nos quedamos con el mensaje genérico
+                }
+              }
+              throw new Error(detail);
             }
+
+            resultado = { data };
+          } catch (err) {
+            resultado = { error: getErrorMessage(err) };
           }
-          throw new Error(detail);
+          cachePorRama.set(cat.rama_id, resultado);
         }
+
+        if (resultado.error) throw new Error(resultado.error);
+        const data = resultado.data;
 
         setResults((prev) =>
           prev.map((g) =>
@@ -158,7 +176,7 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
         lng: confirmed.lng,
         contacto_verificado: false,
         revisar: true,
-        nota_revision: 'Encontrada automáticamente por búsqueda (Google + Gemini). Verificar datos de contacto.',
+        nota_revision: 'Encontrada automáticamente por búsqueda en OpenStreetMap. Verificar datos de contacto.',
         fuente: company.fuente
       };
 
@@ -217,10 +235,9 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
         Panel de gestión de búsqueda
       </h2>
       <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: 0, marginBottom: '16px' }}>
-        Por cada subcategoría marcada, el sistema busca en Google y extrae empresas reales con Gemini (solo a partir
-        de los resultados encontrados, sin inventar). La ubicación que sugiere OpenStreetMap puede ser solo
-        aproximada (a veces a nivel de municipio, no de la dirección exacta), así que al agregar una empresa
-        <b> siempre confirmas o ajustas el pin en el mapa</b> antes de guardarla.
+        Por cada rama marcada, el sistema busca negocios reales en OpenStreetMap (gratis, sin inventar datos) dentro
+        del municipio o estado elegido. La cobertura de OpenStreetMap en zonas industriales puede ser limitada, así
+        que al agregar una empresa <b>siempre confirmas o ajustas el pin en el mapa</b> antes de guardarla.
       </p>
 
       <form onSubmit={handleSubmit}>
@@ -268,8 +285,9 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
           </div>
           {selectedSubcats.size > 0 && (
             <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '8px' }}>
-              Se hará 1 búsqueda por cada subcategoría marcada ({selectedSubcats.size} en total): "empresas de &lt;subcategoría&gt; en
-              {municipioZona ? ` ${municipioZona},` : ''} Carabobo, Venezuela".
+              Se buscará en OpenStreetMap dentro de {municipioZona || 'todo el estado Carabobo'}, usando las etiquetas
+              típicas de cada rama seleccionada. Los resultados encontrados se agregarán a la subcategoría exacta que
+              marques ({selectedSubcats.size} seleccionada{selectedSubcats.size === 1 ? '' : 's'}).
             </div>
           )}
         </fieldset>
