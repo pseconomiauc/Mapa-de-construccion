@@ -107,15 +107,15 @@ interface OverpassElement {
   tags?: Record<string, string>;
 }
 
-// overpass-api.de es el que confirmamos que funciona (con los headers de abajo) desde este
-// entorno, así que va primero. Los otros dos quedan solo como respaldo si alguna vez cae.
-const OVERPASS_MIRRORS = [
-  'https://overpass-api.de/api/interpreter',
-  'https://overpass.kumi.systems/api/interpreter',
-  'https://overpass.openstreetmap.ru/api/interpreter'
-];
+// overpass-api.de es el único que confirmamos que funciona desde este entorno. Otros espejos
+// públicos no pudieron verificarse y probarlos en cadena solo suma tiempos de espera muertos
+// si también fallan; si este llega a ser poco confiable, se puede reintroducir una lista.
+const OVERPASS_MIRRORS = ['https://overpass-api.de/api/interpreter'];
 
-const TIMEOUT_POR_INTENTO_MS = 15000;
+// Debe ser mayor al [timeout:25] que la propia consulta le pide a Overpass (ver
+// buildOverpassQuery): si el cliente corta antes, cancelamos la petición justo cuando
+// el servidor apenas iba a responder.
+const TIMEOUT_POR_INTENTO_MS = 28000;
 
 async function fetchConTimeout(url: string, options: RequestInit, timeoutMs: number): Promise<Response> {
   const controller = new AbortController();
