@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { BRANCHES, ALL_CATEGORIES } from '../data/cadenaData';
 import { LocationPickerModal } from './LocationPickerModal';
@@ -35,6 +35,21 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
   const [formError, setFormError] = useState<string | null>(null);
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState<SubcategoriaResultGroup[]>([]);
+  const [progressLog, setProgressLog] = useState<string[]>([]);
+  const [progressDone, setProgressDone] = useState(0);
+  const [progressTotal, setProgressTotal] = useState(0);
+
+  const logStep = (text: string) => {
+    const hora = new Date().toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    setProgressLog((prev) => [...prev, `[${hora}] ${text}`]);
+  };
+
+  const logBoxRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (logBoxRef.current) {
+      logBoxRef.current.scrollTop = logBoxRef.current.scrollHeight;
+    }
+  }, [progressLog]);
 
   // Empresa que está pendiente de que el usuario confirme/ajuste su ubicación en el mapa
   const [pendingLocation, setPendingLocation] = useState<{ groupSlug: string; company: FoundCompany } | null>(null);
@@ -82,6 +97,10 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
     }));
     setResults(initialGroups);
     setSearching(true);
+    setProgressLog([]);
+    setProgressDone(0);
+    setProgressTotal(subcats.length);
+    logStep(`Iniciando búsqueda: ${subcats.length} subcategoría(s) en ${municipioZona || 'todo el estado Carabobo'}.`);
 
     const municipioNombre = municipioZona || undefined;
 
@@ -89,11 +108,13 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
     // se mapean por rama, no por subcategoría); cacheamos por rama para no repetir llamadas.
     const cachePorRama = new Map<number, { data?: { empresas?: FoundCompany[]; aviso?: string }; error?: string }>();
 
-    for (const cat of subcats) {
+    for (const [idx, cat] of subcats.entries()) {
       try {
         let resultado = cachePorRama.get(cat.rama_id);
 
         if (!resultado) {
+          const ramaNombre = BRANCHES.find((b) => b.id === cat.rama_id)?.name || `rama ${cat.rama_id}`;
+          logStep(`Consultando OpenStreetMap para la rama "${ramaNombre}"…`);
           try {
             const { data, error } = await supabase.functions.invoke('buscar-empresas', {
               body: { subcategoriaNombre: cat.nombre, subcategoriaSlug: cat.slug, ramaId: cat.rama_id, municipioNombre }
@@ -116,10 +137,15 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
             }
 
             resultado = { data };
+            const cantidad = data?.empresas?.length || 0;
+            logStep(`"${ramaNombre}": ${cantidad} negocio(s) encontrado(s) en OpenStreetMap.`);
           } catch (err) {
             resultado = { error: getErrorMessage(err) };
+            logStep(`"${ramaNombre}": error al consultar OpenStreetMap — ${getErrorMessage(err)}`);
           }
           cachePorRama.set(cat.rama_id, resultado);
+        } else {
+          logStep(`"${cat.nombre}": usando resultados ya obtenidos para su rama.`);
         }
 
         if (resultado.error) throw new Error(resultado.error);
@@ -141,9 +167,12 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
         setResults((prev) =>
           prev.map((g) => (g.slug === cat.slug ? { ...g, loading: false, error: getErrorMessage(err) } : g))
         );
+      } finally {
+        setProgressDone(idx + 1);
       }
     }
 
+    logStep('Búsqueda finalizada.');
     setSearching(false);
   };
 
@@ -319,6 +348,58 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
           {searching ? 'Buscando…' : 'Buscar empresas'}
         </button>
       </form>
+
+      {progressLog.length > 0 && (
+        <div style={{ marginTop: '14px' }}>
+          {progressTotal > 0 && (
+            <div style={{ marginBottom: '8px' }}>
+              <div
+                style={{
+                  fontSize: '12px',
+                  color: 'var(--muted)',
+                  marginBottom: '4px',
+                  display: 'flex',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <span>
+                  Progreso: {progressDone} de {progressTotal} subcategoría(s)
+                </span>
+                <span>{Math.round((progressDone / progressTotal) * 100)}%</span>
+              </div>
+              <div style={{ height: '8px', background: 'var(--line-soft)', borderRadius: '4px', overflow: 'hidden' }}>
+                <div
+                  style={{
+                    height: '100%',
+                    width: `${Math.round((progressDone / progressTotal) * 100)}%`,
+                    background: searching ? 'var(--link, #3366cc)' : '#166534',
+                    transition: 'width 0.3s ease'
+                  }}
+                />
+              </div>
+            </div>
+          )}
+
+          <div
+            ref={logBoxRef}
+            style={{
+              maxHeight: '160px',
+              overflowY: 'auto',
+              background: '#111827',
+              color: '#d1d5db',
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+              fontSize: '12px',
+              padding: '10px 12px',
+              borderRadius: '4px',
+              lineHeight: 1.6
+            }}
+          >
+            {progressLog.map((line, idx) => (
+              <div key={idx}>{line}</div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {results.length > 0 && (
         <div style={{ marginTop: '24px' }}>

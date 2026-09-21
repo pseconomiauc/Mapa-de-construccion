@@ -107,26 +107,38 @@ interface OverpassElement {
   tags?: Record<string, string>;
 }
 
-// El servidor principal de Overpass (overpass-api.de) suele bloquear tráfico proveniente de
-// infraestructura en la nube (data centers) como medida anti-bots, aunque los headers sean
-// correctos. Probamos varios espejos públicos conocidos en orden hasta que uno responda.
+// overpass-api.de es el que confirmamos que funciona (con los headers de abajo) desde este
+// entorno, así que va primero. Los otros dos quedan solo como respaldo si alguna vez cae.
 const OVERPASS_MIRRORS = [
+  'https://overpass-api.de/api/interpreter',
   'https://overpass.kumi.systems/api/interpreter',
-  'https://overpass.openstreetmap.ru/api/interpreter',
-  'https://overpass-api.de/api/interpreter'
+  'https://overpass.openstreetmap.ru/api/interpreter'
 ];
+
+const TIMEOUT_POR_INTENTO_MS = 15000;
+
+async function fetchConTimeout(url: string, options: RequestInit, timeoutMs: number): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 async function runOverpassQuery(query: string): Promise<OverpassElement[]> {
   const errores: string[] = [];
 
   for (const endpoint of OVERPASS_MIRRORS) {
-    // Reintentamos una vez por espejo ante 502/503/504 (sobrecarga transitoria).
-    for (let intento = 0; intento < 2; intento++) {
-      try {
-        // Apache (mod_negotiation) puede responder 406 si faltan Accept-Language/Accept-Encoding
-        // explícitos, algo que el runtime Deno de Supabase no agrega por defecto a diferencia de
-        // otros entornos. Los incluimos explícitamente junto al resto de headers.
-        const res = await fetch(endpoint, {
+    try {
+      // Apache (mod_negotiation) puede responder 406 si faltan Accept-Language/Accept-Encoding
+      // explícitos, algo que el runtime Deno de Supabase no agrega por defecto a diferencia de
+      // otros entornos. Los incluimos explícitamente junto al resto de headers. Un timeout corto
+      // evita que un espejo caído o lento cuelgue toda la búsqueda.
+      const res = await fetchConTimeout(
+        endpoint,
+        {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -136,25 +148,25 @@ async function runOverpassQuery(query: string): Promise<OverpassElement[]> {
             'User-Agent': 'CadenaConstruccionCarabobo/1.0 (contacto@cadenacarabobo.org)'
           },
           body: 'data=' + encodeURIComponent(query)
-        });
+        },
+        TIMEOUT_POR_INTENTO_MS
+      );
 
-        if (res.ok) {
-          const data = await res.json();
-          return (data.elements || []) as OverpassElement[];
-        }
-
-        const text = await res.text();
-        const esTransitorio = [502, 503, 504].includes(res.status);
-        if (esTransitorio && intento === 0) {
-          await new Promise((resolve) => setTimeout(resolve, 3000));
-          continue;
-        }
-        errores.push(`${endpoint} -> ${res.status}: ${text.slice(0, 150)}`);
-        break;
-      } catch (err) {
-        errores.push(`${endpoint} -> ${err instanceof Error ? err.message : 'error de red'}`);
-        break;
+      if (res.ok) {
+        const data = await res.json();
+        return (data.elements || []) as OverpassElement[];
       }
+
+      const text = await res.text();
+      errores.push(`${endpoint} -> ${res.status}: ${text.slice(0, 150)}`);
+    } catch (err) {
+      const motivo =
+        err instanceof Error && err.name === 'AbortError'
+          ? `sin respuesta en ${TIMEOUT_POR_INTENTO_MS / 1000}s`
+          : err instanceof Error
+          ? err.message
+          : 'error de red';
+      errores.push(`${endpoint} -> ${motivo}`);
     }
   }
 
