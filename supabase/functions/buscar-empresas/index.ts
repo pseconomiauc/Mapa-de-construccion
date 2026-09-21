@@ -247,6 +247,8 @@ Deno.serve(async (req: Request) => {
 
     return json({ empresas: confirmadas, totalFuentesConsultadas: searchResults.length });
   } catch (err) {
-    return json({ error: err instanceof Error ? err.message : 'Error inesperado en la búsqueda.' }, 500);
+    const message = err instanceof Error ? err.message : 'Error inesperado en la búsqueda.';
+    console.error('buscar-empresas error:', message);
+    return json({ error: message }, 500);
   }
 });
