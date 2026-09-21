@@ -107,10 +107,14 @@ interface OverpassElement {
   tags?: Record<string, string>;
 }
 
-// overpass-api.de es el único que confirmamos que funciona desde este entorno. Otros espejos
-// públicos no pudieron verificarse y probarlos en cadena solo suma tiempos de espera muertos
-// si también fallan; si este llega a ser poco confiable, se puede reintroducir una lista.
-const OVERPASS_MIRRORS = ['https://overpass-api.de/api/interpreter'];
+// overpass-api.de responde bien la mayoría de las veces desde Supabase, pero intermitentemente
+// devuelve 406 (probablemente por balanceo entre sus propios servidores/IPs). Como ese fallo es
+// rápido (segundos, no un timeout), probar espejos adicionales después no sale caro en tiempo.
+const OVERPASS_MIRRORS = [
+  'https://overpass-api.de/api/interpreter',
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.openstreetmap.ru/api/interpreter'
+];
 
 // Debe ser mayor al [timeout:25] que la propia consulta le pide a Overpass (ver
 // buildOverpassQuery): si el cliente corta antes, cancelamos la petición justo cuando
