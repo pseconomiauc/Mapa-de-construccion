@@ -22,6 +22,7 @@ import {
 } from './services/excelService';
 import { ImportPreviewModal } from './components/ImportPreviewModal';
 import { MapView } from './components/Map/MapView';
+import { getErrorMessage } from './utils/errorUtils';
 
 export const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -170,7 +171,7 @@ export const App: React.FC = () => {
       setExcelStatus({ text: 'Excel descargado exitosamente.', isError: false });
       setTimeout(() => setExcelStatus(null), 4000);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = getErrorMessage(err);
       setExcelStatus({ text: `Error al exportar: ${msg}`, isError: true });
     }
   };
@@ -182,7 +183,7 @@ export const App: React.FC = () => {
       setExcelStatus({ text: 'Plantilla descargada.', isError: false });
       setTimeout(() => setExcelStatus(null), 3000);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = getErrorMessage(err);
       setExcelStatus({ text: `Error al descargar plantilla: ${msg}`, isError: true });
     }
   };
@@ -202,7 +203,7 @@ export const App: React.FC = () => {
       setImportModal({ fileName: file.name, result });
       setExcelStatus(null);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = getErrorMessage(err);
       setExcelStatus({ text: `No se pudo leer el archivo: ${msg}`, isError: true });
     }
   };
@@ -218,7 +219,7 @@ export const App: React.FC = () => {
 
     // A) Insertar empresas nuevas
     for (const item of readyToImport) {
-      const { categoriaSlugs, isExisting: _, existingId: __, ...empresaFields } = item;
+      const { categoriaSlugs, isExisting: _, existingId: __, tipo_actor: ___, ...empresaFields } = item;
 
       // 1. Insertar empresa
       const { data: inserted, error: insErr } = await supabase
@@ -247,7 +248,7 @@ export const App: React.FC = () => {
     for (const item of existingMerged) {
       if (!item.existingId) continue;
 
-      const { categoriaSlugs, isExisting: _, existingId, ...empresaFields } = item;
+      const { categoriaSlugs, isExisting: _, existingId, tipo_actor: __, ...empresaFields } = item;
 
       // 1. Actualizar campos opcionales no nulos
       const updateData: Record<string, unknown> = {};

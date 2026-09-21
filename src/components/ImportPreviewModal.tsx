@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ImportValidationResult } from '../services/excelService';
+import { getErrorMessage } from '../utils/errorUtils';
 
 interface ImportPreviewModalProps {
   fileName: string;
@@ -34,7 +35,7 @@ export const ImportPreviewModal: React.FC<ImportPreviewModalProps> = ({
       setFinished(true);
       setProgressText(`¡Listo! Se procesaron ${totalToProcess} empresas correctamente.`);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = getErrorMessage(err);
       setErrorStatus(`La importación se detuvo: ${msg}`);
     } finally {
       setImporting(false);

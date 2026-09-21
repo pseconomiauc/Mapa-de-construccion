@@ -8,6 +8,7 @@ import {
   getMunicipioFromGeoJSON
 } from '../utils/geoUtils';
 import { searchAddressNominatim } from '../services/nominatimService';
+import { getErrorMessage } from '../utils/errorUtils';
 
 interface CompanyFormProps {
   currentCategorySlug: string;
@@ -291,7 +292,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
         });
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = getErrorMessage(err);
       setLocationFeedback({
         text: `Error al consultar Nominatim: ${msg}`,
         isError: true
@@ -404,7 +405,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
         });
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = getErrorMessage(err);
       setMessage({
         text: `Error al procesar: ${msg}`,
         isError: true

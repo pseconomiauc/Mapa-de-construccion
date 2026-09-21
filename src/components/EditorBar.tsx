@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { getErrorMessage } from '../utils/errorUtils';
 
 interface EditorBarProps {
   isEditor: boolean;
@@ -79,7 +80,7 @@ export const EditorBar: React.FC<EditorBarProps> = ({
         setTimeout(() => setShowAuthModal(false), 800);
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = getErrorMessage(err);
       setAuthMsg({ text: msg, isError: true });
     } finally {
       setAuthLoading(false);
@@ -110,7 +111,7 @@ export const EditorBar: React.FC<EditorBarProps> = ({
         });
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = getErrorMessage(err);
       setAuthMsg({ text: msg, isError: true });
     } finally {
       setAuthLoading(false);
@@ -141,7 +142,7 @@ export const EditorBar: React.FC<EditorBarProps> = ({
         });
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = getErrorMessage(err);
       setAuthMsg({ text: msg, isError: true });
     } finally {
       setAuthLoading(false);

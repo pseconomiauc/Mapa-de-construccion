@@ -4,6 +4,7 @@ import { BRANCHES, norm } from '../../data/cadenaData';
 import { ACTOR_COLORS, ACTOR_LABELS } from '../../utils/geoUtils';
 import { LocationPickerModal } from '../LocationPickerModal';
 import { searchAddressNominatim } from '../../services/nominatimService';
+import { getErrorMessage } from '../../utils/errorUtils';
 
 interface MapSidebarProps {
   empresas: Empresa[];
@@ -152,7 +153,7 @@ export const MapSidebar: React.FC<MapSidebarProps> = ({
         });
       }
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = getErrorMessage(err);
       setNominatimFeedback({
         id: emp.id,
         text: `Error al consultar Nominatim: ${msg}`,

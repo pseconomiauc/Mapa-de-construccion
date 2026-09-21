@@ -3,6 +3,7 @@ import { Categoria, Empresa, DESCRIPCION_ACTORES } from '../types/database';
 import { CompanyCard } from './CompanyCard';
 import { CompanyForm } from './CompanyForm';
 import { supabase, isConfigured } from '../lib/supabase';
+import { getErrorMessage } from '../utils/errorUtils';
 
 interface CategoryDetailViewProps {
   category: Categoria;
@@ -72,7 +73,7 @@ export const CategoryDetailView: React.FC<CategoryDetailViewProps> = ({
 
       setEmpresas(empData || []);
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
+      const msg = getErrorMessage(err);
       setErrorMessage(`No se pudieron cargar las empresas: ${msg}`);
     } finally {
       setLoading(false);
