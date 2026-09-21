@@ -22,6 +22,8 @@ import {
 } from './services/excelService';
 import { ImportPreviewModal } from './components/ImportPreviewModal';
 import { AdminPanel } from './components/AdminPanel';
+import { AdminTabs } from './components/AdminTabs';
+import { SearchPanel } from './components/SearchPanel';
 import { MapView } from './components/Map/MapView';
 import { getErrorMessage } from './utils/errorUtils';
 
@@ -102,6 +104,9 @@ export const App: React.FC = () => {
       if (hash === '#/mapa' || hash.startsWith('#/mapa')) {
         setActiveCategorySlug(null);
         setCurrentPath('/mapa');
+      } else if (hash === '#/admin/busqueda' || hash.startsWith('#/admin/busqueda')) {
+        setActiveCategorySlug(null);
+        setCurrentPath('/admin/busqueda');
       } else if (hash === '#/admin' || hash.startsWith('#/admin')) {
         setActiveCategorySlug(null);
         setCurrentPath('/admin');
@@ -462,15 +467,22 @@ export const App: React.FC = () => {
         />
       )}
 
-      {currentPath === '/admin' ? (
+      {currentPath === '/admin' || currentPath === '/admin/busqueda' ? (
         isEditor ? (
-          <AdminPanel onNavigateHome={handleNavigateHome} onCountsChanged={fetchCounts} />
+          <div style={{ maxWidth: '1100px' }}>
+            <AdminTabs currentPath={currentPath} />
+            {currentPath === '/admin/busqueda' ? (
+              <SearchPanel onCountsChanged={fetchCounts} />
+            ) : (
+              <AdminPanel onNavigateHome={handleNavigateHome} onCountsChanged={fetchCounts} />
+            )}
+          </div>
         ) : (
           <div style={{ maxWidth: '640px', padding: '32px 16px' }}>
             <h2 className="ct">Acceso restringido</h2>
             <p style={{ color: 'var(--muted)' }}>
-              El panel de gestión de empresas es exclusivo para usuarios con una cuenta iniciada. Inicia sesión (o
-              regístrate) desde la esquina superior derecha para acceder.
+              El panel de gestión es exclusivo para usuarios con una cuenta iniciada. Inicia sesión (o regístrate)
+              desde la esquina superior derecha para acceder.
             </p>
             <button type="button" className="btn" onClick={handleNavigateHome}>
               ← Volver a la Cadena
