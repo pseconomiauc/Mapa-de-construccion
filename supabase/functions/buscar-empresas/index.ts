@@ -97,6 +97,29 @@ Responde ÚNICAMENTE con un JSON array válido, sin texto adicional antes ni des
 Si no tienes conocimiento confiable de ninguna empresa real de este tipo en la zona indicada, responde exactamente con: []`;
 }
 
+async function llamarGeminiConReintentos(url: string, body: string): Promise<Response> {
+  const ESPERAS_MS = [0, 2000, 5000]; // 3 intentos: inmediato, +2s, +5s
+
+  let ultimaRespuesta: Response | null = null;
+  for (const espera of ESPERAS_MS) {
+    if (espera > 0) await sleep(espera);
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body
+    });
+
+    // 503 ("modelo con alta demanda") y 429 (cuota) son transitorios; el resto no vale reintentar.
+    if (res.ok || ![503, 429].includes(res.status)) {
+      return res;
+    }
+    ultimaRespuesta = res;
+  }
+
+  return ultimaRespuesta as Response;
+}
+
 async function preguntarAGemini(subcategoriaNombre: string, municipioNombre?: string): Promise<EmpresaSugerida[]> {
   const key = Deno.env.get('GEMINI_API_KEY');
   if (!key) throw new Error('Falta la credencial GEMINI_API_KEY en los secretos de la función.');
@@ -104,14 +127,13 @@ async function preguntarAGemini(subcategoriaNombre: string, municipioNombre?: st
   const prompt = buildPrompt(subcategoriaNombre, municipioNombre);
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${key}`;
 
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
+  const res = await llamarGeminiConReintentos(
+    url,
+    JSON.stringify({
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: { responseMimeType: 'application/json', temperature: 0 }
     })
-  });
+  );
 
   if (!res.ok) {
     const text = await res.text();
