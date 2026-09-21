@@ -413,12 +413,13 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
               {group.error && (
                 <p className="warn">
                   No se pudo buscar esta subcategoría: {group.error}
-                  {/* Errores típicos cuando la función Edge aún no existe o falta configurar sus secretos */}
+                  {/* Mensaje genérico de supabase-js cuando la función Edge falla sin devolver un cuerpo JSON legible
+                      (función no desplegada, error de plataforma, o se agotó el tiempo de ejecución) */}
                   {/edge function|fetch|404|not found/i.test(group.error) ? (
                     <>
                       {' '}
-                      — probablemente la función "buscar-empresas" todavía no está desplegada en Supabase, o faltan
-                      sus credenciales (GOOGLE_CSE_KEY, GOOGLE_CSE_CX, GEMINI_API_KEY).
+                      — revisa los "Logs" de la función "buscar-empresas" en el dashboard de Supabase para ver el
+                      motivo exacto (puede ser que falte desplegar la última versión, o que tardó demasiado).
                     </>
                   ) : null}
                 </p>
