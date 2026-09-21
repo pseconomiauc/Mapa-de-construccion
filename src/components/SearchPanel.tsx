@@ -1,13 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { supabase } from '../lib/supabase';
 import { BRANCHES, ALL_CATEGORIES } from '../data/cadenaData';
-import { searchAddressNominatim } from '../services/nominatimService';
-import { isValidVenezuelaCoords } from '../utils/geoUtils';
+import { LocationPickerModal } from './LocationPickerModal';
 import { getErrorMessage } from '../utils/errorUtils';
-import { Empresa } from '../types/database';
-
-// Pasos de radio de búsqueda disponibles (km). "Ampliar rango" avanza al siguiente.
-const RADIUS_STEPS_KM = [2, 5, 10, 20, 50, 100];
+import { Empresa, MunicipioCarabobo, MUNICIPIOS_CARABOBO } from '../types/database';
 
 interface FoundCompany {
   nombre: string;
@@ -35,15 +31,13 @@ interface SearchPanelProps {
 export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => {
   const [selectedRamas, setSelectedRamas] = useState<Set<number>>(new Set());
   const [selectedSubcats, setSelectedSubcats] = useState<Set<string>>(new Set());
-  const [direccion, setDireccion] = useState('');
-  const [lat, setLat] = useState('');
-  const [lng, setLng] = useState('');
-  const [radiusIndex, setRadiusIndex] = useState(2); // por defecto 10 km
-  const [geocoding, setGeocoding] = useState(false);
-  const [locationFeedback, setLocationFeedback] = useState<{ text: string; isError: boolean } | null>(null);
+  const [municipioZona, setMunicipioZona] = useState<MunicipioCarabobo | ''>('');
   const [formError, setFormError] = useState<string | null>(null);
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState<SubcategoriaResultGroup[]>([]);
+
+  // Empresa que está pendiente de que el usuario confirme/ajuste su ubicación en el mapa
+  const [pendingLocation, setPendingLocation] = useState<{ groupSlug: string; company: FoundCompany } | null>(null);
 
   const subcategoriasDisponibles = useMemo(() => {
     if (selectedRamas.size === 0) return ALL_CATEGORIES;
@@ -68,38 +62,6 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
     });
   };
 
-  const handleGeocode = async () => {
-    const query = direccion.trim();
-    if (!query) {
-      setLocationFeedback({ text: 'Escribe una dirección o zona de referencia antes de buscar.', isError: true });
-      return;
-    }
-    setGeocoding(true);
-    setLocationFeedback({ text: 'Consultando OpenStreetMap (Nominatim)…', isError: false });
-    try {
-      const found = await searchAddressNominatim(query);
-      if (found.length > 0) {
-        const best = found[0];
-        setLat(String(best.lat));
-        setLng(String(best.lng));
-        setLocationFeedback({
-          text: `Ubicación de referencia fijada: "${best.displayName.substring(0, 70)}…"`,
-          isError: false
-        });
-      } else {
-        setLocationFeedback({ text: 'No se encontraron coordenadas para esa dirección.', isError: true });
-      }
-    } catch (err) {
-      setLocationFeedback({ text: `Error al consultar Nominatim: ${getErrorMessage(err)}`, isError: true });
-    } finally {
-      setGeocoding(false);
-    }
-  };
-
-  const handleExpandRadius = () => {
-    setRadiusIndex((idx) => Math.min(idx + 1, RADIUS_STEPS_KM.length - 1));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
@@ -107,15 +69,6 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
     if (selectedSubcats.size === 0) {
       setFormError('Selecciona al menos una subcategoría a buscar (marca primero las ramas para filtrar la lista).');
       return;
-    }
-
-    if (lat.trim() || lng.trim()) {
-      const latNum = parseFloat(lat.trim().replace(',', '.'));
-      const lngNum = parseFloat(lng.trim().replace(',', '.'));
-      if (isNaN(latNum) || isNaN(lngNum) || !isValidVenezuelaCoords(latNum, lngNum)) {
-        setFormError('Las coordenadas de referencia no son válidas. Bórralas o corrígelas antes de buscar.');
-        return;
-      }
     }
 
     const subcats = ALL_CATEGORIES.filter((c) => selectedSubcats.has(c.slug));
@@ -130,7 +83,7 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
     setResults(initialGroups);
     setSearching(true);
 
-    const municipioHint = direccion.trim() || undefined;
+    const municipioHint = municipioZona || undefined;
 
     for (const cat of subcats) {
       try {
@@ -138,7 +91,21 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
           body: { subcategoriaNombre: cat.nombre, subcategoriaSlug: cat.slug, municipioHint }
         });
 
-        if (error) throw error;
+        if (error) {
+          // supabase-js solo da un mensaje genérico ("Edge Function returned a non-2xx status code");
+          // el detalle real viene en el cuerpo de la respuesta que guarda en error.context.
+          let detail = error.message;
+          const ctx = (error as { context?: Response }).context;
+          if (ctx && typeof ctx.json === 'function') {
+            try {
+              const body = await ctx.clone().json();
+              if (body?.error) detail = body.error;
+            } catch {
+              // el cuerpo no era JSON; nos quedamos con el mensaje genérico
+            }
+          }
+          throw new Error(detail);
+        }
 
         setResults((prev) =>
           prev.map((g) =>
@@ -162,7 +129,18 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
     setSearching(false);
   };
 
-  const handleAddCompany = async (groupSlug: string, company: FoundCompany) => {
+  // "Agregar" siempre pasa primero por el mapa: la ubicación que sugiere OpenStreetMap
+  // puede corresponder solo al municipio/zona (no a la dirección exacta de la empresa),
+  // así que el humano confirma o ajusta el pin antes de guardar.
+  const handleStartAddCompany = (groupSlug: string, company: FoundCompany) => {
+    setPendingLocation({ groupSlug, company });
+  };
+
+  const handleConfirmLocationAndSave = async (confirmed: { lat: number; lng: number; municipio?: MunicipioCarabobo }) => {
+    if (!pendingLocation) return;
+    const { groupSlug, company } = pendingLocation;
+    setPendingLocation(null);
+
     setResults((prev) =>
       prev.map((g) =>
         g.slug === groupSlug
@@ -175,12 +153,12 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
       const payload: Partial<Empresa> & { nombre: string } = {
         nombre: company.nombre,
         direccion: company.direccion,
-        municipio: (company.municipio as Empresa['municipio']) || null,
-        lat: company.lat,
-        lng: company.lng,
+        municipio: confirmed.municipio || null,
+        lat: confirmed.lat,
+        lng: confirmed.lng,
         contacto_verificado: false,
         revisar: true,
-        nota_revision: 'Encontrada automáticamente por búsqueda (Google + Gemini + OpenStreetMap). Verificar datos de contacto y ubicación exacta.',
+        nota_revision: 'Encontrada automáticamente por búsqueda (Google + Gemini). Verificar datos de contacto.',
         fuente: company.fuente
       };
 
@@ -239,9 +217,10 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
         Panel de gestión de búsqueda
       </h2>
       <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: 0, marginBottom: '16px' }}>
-        Por cada subcategoría marcada, el sistema busca en Google, extrae empresas reales con Gemini (solo a partir de
-        los resultados encontrados, sin inventar) y confirma la ubicación con OpenStreetMap. Todo resultado se agrega
-        marcado como <b>"por revisar"</b> hasta que confirmes sus datos manualmente.
+        Por cada subcategoría marcada, el sistema busca en Google y extrae empresas reales con Gemini (solo a partir
+        de los resultados encontrados, sin inventar). La ubicación que sugiere OpenStreetMap puede ser solo
+        aproximada (a veces a nivel de municipio, no de la dirección exacta), así que al agregar una empresa
+        <b> siempre confirmas o ajustas el pin en el mapa</b> antes de guardarla.
       </p>
 
       <form onSubmit={handleSubmit}>
@@ -289,95 +268,31 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
           </div>
           {selectedSubcats.size > 0 && (
             <div style={{ fontSize: '12px', color: 'var(--muted)', marginTop: '8px' }}>
-              Se hará 1 búsqueda por cada subcategoría marcada ({selectedSubcats.size} en total): "empresas de &lt;subcategoría&gt; en Carabobo, Venezuela".
+              Se hará 1 búsqueda por cada subcategoría marcada ({selectedSubcats.size} en total): "empresas de &lt;subcategoría&gt; en
+              {municipioZona ? ` ${municipioZona},` : ''} Carabobo, Venezuela".
             </div>
           )}
         </fieldset>
 
         <fieldset style={{ border: '1px solid var(--line-soft)', borderRadius: '3px', padding: '12px 16px', marginBottom: '14px' }}>
           <legend style={{ fontSize: '13px', fontWeight: 600, padding: '0 6px' }}>
-            3. Zona de referencia <em style={{ fontWeight: 400, color: 'var(--muted)' }}>(opcional, ayuda a acotar la búsqueda)</em>
+            3. Zona de referencia
           </legend>
-
-          <label style={{ display: 'block', fontSize: '13.5px', marginBottom: '8px' }}>
-            Dirección, municipio o zona
-            <div style={{ display: 'flex', gap: '8px', marginTop: '3px' }}>
-              <input
-                type="text"
-                placeholder="Ej: Zona Industrial San Diego, Valencia"
-                value={direccion}
-                onChange={(e) => setDireccion(e.target.value)}
-                style={{ flex: 1, padding: '6px', border: '1px solid var(--line)' }}
-              />
-              <button type="button" className="btn" onClick={handleGeocode} disabled={geocoding || !direccion.trim()}>
-                {geocoding ? 'Buscando…' : '🔍 Buscar coordenadas'}
-              </button>
-            </div>
+          <label style={{ display: 'block', fontSize: '13.5px' }}>
+            Municipio de Carabobo
+            <select
+              value={municipioZona}
+              onChange={(e) => setMunicipioZona(e.target.value as MunicipioCarabobo | '')}
+              style={{ ...selectStyle, display: 'block', width: '100%', maxWidth: '360px', marginTop: '4px' }}
+            >
+              <option value="">Todo el estado Carabobo</option>
+              {MUNICIPIOS_CARABOBO.map((m) => (
+                <option key={m} value={m}>
+                  {m}
+                </option>
+              ))}
+            </select>
           </label>
-
-          {locationFeedback && (
-            <div
-              style={{
-                fontSize: '12.5px',
-                padding: '6px 10px',
-                borderRadius: '2px',
-                marginBottom: '10px',
-                background: locationFeedback.isError ? '#fdf2f2' : '#f0fdf4',
-                border: `1px solid ${locationFeedback.isError ? '#f8b4b4' : '#bbf7d0'}`,
-                color: locationFeedback.isError ? '#b32424' : '#166534'
-              }}
-            >
-              {locationFeedback.text}
-            </div>
-          )}
-
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '10px' }}>
-            <label style={{ fontSize: '13px', flex: '1 1 160px' }}>
-              Latitud (opcional)
-              <input
-                type="text"
-                placeholder="Ej: 10.1620"
-                value={lat}
-                onChange={(e) => setLat(e.target.value)}
-                style={{ width: '100%', marginTop: '3px', padding: '6px', border: '1px solid var(--line)', boxSizing: 'border-box' }}
-              />
-            </label>
-            <label style={{ fontSize: '13px', flex: '1 1 160px' }}>
-              Longitud (opcional)
-              <input
-                type="text"
-                placeholder="Ej: -68.0077"
-                value={lng}
-                onChange={(e) => setLng(e.target.value)}
-                style={{ width: '100%', marginTop: '3px', padding: '6px', border: '1px solid var(--line)', boxSizing: 'border-box' }}
-              />
-            </label>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-            <label style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              Radio de búsqueda:
-              <select value={radiusIndex} onChange={(e) => setRadiusIndex(Number(e.target.value))} style={selectStyle}>
-                {RADIUS_STEPS_KM.map((km, idx) => (
-                  <option key={km} value={idx}>
-                    {km} km
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button
-              type="button"
-              className="btn"
-              onClick={handleExpandRadius}
-              disabled={radiusIndex >= RADIUS_STEPS_KM.length - 1}
-              title="Ampliar el radio de búsqueda al siguiente nivel"
-            >
-              + Ampliar rango
-            </button>
-            <span style={{ fontSize: '11.5px', color: 'var(--muted)' }}>
-              (el radio se usará para acotar resultados una vez tengamos varios centros de búsqueda; por ahora prioriza la zona escrita arriba)
-            </span>
-          </div>
         </fieldset>
 
         {formError && <div style={{ fontSize: '13px', color: 'var(--danger, #b32424)', marginBottom: '12px' }}>{formError}</div>}
@@ -422,7 +337,7 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
                     <tr>
                       <th style={thStyle}>Nombre</th>
                       <th style={thStyle}>Dirección</th>
-                      <th style={thStyle}>Ubicación</th>
+                      <th style={thStyle}>Sugerencia OSM</th>
                       <th style={thStyle}>Fuente</th>
                       <th style={thStyle}>Acción</th>
                     </tr>
@@ -436,12 +351,14 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
                         <td style={tdStyle}>{emp.direccion || <span style={{ color: 'var(--muted)' }}>—</span>}</td>
                         <td style={tdStyle}>
                           {emp.ubicacionConfirmada ? (
-                            <span style={{ color: '#166534' }}>
-                              ✓ {emp.lat}, {emp.lng}
+                            <span style={{ color: '#856404' }}>
+                              {emp.lat}, {emp.lng}
                               {emp.municipio && ` (${emp.municipio})`}
+                              <br />
+                              <em style={{ fontSize: '11px' }}>sin confirmar manualmente</em>
                             </span>
                           ) : (
-                            <span style={{ color: '#856404' }}>Sin confirmar en OSM</span>
+                            <span style={{ color: 'var(--muted)' }}>Sin sugerencia — marca a mano</span>
                           )}
                         </td>
                         <td style={tdStyle}>
@@ -462,10 +379,10 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
                             <button
                               type="button"
                               className="btn"
-                              onClick={() => handleAddCompany(group.slug, emp)}
+                              onClick={() => handleStartAddCompany(group.slug, emp)}
                               disabled={emp.estado === 'agregando'}
                             >
-                              {emp.estado === 'agregando' ? 'Agregando…' : 'Agregar'}
+                              {emp.estado === 'agregando' ? 'Agregando…' : '📍 Confirmar ubicación y agregar'}
                             </button>
                           )}
                         </td>
@@ -477,6 +394,16 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
             </div>
           ))}
         </div>
+      )}
+
+      {pendingLocation && (
+        <LocationPickerModal
+          initialLat={pendingLocation.company.lat}
+          initialLng={pendingLocation.company.lng}
+          initialMunicipio={(pendingLocation.company.municipio as MunicipioCarabobo) || null}
+          onConfirm={handleConfirmLocationAndSave}
+          onClose={() => setPendingLocation(null)}
+        />
       )}
     </div>
   );
