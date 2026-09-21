@@ -107,35 +107,58 @@ interface OverpassElement {
   tags?: Record<string, string>;
 }
 
+// El servidor principal de Overpass (overpass-api.de) suele bloquear tráfico proveniente de
+// infraestructura en la nube (data centers) como medida anti-bots, aunque los headers sean
+// correctos. Probamos varios espejos públicos conocidos en orden hasta que uno responda.
+const OVERPASS_MIRRORS = [
+  'https://overpass.kumi.systems/api/interpreter',
+  'https://overpass.openstreetmap.ru/api/interpreter',
+  'https://overpass-api.de/api/interpreter'
+];
+
 async function runOverpassQuery(query: string): Promise<OverpassElement[]> {
-  // El servidor público de Overpass a veces responde 502/503/504 por sobrecarga transitoria;
-  // reintentamos una vez antes de darnos por vencidos.
-  for (let intento = 0; intento < 2; intento++) {
-    // Overpass exige un Accept explícito y un User-Agent identificable; sin ellos responde 406.
-    const res = await fetch('https://overpass-api.de/api/interpreter', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Accept: '*/*',
-        'User-Agent': 'CadenaConstruccionCarabobo/1.0 (contacto@cadenacarabobo.org)'
-      },
-      body: 'data=' + encodeURIComponent(query)
-    });
+  const errores: string[] = [];
 
-    if (res.ok) {
-      const data = await res.json();
-      return (data.elements || []) as OverpassElement[];
-    }
+  for (const endpoint of OVERPASS_MIRRORS) {
+    // Reintentamos una vez por espejo ante 502/503/504 (sobrecarga transitoria).
+    for (let intento = 0; intento < 2; intento++) {
+      try {
+        // Apache (mod_negotiation) puede responder 406 si faltan Accept-Language/Accept-Encoding
+        // explícitos, algo que el runtime Deno de Supabase no agrega por defecto a diferencia de
+        // otros entornos. Los incluimos explícitamente junto al resto de headers.
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Accept: '*/*',
+            'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
+            'Accept-Encoding': 'identity',
+            'User-Agent': 'CadenaConstruccionCarabobo/1.0 (contacto@cadenacarabobo.org)'
+          },
+          body: 'data=' + encodeURIComponent(query)
+        });
 
-    const text = await res.text();
-    const esTransitorio = [502, 503, 504].includes(res.status);
-    if (!esTransitorio || intento === 1) {
-      throw new Error(`Overpass respondió ${res.status}: ${text.slice(0, 300)}`);
+        if (res.ok) {
+          const data = await res.json();
+          return (data.elements || []) as OverpassElement[];
+        }
+
+        const text = await res.text();
+        const esTransitorio = [502, 503, 504].includes(res.status);
+        if (esTransitorio && intento === 0) {
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+          continue;
+        }
+        errores.push(`${endpoint} -> ${res.status}: ${text.slice(0, 150)}`);
+        break;
+      } catch (err) {
+        errores.push(`${endpoint} -> ${err instanceof Error ? err.message : 'error de red'}`);
+        break;
+      }
     }
-    await new Promise((resolve) => setTimeout(resolve, 3000));
   }
 
-  return [];
+  throw new Error(`Ningún servidor de Overpass respondió correctamente. Detalle: ${errores.join(' | ')}`);
 }
 
 function elementToCompany(el: OverpassElement, municipioHint?: string): ResultCompany | null {
