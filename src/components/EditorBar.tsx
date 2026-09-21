@@ -28,7 +28,8 @@ export const EditorBar: React.FC<EditorBarProps> = ({
   // Pestaña activa en el modal: 'password' o 'magic'
   const [authTab, setAuthTab] = useState<'password' | 'magic'>('password');
 
-  // Comprobar sesión de Supabase al montar
+  // Cualquier cuenta registrada e iniciada sesión tiene acceso de editor
+  // (no requiere aprobación manual de un administrador).
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
@@ -52,6 +53,7 @@ export const EditorBar: React.FC<EditorBarProps> = ({
     return () => {
       subscription.unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onToggleEditorMode]);
 
   // Inicio de sesión con correo y contraseña
@@ -77,6 +79,7 @@ export const EditorBar: React.FC<EditorBarProps> = ({
         }
       } else if (data.session) {
         setAuthMsg({ text: '✓ Sesión iniciada con éxito.', isError: false });
+        onToggleEditorMode(true);
         setTimeout(() => setShowAuthModal(false), 800);
       }
     } catch (err) {
@@ -104,9 +107,13 @@ export const EditorBar: React.FC<EditorBarProps> = ({
 
       if (error) {
         setAuthMsg({ text: error.message, isError: true });
+      } else if (data.session) {
+        setAuthMsg({ text: '✓ Cuenta creada e iniciada sesión con éxito.', isError: false });
+        onToggleEditorMode(true);
+        setTimeout(() => setShowAuthModal(false), 800);
       } else if (data.user) {
         setAuthMsg({
-          text: '✓ Usuario registrado. Un administrador debe asignarle el rol editor en Supabase.',
+          text: '✓ Cuenta creada. Revisa tu correo para confirmar el registro antes de iniciar sesión.',
           isError: false
         });
       }
@@ -183,6 +190,9 @@ export const EditorBar: React.FC<EditorBarProps> = ({
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
           <b style={{ color: 'var(--success, #1a7f37)' }}>●</b>
           <span title="Sesión activa como editor">{userEmail}</span>
+          <a href="#/admin" className="btn" style={{ fontWeight: 600, color: 'var(--link)', fontSize: '12px' }}>
+            Panel de gestión
+          </a>
           <button
             type="button"
             className="btn"

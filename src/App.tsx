@@ -21,6 +21,7 @@ import {
   ImportValidationResult
 } from './services/excelService';
 import { ImportPreviewModal } from './components/ImportPreviewModal';
+import { AdminPanel } from './components/AdminPanel';
 import { MapView } from './components/Map/MapView';
 import { getErrorMessage } from './utils/errorUtils';
 
@@ -101,6 +102,9 @@ export const App: React.FC = () => {
       if (hash === '#/mapa' || hash.startsWith('#/mapa')) {
         setActiveCategorySlug(null);
         setCurrentPath('/mapa');
+      } else if (hash === '#/admin' || hash.startsWith('#/admin')) {
+        setActiveCategorySlug(null);
+        setCurrentPath('/admin');
       } else if (hash.startsWith('#/categoria/')) {
         const slug = hash.replace('#/categoria/', '');
         setActiveCategorySlug(slug);
@@ -237,7 +241,8 @@ export const App: React.FC = () => {
           categoria_slug: slug
         }));
 
-        await supabase.from('empresa_categorias').insert(relRows);
+        const { error: relErr } = await supabase.from('empresa_categorias').insert(relRows);
+        if (relErr) throw relErr;
       }
 
       processed++;
@@ -259,17 +264,19 @@ export const App: React.FC = () => {
       });
 
       if (Object.keys(updateData).length > 0) {
-        await supabase
+        const { error: updErr } = await supabase
           .from('empresas')
           .update(updateData)
           .eq('id', existingId);
+        if (updErr) throw updErr;
       }
 
       // 2. Consultar relaciones existentes para no duplicarlas
-      const { data: currentRels } = await supabase
+      const { data: currentRels, error: relSelErr } = await supabase
         .from('empresa_categorias')
         .select('categoria_slug')
         .eq('empresa_id', existingId);
+      if (relSelErr) throw relSelErr;
 
       const existingSlugs = new Set((currentRels || []).map((r: { categoria_slug: string }) => r.categoria_slug));
       const newSlugsToInsert = categoriaSlugs.filter((s) => !existingSlugs.has(s));
@@ -280,7 +287,8 @@ export const App: React.FC = () => {
           categoria_slug: slug
         }));
 
-        await supabase.from('empresa_categorias').insert(relRows);
+        const { error: relInsErr } = await supabase.from('empresa_categorias').insert(relRows);
+        if (relInsErr) throw relInsErr;
       }
 
       processed++;
@@ -454,7 +462,22 @@ export const App: React.FC = () => {
         />
       )}
 
-      {activeCategory ? (
+      {currentPath === '/admin' ? (
+        isEditor ? (
+          <AdminPanel onNavigateHome={handleNavigateHome} onCountsChanged={fetchCounts} />
+        ) : (
+          <div style={{ maxWidth: '640px', padding: '32px 16px' }}>
+            <h2 className="ct">Acceso restringido</h2>
+            <p style={{ color: 'var(--muted)' }}>
+              El panel de gestión de empresas es exclusivo para usuarios con una cuenta iniciada. Inicia sesión (o
+              regístrate) desde la esquina superior derecha para acceder.
+            </p>
+            <button type="button" className="btn" onClick={handleNavigateHome}>
+              ← Volver a la Cadena
+            </button>
+          </div>
+        )
+      ) : activeCategory ? (
         <CategoryDetailView
           category={activeCategory}
           isEditor={isEditor}

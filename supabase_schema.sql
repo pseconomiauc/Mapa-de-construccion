@@ -202,22 +202,23 @@ CREATE POLICY "Lectura publica de empresas"
     ON public.empresas FOR SELECT
     USING (true);
 
--- Inserción, actualización y borrado exclusivo para editores
+-- Inserción, actualización y borrado: cualquier usuario con cuenta registrada
+-- (autenticado en Supabase Auth), sin requerir aprobación manual de un admin.
 CREATE POLICY "Editores pueden insertar empresas"
     ON public.empresas FOR INSERT
     TO authenticated
-    WITH CHECK (public.is_editor());
+    WITH CHECK (true);
 
 CREATE POLICY "Editores pueden actualizar empresas"
     ON public.empresas FOR UPDATE
     TO authenticated
-    USING (public.is_editor())
-    WITH CHECK (public.is_editor());
+    USING (true)
+    WITH CHECK (true);
 
 CREATE POLICY "Editores pueden eliminar empresas"
     ON public.empresas FOR DELETE
     TO authenticated
-    USING (public.is_editor());
+    USING (true);
 
 -- POLÍTICAS: empresa_categorias
 CREATE POLICY "Lectura publica de empresa_categorias"
@@ -227,18 +228,18 @@ CREATE POLICY "Lectura publica de empresa_categorias"
 CREATE POLICY "Editores pueden insertar empresa_categorias"
     ON public.empresa_categorias FOR INSERT
     TO authenticated
-    WITH CHECK (public.is_editor());
+    WITH CHECK (true);
 
 CREATE POLICY "Editores pueden actualizar empresa_categorias"
     ON public.empresa_categorias FOR UPDATE
     TO authenticated
-    USING (public.is_editor())
-    WITH CHECK (public.is_editor());
+    USING (true)
+    WITH CHECK (true);
 
 CREATE POLICY "Editores pueden eliminar empresa_categorias"
     ON public.empresa_categorias FOR DELETE
     TO authenticated
-    USING (public.is_editor());
+    USING (true);
 
 -- POLÍTICAS: user_roles
 -- Cada usuario puede ver su propio rol, y los editores pueden ver los roles

@@ -72,23 +72,16 @@ Las políticas RLS (Row Level Security) están habilitadas para proteger los dat
 
 ### 📝 Agregar Editores
 
-Los editores son usuarios que pueden crear, editar y eliminar empresas desde la aplicación.
+Cualquier persona con una cuenta registrada (correo + contraseña) tiene automáticamente permisos de editor: puede
+crear, editar y eliminar empresas, e importar/exportar Excel desde el **Panel de gestión** (`#/admin`). No se requiere
+que un administrador apruebe manualmente el rol.
 
-1. **Crear usuario en Supabase Auth:**
-   - Ve al panel de Supabase → **Authentication** → **Users**.
-   - Pulsa **Add user** → **Create new user**.
-   - Escribe el correo y una contraseña temporal.
-   - Marca **Auto Confirm User** si quieres que se active inmediatamente.
-
-2. **Asignar rol de editor** (opcional, para control granular):
-   - En el **SQL Editor** de Supabase, ejecuta:
-     ```sql
-     INSERT INTO user_roles (user_id, role)
-     VALUES ('<uuid-del-usuario>', 'editor');
-     ```
-   - Puedes encontrar el UUID en la tabla de usuarios de Auth.
-
-3. El editor ya puede iniciar sesión desde la aplicación con el botón **"Iniciar sesión"** en la esquina superior derecha.
+- Un usuario puede registrarse él mismo desde el botón **"Iniciar sesión" → "Registrarme"** en la esquina superior
+  derecha, o puedes crearle la cuenta tú desde Supabase → **Authentication** → **Users** → **Add user**.
+- La tabla `user_roles` y la función `is_editor()` quedan en el esquema como infraestructura para un control más
+  granular en el futuro, pero **las políticas RLS actuales no la exigen**: basta con tener una sesión autenticada.
+- Si en el futuro quieres restringir de nuevo el acceso a solo ciertos usuarios, cambia las políticas de `empresas` y
+  `empresa_categorias` en `supabase_schema.sql` para volver a usar `public.is_editor()` en el `WITH CHECK`/`USING`.
 
 ### 💾 Hacer Copias de Seguridad (Exportar Excel)
 

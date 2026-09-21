@@ -49,11 +49,19 @@ export const CategoryTree: React.FC<CategoryTreeProps> = ({
         );
         if (branchSubcatCount === 0) return null;
 
+        const branchCompanyTotal = groups.reduce(
+          (sum, g) =>
+            sum + g.filteredItems.reduce((s, item) => s + (companyCounts[item.slug] || 0), 0),
+          0
+        );
+
         return (
           <section key={branch.id} className="br" id={`rama-${branch.id}`}>
             <h2>
               <span className="num">{branch.id}.</span>
-              <span>{branch.name}</span>
+              <span>
+                {branch.name} ({branchCompanyTotal})
+              </span>
               <span className="cnt">
                 {branchSubcatCount} {branchSubcatCount === 1 ? 'subcategoría' : 'subcategorías'}
               </span>
@@ -92,16 +100,17 @@ export const CategoryTree: React.FC<CategoryTreeProps> = ({
                         </span>
                       ))}
                     </span>
-                    {cCount > 0 && (
-                      <span className="ec on">
-                        {cCount} {cCount === 1 ? 'empresa' : 'empresas'}
-                      </span>
-                    )}
+                    <span className={cCount > 0 ? 'ec on' : 'ec'}>({cCount})</span>
                   </div>
                 );
               }
 
               // Grupo normal con subcategorías anidadas
+              const groupTotal = filteredItems.reduce(
+                (sum, item) => sum + (companyCounts[item.slug] || 0),
+                0
+              );
+
               return (
                 <details
                   key={groupKey}
@@ -116,7 +125,7 @@ export const CategoryTree: React.FC<CategoryTreeProps> = ({
                 >
                   <summary>
                     <span className="group-title">
-                      {highlightMatch(group.name, searchQuery)}
+                      {highlightMatch(group.name, searchQuery)} ({groupTotal})
                     </span>
                     <span className="gc">
                       {filteredItems.length} {filteredItems.length === 1 ? 'ítem' : 'ítems'}
@@ -150,11 +159,7 @@ export const CategoryTree: React.FC<CategoryTreeProps> = ({
                               </span>
                             ))}
                           </span>
-                          {count > 0 && (
-                            <span className="ec on">
-                              {count} {count === 1 ? 'empresa' : 'empresas'}
-                            </span>
-                          )}
+                          <span className={count > 0 ? 'ec on' : 'ec'}>({count})</span>
                         </li>
                       );
                     })}

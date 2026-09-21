@@ -11,6 +11,7 @@ import { searchAddressNominatim } from '../services/nominatimService';
 import { getErrorMessage } from '../utils/errorUtils';
 
 interface CompanyFormProps {
+  /** Subcategoría "fija" del contexto actual. Pasa '' cuando el formulario se usa fuera de una subcategoría (ej. panel de gestión) para dejar la selección de sectores completamente libre. */
   currentCategorySlug: string;
   empresaToEdit?: Empresa | null;
   associatedCategories?: string[];
@@ -73,7 +74,9 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
   const [notaRevision, setNotaRevision] = useState('');
   const [fuente, setFuente] = useState('');
   const [tipoRegistro, setTipoRegistro] = useState<'empresa' | 'referencia_generica'>('empresa');
-  const [selectedCats, setSelectedCats] = useState<Set<string>>(new Set([currentCategorySlug]));
+  const [selectedCats, setSelectedCats] = useState<Set<string>>(
+    new Set(currentCategorySlug ? [currentCategorySlug] : [])
+  );
 
   // Casillas activas
   const [activeTicks, setActiveTicks] = useState<Set<OptionalFieldKey>>(new Set());
@@ -131,8 +134,14 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
       }
       if (empresaToEdit.fuente) initialTicks.add('fuente');
 
-      const cats = new Set(associatedCategories.length > 0 ? associatedCategories : [currentCategorySlug]);
-      if (cats.size > 1) initialTicks.add('otras_categorias');
+      const cats = new Set(
+        associatedCategories.length > 0
+          ? associatedCategories
+          : currentCategorySlug
+          ? [currentCategorySlug]
+          : []
+      );
+      if (cats.size > 1 || !currentCategorySlug) initialTicks.add('otras_categorias');
       setSelectedCats(cats);
       setActiveTicks(initialTicks);
     } else {
@@ -152,8 +161,8 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
       setNotaRevision('');
       setFuente('');
       setTipoRegistro('empresa');
-      setActiveTicks(new Set());
-      setSelectedCats(new Set([currentCategorySlug]));
+      setActiveTicks(currentCategorySlug ? new Set() : new Set<OptionalFieldKey>(['otras_categorias']));
+      setSelectedCats(new Set(currentCategorySlug ? [currentCategorySlug] : []));
     }
     setMessage(null);
     setLocationFeedback(null);
@@ -313,6 +322,14 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
       return;
     }
 
+    if (selectedCats.size === 0) {
+      setMessage({
+        text: 'Selecciona al menos una subcategoría a la que pertenece la empresa.',
+        isError: true
+      });
+      return;
+    }
+
     // Parseo y validación de coordenadas
     let parsedLat: number | null = null;
     let parsedLng: number | null = null;
@@ -395,8 +412,8 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
           setNotaRevision('');
           setFuente('');
           setTipoRegistro('empresa');
-          setActiveTicks(new Set());
-          setSelectedCats(new Set([currentCategorySlug]));
+          setActiveTicks(currentCategorySlug ? new Set() : new Set<OptionalFieldKey>(['otras_categorias']));
+          setSelectedCats(new Set(currentCategorySlug ? [currentCategorySlug] : []));
         }
       } else {
         setMessage({
@@ -790,7 +807,9 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
             {activeTicks.has('otras_categorias') && (
               <div style={{ gridColumn: '1 / -1', marginTop: '6px' }}>
                 <span style={{ fontSize: '13.5px', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
-                  Marcar otras subcategorías donde también aplica esta empresa:
+                  {currentCategorySlug
+                    ? 'Marcar otras subcategorías donde también aplica esta empresa:'
+                    : 'Selecciona las subcategorías a las que pertenece esta empresa:'}
                 </span>
                 <span style={{ fontSize: '12px', color: 'var(--muted)', display: 'block', marginBottom: '8px' }}>
                   (Aparecerá en los listados de cada una pero una sola vez en el mapa industrial)
