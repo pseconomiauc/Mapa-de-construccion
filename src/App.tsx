@@ -219,7 +219,7 @@ export const App: React.FC = () => {
 
     // A) Insertar empresas nuevas
     for (const item of readyToImport) {
-      const { categoriaSlugs, isExisting: _, existingId: __, tipo_actor: ___, ...empresaFields } = item;
+      const { categoriaSlugs, isExisting: _, existingId: __, tipo_actor: ___, warnings: ____, ...empresaFields } = item;
 
       // 1. Insertar empresa
       const { data: inserted, error: insErr } = await supabase
@@ -248,7 +248,7 @@ export const App: React.FC = () => {
     for (const item of existingMerged) {
       if (!item.existingId) continue;
 
-      const { categoriaSlugs, isExisting: _, existingId, tipo_actor: __, ...empresaFields } = item;
+      const { categoriaSlugs, isExisting: _, existingId, tipo_actor: __, warnings: ___, ...empresaFields } = item;
 
       // 1. Actualizar campos opcionales no nulos
       const updateData: Record<string, unknown> = {};
