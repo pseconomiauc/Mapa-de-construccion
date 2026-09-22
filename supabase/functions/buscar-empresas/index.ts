@@ -81,7 +81,7 @@ function buildPrompt(subcategoriaNombre: string, municipioNombre?: string): stri
 
 REGLA MÁS IMPORTANTE, POR ENCIMA DE CUALQUIER OTRA COSA: nunca inventes, asumas ni completes un dato que no sepas con certeza que es real. Es preferible responder con una lista vacía o corta antes que incluir una sola empresa de la que no estés genuinamente seguro de que existe y opera en Venezuela. No intentes "ser útil" agregando empresas dudosas: eso causa más daño que una lista corta.
 
-Tarea: menciona ÚNICAMENTE empresas reales, conocidas y establecidas relacionadas con "${subcategoriaNombre}" que tengas conocimiento confiable de que operan en ${zona}, Venezuela. No se espera ni se necesita que la lista sea exhaustiva; 0 a 5 resultados de alta calidad es perfectamente aceptable.
+Tarea: menciona TODAS las empresas reales, conocidas y establecidas relacionadas con "${subcategoriaNombre}" de las que tengas conocimiento confiable de que operan en ${zona}, Venezuela. No te limites a poner solo unas pocas: si conoces con certeza 10, 20 o más, inclúyelas todas. La única razón para excluir una empresa es no estar genuinamente seguro de que existe — nunca la cantidad.
 
 Para cada empresa que incluyas, entrega:
 - "nombre": el nombre exacto de la empresa (razón social o nombre comercial conocido).
