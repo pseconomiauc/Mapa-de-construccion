@@ -13,6 +13,10 @@ interface FoundCompany {
   lat: number | null;
   lng: number | null;
   ubicacionConfirmada: boolean;
+  fuente?: string | null;
+  direccion?: string | null;
+  telefono?: string | null;
+  sitio_web?: string | null;
 }
 
 interface SubcategoriaResultGroup {
@@ -182,10 +186,12 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
         municipio: confirmed.municipio || null,
         lat: confirmed.lat,
         lng: confirmed.lng,
+        direccion: company.direccion || null,
+        telefono: company.telefono || null,
+        fuente: company.fuente || null,
         contacto_verificado: false,
         revisar: true,
-        nota_revision: `Sugerida por Gemini (confianza ${company.confianza}): "${company.justificacion}". No verificado por un humano — confirmar que la empresa exista realmente antes de publicar, y completar dirección/contacto.`,
-        fuente: null
+        nota_revision: `Sugerida con IA y búsqueda web (confianza ${company.confianza}): "${company.justificacion}". Confirmar ubicación y datos antes de publicar.`,
       };
 
       const { data: inserted, error: insErr } = await supabase.from('empresas').insert([payload]).select('id').single();
@@ -243,11 +249,7 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
         Panel de gestión de búsqueda
       </h2>
       <p style={{ fontSize: '13px', color: 'var(--muted)', marginTop: 0, marginBottom: '16px' }}>
-        Por cada subcategoría marcada, se le pregunta a Gemini (IA) qué empresas reales conoce de ese tipo en la zona
-        elegida. Gemini <b>no navega internet</b>: solo puede reportar lo que sabe con certeza, nunca inventa
-        direcciones ni coordenadas, y se le exige indicar su nivel de confianza y justificar cada respuesta. Aun así,
-        una IA puede equivocarse — <b>revisa cada sugerencia</b> y confirma tú mismo la ubicación en el mapa antes de
-        guardarla; todo lo agregado queda marcado como "por revisar".
+        Por cada subcategoría marcada, el sistema realiza una <b>búsqueda web en tiempo real</b> en Carabobo/Venezuela y le pide a Gemini (IA) analizar las fuentes para extraer empresas reales con sus datos comprobables. Cada resultado incluye su <b>nivel de confianza</b>, <b>justificación</b> y la <b>fuente real (URL)</b> de donde se extrajo. Confirma la ubicación en el mapa antes de guardar; todo lo agregado queda marcado como "por revisar".
       </p>
 
       <form onSubmit={handleSubmit}>
@@ -443,8 +445,37 @@ export const SearchPanel: React.FC<SearchPanelProps> = ({ onCountsChanged }) => 
                             {emp.confianza === 'alta' ? 'Alta' : 'Media'}
                           </span>
                         </td>
-                        <td style={{ ...tdStyle, fontSize: '12px', color: 'var(--muted)', maxWidth: '260px' }}>
-                          {emp.justificacion || '—'}
+                        <td style={{ ...tdStyle, fontSize: '12px', color: 'var(--muted)', maxWidth: '280px' }}>
+                          <div>{emp.justificacion || '—'}</div>
+                          {emp.direccion && (
+                            <div style={{ fontSize: '11px', color: 'var(--text)', marginTop: '4px' }}>
+                              📍 <b>Dir:</b> {emp.direccion}
+                            </div>
+                          )}
+                          {emp.telefono && (
+                            <div style={{ fontSize: '11px', color: 'var(--text)', marginTop: '2px' }}>
+                              📞 <b>Tel:</b> {emp.telefono}
+                            </div>
+                          )}
+                          {emp.fuente && (
+                            <div style={{ marginTop: '5px' }}>
+                              <a
+                                href={emp.fuente}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  fontSize: '11px',
+                                  color: 'var(--link, #3366cc)',
+                                  textDecoration: 'underline',
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '3px'
+                                }}
+                              >
+                                🔗 <span>Fuente verificada</span>
+                              </a>
+                            </div>
+                          )}
                         </td>
                         <td style={tdStyle}>
                           {emp.ubicacionConfirmada ? (

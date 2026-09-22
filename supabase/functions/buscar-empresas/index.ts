@@ -1,22 +1,15 @@
 // Función Edge: buscar-empresas
 //
-// Descubre empresas para una subcategoría de la Cadena de la Construcción en Carabobo
-// usando Gemini como fuente de conocimiento (no como buscador web: Gemini no tiene acceso
-// a internet en tiempo real aquí, así que solo puede "recordar" lo que sabe de su
-// entrenamiento). Esto tiene un riesgo real de alucinación, así que el prompt está diseñado
-// específicamente para minimizarlo:
+// Descubre empresas reales para una subcategoría de la Cadena de la Construcción en Carabobo
+// combinando búsqueda web en tiempo real (Grounding web asistido) con Gemini para análisis
+// y extracción rigurosa de datos verídicos.
 //
-//   1. Se le prohíbe explícitamente inventar, adivinar o completar datos inciertos.
-//   2. Se le pide preferir una lista vacía o corta antes que arriesgar un dato falso.
-//   3. NUNCA se le pide dirección, teléfono ni coordenadas (no tiene forma de saberlos
-//      con certeza) — solo nombre y, si lo sabe con seguridad, el municipio.
-//   4. Debe autoevaluar su confianza ("alta"/"media") y justificar cada respuesta.
-//
-// Después, se intenta (opcionalmente) geocodificar "nombre + municipio" con Nominatim
-// como sugerencia de partida, pero el frontend SIEMPRE exige confirmar/ajustar el pin
-// manualmente en el mapa antes de guardar — ningún dato de ubicación se guarda a ciegas.
-//
-// Requiere una sesión de Supabase Auth válida (cualquier cuenta registrada).
+// Reglas estrictas:
+//   1. Prohibido inventar o alucinar empresas, teléfonos o direcciones inexistentes.
+//   2. Preferir listas cortas o vacías antes que datos no confirmados.
+//   3. Cada empresa debe incluir "confianza" ("alta" | "media") y "justificacion".
+//   4. Cada dato extraído (dirección, teléfono, web) debe citar la URL de la fuente real.
+//   5. Geocodificación asistida con Nominatim como sugerencia ajustable en mapa.
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
@@ -48,13 +41,23 @@ interface EmpresaSugerida {
   municipio: string | null;
   confianza: 'alta' | 'media';
   justificacion: string;
+  direccion?: string | null;
+  telefono?: string | null;
+  sitio_web?: string | null;
+  fuente?: string | null;
 }
 
 interface ResultCompany extends EmpresaSugerida {
   lat: number | null;
   lng: number | null;
   ubicacionConfirmada: boolean;
-  fuente: null;
+  fuente: string | null;
+}
+
+interface SearchResult {
+  title: string;
+  url: string;
+  snippet: string;
 }
 
 const MUNICIPIOS_CARABOBO = [
@@ -74,31 +77,143 @@ const MUNICIPIOS_CARABOBO = [
   'Valencia'
 ];
 
-function buildPrompt(subcategoriaNombre: string, municipioNombre?: string): string {
-  const zona = municipioNombre ? `el municipio ${municipioNombre} del estado Carabobo` : 'el estado Carabobo';
+/**
+ * Realiza una búsqueda web en tiempo real sobre fuentes de Carabobo / Venezuela
+ * para sustentar la respuesta de Gemini con URLs y datos reales.
+ */
+async function buscarWeb(query: string): Promise<SearchResult[]> {
+  const url = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
+  try {
+    const res = await fetch(url, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept-Language': 'es-ES,es;q=0.9'
+      }
+    });
 
-  return `Eres un asistente que ayuda a construir un directorio de empresas REALES del sector construcción en Venezuela. No tienes acceso a internet en esta conversación: solo puedes usar lo que sabes con certeza de tu entrenamiento.
+    if (!res.ok) return [];
+    const html = await res.text();
+    const results: SearchResult[] = [];
+    const blocks = html.split('<div class="result results_links');
 
-REGLA MÁS IMPORTANTE, POR ENCIMA DE CUALQUIER OTRA COSA: nunca inventes, asumas ni completes un dato que no sepas con certeza que es real. Es preferible responder con una lista vacía o corta antes que incluir una sola empresa de la que no estés genuinamente seguro de que existe y opera en Venezuela. No intentes "ser útil" agregando empresas dudosas: eso causa más daño que una lista corta.
+    for (const b of blocks.slice(1)) {
+      const urlMatch = b.match(/<a class="result__url"[^>]*href="([^"]+)"/);
+      const titleMatch = b.match(/<h2 class="result__title">\s*<a[^>]*>(.*?)<\/a>/s);
+      const snippetMatch = b.match(/<a class="result__snippet"[^>]*>(.*?)<\/a>/s);
 
-Tarea: menciona TODAS las empresas reales, conocidas y establecidas relacionadas con "${subcategoriaNombre}" de las que tengas conocimiento confiable de que operan en ${zona}, Venezuela. No te limites a poner solo unas pocas: si conoces con certeza 10, 20 o más, inclúyelas todas. La única razón para excluir una empresa es no estar genuinamente seguro de que existe — nunca la cantidad.
+      const title = titleMatch ? titleMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+      const snippet = snippetMatch ? snippetMatch[1].replace(/<[^>]+>/g, '').trim() : '';
 
-Para cada empresa que incluyas, entrega:
-- "nombre": el nombre exacto de la empresa (razón social o nombre comercial conocido).
-- "municipio": SOLO si sabes con certeza en cuál de estos 14 municipios de Carabobo opera (${MUNICIPIOS_CARABOBO.join(', ')}). Si no lo sabes con certeza, usa null — NO adivines un municipio solo porque "suena probable".
-- "confianza": "alta" solo si estás genuinamente seguro de que la empresa existe y opera en Carabobo; "media" si tienes una duda razonable pero justificada. No incluyas nada por debajo de "media".
-- "justificacion": una frase breve y específica explicando por qué sabes que es real (ejemplo: "Marca nacional de cemento con planta identificada en Carabobo"). Si no puedes justificarlo con algo específico, no la incluyas.
+      let rawUrl = urlMatch ? urlMatch[1].trim() : '';
+      if (rawUrl.includes('uddg=')) {
+        try {
+          const u = new URL(rawUrl, 'https://duckduckgo.com');
+          rawUrl = u.searchParams.get('uddg') || rawUrl;
+        } catch {
+          // conservar rawUrl si falla el parseo
+        }
+      }
 
-PROHIBIDO incluir: direcciones, teléfonos, correos, sitios web o coordenadas — no tienes forma de verificarlos en este momento, así que no los reportes aunque creas recordarlos.
+      if (title && rawUrl && !rawUrl.includes('duckduckgo.com')) {
+        results.push({ title, url: rawUrl, snippet });
+      }
+    }
 
-Responde ÚNICAMENTE con un JSON array válido, sin texto adicional antes ni después, con este formato exacto:
-[{"nombre": "string", "municipio": "string o null", "confianza": "alta" | "media", "justificacion": "string"}]
-
-Si no tienes conocimiento confiable de ninguna empresa real de este tipo en la zona indicada, responde exactamente con: []`;
+    return results.slice(0, 10);
+  } catch (err) {
+    console.error('Error en búsqueda web de soporte:', err);
+    return [];
+  }
 }
 
-async function llamarGeminiConReintentos(url: string, body: string): Promise<Response> {
+/**
+ * Ejecuta búsquedas combinadas para enriquecer el contexto del sector y municipio
+ */
+async function obtenerContextoWeb(subcategoriaNombre: string, municipioNombre?: string): Promise<SearchResult[]> {
+  const zona = municipioNombre ? `${municipioNombre} Carabobo Venezuela` : 'Carabobo Valencia Venezuela';
+  
+  // Sin comillas exactas: el nombre de la subcategoría es nuestra propia taxonomía y casi
+  // nunca aparece tal cual, palabra por palabra, en una página real (comprobado: 1 resultado
+  // con comillas vs. 10 sin ellas para la misma búsqueda).
+  const query1 = `empresas ${subcategoriaNombre} ${zona}`;
+  const query2 = `directorio ${subcategoriaNombre} ${zona}`;
+
+  const [res1, res2] = await Promise.all([buscarWeb(query1), buscarWeb(query2)]);
+
+  const unicos = new Map<string, SearchResult>();
+  for (const item of [...res1, ...res2]) {
+    if (item.url && !unicos.has(item.url)) {
+      unicos.set(item.url, item);
+    }
+  }
+
+  return Array.from(unicos.values()).slice(0, 15);
+}
+
+function buildPrompt(subcategoriaNombre: string, municipioNombre?: string, fuentesWeb: SearchResult[] = []): string {
+  const zona = municipioNombre ? `el municipio ${municipioNombre} del estado Carabobo` : 'el estado Carabobo';
+
+  const textoFuentes =
+    fuentesWeb.length > 0
+      ? fuentesWeb
+          .map(
+            (f, i) =>
+              `[Fuente ${i + 1}]\n- Título: ${f.title}\n- URL: ${f.url}\n- Contenido/Snippet: ${f.snippet}`
+          )
+          .join('\n\n')
+      : 'No se encontraron resultados web directos en esta consulta.';
+
+  return `Eres un asistente de investigación que ayuda a construir un directorio de empresas REALES del sector construcción en Venezuela.
+
+A continuación tienes resultados de búsqueda web en tiempo real extraídos de internet sobre "${subcategoriaNombre}" en ${zona}:
+
+==================================================
+RESULTADOS DE BÚSQUEDA WEB EN TIEMPO REAL:
+${textoFuentes}
+==================================================
+
+REGLAS ESTRICTAS DE CALIDAD Y NO ALUCINACIÓN:
+1. NUNCA inventes, supongas ni completes datos que no estén respaldados por las fuentes de búsqueda o por hechos verificables de conocimiento público en Carabobo, Venezuela.
+2. Es preferible devolver una lista vacía ([]) o corta antes que incluir una sola empresa dudosa, inexistente o fuera de Carabobo.
+3. Extrae todas las empresas reales que operen en ${zona} relacionadas con "${subcategoriaNombre}".
+4. Para cada empresa encontrada:
+   - "nombre": Razón social o nombre comercial exacto.
+   - "municipio": Nombre del municipio SOLO si es uno de estos 14 municipios de Carabobo (${MUNICIPIOS_CARABOBO.join(', ')}). Si no está claro en qué municipio opera, usa null. NUNCA inventes un municipio.
+   - "confianza": "alta" si está directamente respaldada por una fuente real o es una empresa consolidada e identificable en Carabobo; "media" si se conoce su existencia pero los datos de contacto son parciales. No incluyas empresas con confianza dudosa.
+   - "justificacion": Explicación breve y concreta de por qué es real y qué actividad realiza en Carabobo.
+   - "direccion": Dirección física solo si aparece explícitamente en los resultados, de lo contrario null.
+   - "telefono": Teléfono de contacto solo si aparece explícitamente en los resultados, de lo contrario null.
+   - "sitio_web": Sitio web o enlace de catálogo/perfil comercial de la empresa si aparece, de lo contrario null.
+   - "fuente": URL exacta de la fuente web de donde se confirmó la información. Si es de conocimiento general, usa null.
+
+Responde ÚNICAMENTE con un JSON array válido con este formato exacto:
+[
+  {
+    "nombre": "string",
+    "municipio": "string o null",
+    "confianza": "alta" | "media",
+    "justificacion": "string",
+    "direccion": "string o null",
+    "telefono": "string o null",
+    "sitio_web": "string o null",
+    "fuente": "string o null"
+  }
+]
+
+Si no encuentras ninguna empresa real y confiable, responde exactamente con: []`;
+}
+
+// gemini-2.5-flash, gemini-1.5-flash y gemini-2.0-flash quedaron descontinuados en esta cuenta
+// (confirmado: los tres responden 404 "no longer available"). El único modelo vigente
+// verificado es gemini-3.6-flash.
+async function llamarGeminiConReintentos(key: string, prompt: string): Promise<Response> {
   const ESPERAS_MS = [0, 2000, 5000]; // 3 intentos: inmediato, +2s, +5s
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${key}`;
+  const body = JSON.stringify({
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
+  });
 
   let ultimaRespuesta: Response | null = null;
   for (const espera of ESPERAS_MS) {
@@ -120,20 +235,21 @@ async function llamarGeminiConReintentos(url: string, body: string): Promise<Res
   return ultimaRespuesta as Response;
 }
 
-async function preguntarAGemini(subcategoriaNombre: string, municipioNombre?: string): Promise<EmpresaSugerida[]> {
+async function preguntarAGeminiConGrounding(
+  subcategoriaNombre: string,
+  municipioNombre?: string
+): Promise<EmpresaSugerida[]> {
   const key = Deno.env.get('GEMINI_API_KEY');
   if (!key) throw new Error('Falta la credencial GEMINI_API_KEY en los secretos de la función.');
 
-  const prompt = buildPrompt(subcategoriaNombre, municipioNombre);
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${key}`;
+  // 1. Obtener fuentes reales de búsqueda web
+  const fuentesWeb = await obtenerContextoWeb(subcategoriaNombre, municipioNombre);
 
-  const res = await llamarGeminiConReintentos(
-    url,
-    JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { responseMimeType: 'application/json', temperature: 0 }
-    })
-  );
+  // 2. Construir prompt con grounding
+  const prompt = buildPrompt(subcategoriaNombre, municipioNombre, fuentesWeb);
+
+  // 3. Consultar a Gemini
+  const res = await llamarGeminiConReintentos(key, prompt);
 
   if (!res.ok) {
     const text = await res.text();
@@ -161,20 +277,29 @@ async function preguntarAGemini(subcategoriaNombre: string, municipioNombre?: st
     .map((it) => ({
       nombre: (it.nombre as string).trim(),
       municipio:
-        typeof it.municipio === 'string' && MUNICIPIOS_CARABOBO.includes(it.municipio) ? (it.municipio as string) : null,
+        typeof it.municipio === 'string' && MUNICIPIOS_CARABOBO.includes(it.municipio)
+          ? (it.municipio as string)
+          : null,
       confianza: it.confianza as 'alta' | 'media',
-      justificacion: typeof it.justificacion === 'string' ? it.justificacion : ''
+      justificacion: typeof it.justificacion === 'string' ? it.justificacion : '',
+      direccion: typeof it.direccion === 'string' && it.direccion.trim() ? it.direccion.trim() : null,
+      telefono: typeof it.telefono === 'string' && it.telefono.trim() ? it.telefono.trim() : null,
+      sitio_web: typeof it.sitio_web === 'string' && it.sitio_web.trim() ? it.sitio_web.trim() : null,
+      fuente: typeof it.fuente === 'string' && it.fuente.startsWith('http') ? it.fuente.trim() : null
     }));
 }
 
-// Intento opcional de geocodificar "nombre + municipio" con Nominatim, solo como sugerencia
-// de partida — el frontend exige confirmar/ajustar el pin a mano antes de guardar, así que
-// un intento fallido o impreciso aquí no es crítico.
+// Intento opcional de geocodificar con Nominatim
 async function intentarGeocodificar(
   nombre: string,
-  municipioNombre?: string
+  municipioNombre?: string,
+  direccion?: string | null
 ): Promise<{ lat: number; lng: number } | null> {
-  const query = municipioNombre ? `${nombre}, ${municipioNombre}, Carabobo, Venezuela` : `${nombre}, Carabobo, Venezuela`;
+  const query = direccion
+    ? `${direccion}, ${municipioNombre || 'Carabobo'}, Venezuela`
+    : municipioNombre
+    ? `${nombre}, ${municipioNombre}, Carabobo, Venezuela`
+    : `${nombre}, Carabobo, Venezuela`;
 
   const url = new URL('https://nominatim.openstreetmap.org/search');
   url.searchParams.set('q', query);
@@ -185,7 +310,10 @@ async function intentarGeocodificar(
 
   try {
     const res = await fetch(url.toString(), {
-      headers: { 'Accept-Language': 'es', 'User-Agent': 'CadenaConstruccionCarabobo/1.0 (contacto@cadenacarabobo.org)' }
+      headers: {
+        'Accept-Language': 'es',
+        'User-Agent': 'CadenaConstruccionCarabobo/1.0 (contacto@cadenacarabobo.org)'
+      }
     });
     if (!res.ok) return null;
     const data = await res.json();
@@ -222,24 +350,24 @@ Deno.serve(async (req: Request) => {
       return json({ error: 'Falta el nombre de la subcategoría a buscar.' }, 400);
     }
 
-    const sugeridas = await preguntarAGemini(subcategoriaNombre, municipioNombre);
+    const sugeridas = await preguntarAGeminiConGrounding(subcategoriaNombre, municipioNombre);
 
     if (sugeridas.length === 0) {
       return json({
         empresas: [],
-        aviso: 'Gemini no reportó ninguna empresa de la que tenga conocimiento confiable para esta subcategoría y zona.'
+        aviso: 'No se encontraron empresas verificadas con fuentes confiables en la búsqueda para esta subcategoría y zona.'
       });
     }
 
     const empresas: ResultCompany[] = [];
     for (const s of sugeridas) {
-      const geo = await intentarGeocodificar(s.nombre, s.municipio || municipioNombre);
+      const geo = await intentarGeocodificar(s.nombre, s.municipio || municipioNombre, s.direccion);
       empresas.push({
         ...s,
         lat: geo?.lat ?? null,
         lng: geo?.lng ?? null,
         ubicacionConfirmada: !!geo,
-        fuente: null
+        fuente: s.fuente ?? null
       });
       await sleep(1100); // respetar límite de 1 solicitud/segundo de Nominatim
     }
@@ -251,3 +379,4 @@ Deno.serve(async (req: Request) => {
     return json({ error: message }, 500);
   }
 });
+
