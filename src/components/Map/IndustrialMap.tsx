@@ -336,6 +336,7 @@ export const IndustrialMap: React.FC<IndustrialMapProps> = ({
       `;
 
       marker.bindPopup(popupHtml, { maxWidth: 300, minWidth: 220 });
+      marker.bindTooltip(emp.nombre, { direction: 'top', offset: [0, -20] });
 
       marker.on('click', () => {
         if (onSelectEmpresa) {

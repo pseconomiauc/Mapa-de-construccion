@@ -136,13 +136,14 @@ export function createPinIcon(actor: TipoActor): L.DivIcon {
   const color = ACTOR_COLORS[actor] || '#2563eb';
   const letter = actor || 'E';
 
+  // Tamaño reducido (antes 28x36) para que el mapa se vea menos saturado con muchas empresas.
   const svgHtml = `
-    <div style="position: relative; width: 28px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-      <svg width="28" height="36" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <div style="position: relative; width: 18px; height: 23px; display: flex; align-items: center; justify-content: center; cursor: pointer;">
+      <svg width="18" height="23" viewBox="0 0 28 36" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M14 0C6.268 0 0 6.268 0 14C0 24.5 14 36 14 36C14 36 28 24.5 28 14C28 6.268 21.732 0 14 0Z" fill="${color}" stroke="#ffffff" stroke-width="1.5"/>
         <circle cx="14" cy="13" r="8" fill="#ffffff"/>
       </svg>
-      <span style="position: absolute; top: 5px; left: 0; right: 0; text-align: center; font-size: 11px; font-weight: 700; color: ${color}; font-family: system-ui, sans-serif;">
+      <span style="position: absolute; top: 3px; left: 0; right: 0; text-align: center; font-size: 7px; font-weight: 700; color: ${color}; font-family: system-ui, sans-serif;">
         ${letter}
       </span>
     </div>
@@ -151,8 +152,8 @@ export function createPinIcon(actor: TipoActor): L.DivIcon {
   return L.divIcon({
     html: svgHtml,
     className: 'custom-company-pin',
-    iconSize: [28, 36],
-    iconAnchor: [14, 36],
-    popupAnchor: [0, -34]
+    iconSize: [18, 23],
+    iconAnchor: [9, 23],
+    popupAnchor: [0, -21]
   });
 }
