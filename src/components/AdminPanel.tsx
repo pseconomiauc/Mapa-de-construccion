@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { Empresa, MunicipioCarabobo, MUNICIPIOS_CARABOBO } from '../types/database';
+import { Empresa, MUNICIPIOS_CARABOBO } from '../types/database';
 import { BRANCHES, ALL_CATEGORIES, CATEGORIES_BY_SLUG, norm } from '../data/cadenaData';
 import { CompanyForm } from './CompanyForm';
+import { MultiSelectDropdown } from './MultiSelectDropdown';
 import { getErrorMessage } from '../utils/errorUtils';
 
 interface AdminPanelProps {
@@ -12,6 +13,7 @@ interface AdminPanelProps {
 
 type RevisionFilter = 'all' | 'solo_revisar' | 'sin_revisar';
 type TipoFilter = 'all' | 'empresa' | 'referencia_generica';
+type VerificadoFilter = 'all' | 'verificado' | 'sin_verificar';
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCountsChanged }) => {
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
@@ -19,13 +21,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  // Filtros
+  // Filtros (rama, subcategoría y municipio admiten selección múltiple)
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterRamaId, setFilterRamaId] = useState<number | 'all'>('all');
-  const [filterCategoriaSlug, setFilterCategoriaSlug] = useState<string | 'all'>('all');
-  const [filterMunicipio, setFilterMunicipio] = useState<MunicipioCarabobo | 'all'>('all');
+  const [filterRamaIds, setFilterRamaIds] = useState<Set<string>>(new Set());
+  const [filterCategoriaSlugs, setFilterCategoriaSlugs] = useState<Set<string>>(new Set());
+  const [filterMunicipios, setFilterMunicipios] = useState<Set<string>>(new Set());
   const [filterRevision, setFilterRevision] = useState<RevisionFilter>('all');
   const [filterTipo, setFilterTipo] = useState<TipoFilter>('all');
+  const [filterVerificado, setFilterVerificado] = useState<VerificadoFilter>('all');
+
+  // Selección de filas para acciones en lote
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkDeleting, setBulkDeleting] = useState(false);
+  const [confirmBulkDelete, setConfirmBulkDelete] = useState(false);
 
   // Modal de alta / edición
   const [showForm, setShowForm] = useState(false);
@@ -78,11 +86,22 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
     };
   }, [loadData]);
 
-  // Grupos disponibles para el filtro de subcategoría, dependientes de la rama elegida
+  // Grupos disponibles para el filtro de subcategoría, dependientes de las ramas elegidas
   const categoriasParaFiltro = useMemo(() => {
-    if (filterRamaId === 'all') return ALL_CATEGORIES;
-    return ALL_CATEGORIES.filter((c) => c.rama_id === filterRamaId);
-  }, [filterRamaId]);
+    if (filterRamaIds.size === 0) return ALL_CATEGORIES;
+    return ALL_CATEGORIES.filter((c) => filterRamaIds.has(String(c.rama_id)));
+  }, [filterRamaIds]);
+
+  // Al cambiar las ramas seleccionadas, descarta subcategorías que ya no apliquen
+  useEffect(() => {
+    if (filterRamaIds.size === 0) return;
+    setFilterCategoriaSlugs((prev) => {
+      const validSlugs = new Set(categoriasParaFiltro.map((c) => c.slug));
+      const next = new Set([...prev].filter((s) => validSlugs.has(s)));
+      return next.size === prev.size ? prev : next;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterRamaIds]);
 
   const filteredEmpresas = useMemo(() => {
     const nq = norm(searchQuery.trim());
@@ -90,23 +109,81 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
     return empresas.filter((emp) => {
       if (nq && !norm(emp.nombre || '').includes(nq)) return false;
 
-      if (filterMunicipio !== 'all' && emp.municipio !== filterMunicipio) return false;
+      if (filterMunicipios.size > 0 && (!emp.municipio || !filterMunicipios.has(emp.municipio))) return false;
 
       if (filterRevision === 'solo_revisar' && !emp.revisar) return false;
       if (filterRevision === 'sin_revisar' && emp.revisar) return false;
 
+      if (filterVerificado === 'verificado' && !emp.contacto_verificado) return false;
+      if (filterVerificado === 'sin_verificar' && emp.contacto_verificado) return false;
+
       if (filterTipo !== 'all' && (emp.tipo_registro || 'empresa') !== filterTipo) return false;
 
       const slugs = relMap[emp.id] || [];
-      if (filterCategoriaSlug !== 'all' && !slugs.includes(filterCategoriaSlug)) return false;
-      if (filterRamaId !== 'all') {
-        const belongsToRama = slugs.some((s) => CATEGORIES_BY_SLUG[s]?.rama_id === filterRamaId);
+      if (filterCategoriaSlugs.size > 0 && !slugs.some((s) => filterCategoriaSlugs.has(s))) return false;
+      if (filterRamaIds.size > 0) {
+        const belongsToRama = slugs.some((s) => filterRamaIds.has(String(CATEGORIES_BY_SLUG[s]?.rama_id)));
         if (!belongsToRama) return false;
       }
 
       return true;
     });
-  }, [empresas, relMap, searchQuery, filterMunicipio, filterRevision, filterTipo, filterCategoriaSlug, filterRamaId]);
+  }, [
+    empresas,
+    relMap,
+    searchQuery,
+    filterMunicipios,
+    filterRevision,
+    filterVerificado,
+    filterTipo,
+    filterCategoriaSlugs,
+    filterRamaIds
+  ]);
+
+  // La selección se limpia si cambian los filtros, para no arrastrar filas que ya no se ven
+  useEffect(() => {
+    setSelectedIds(new Set());
+  }, [searchQuery, filterMunicipios, filterRevision, filterVerificado, filterTipo, filterCategoriaSlugs, filterRamaIds]);
+
+  const allVisibleSelected = filteredEmpresas.length > 0 && filteredEmpresas.every((e) => selectedIds.has(e.id));
+
+  const toggleSelectAll = () => {
+    if (allVisibleSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filteredEmpresas.map((e) => e.id)));
+    }
+  };
+
+  const toggleSelectOne = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const handleBulkDelete = async () => {
+    setBulkDeleting(true);
+    try {
+      const { error } = await supabase.from('empresas').delete().in('id', [...selectedIds]);
+      if (error) throw error;
+      setSelectedIds(new Set());
+      await loadData();
+      onCountsChanged();
+    } catch (err: unknown) {
+      const e = err as { message?: string; code?: string };
+      if (e?.code === '42501') {
+        alert('No tienes permiso de editor para eliminar empresas.');
+      } else {
+        alert(`No se pudieron eliminar las empresas seleccionadas: ${e?.message || 'error desconocido'}`);
+      }
+    } finally {
+      setBulkDeleting(false);
+      setConfirmBulkDelete(false);
+    }
+  };
 
   const openNewForm = () => {
     setEditingEmpresa(null);
@@ -262,51 +339,29 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
           style={{ ...selectStyle, minWidth: '200px', flex: '1 1 200px' }}
         />
 
-        <select
-          value={filterRamaId}
-          onChange={(e) => {
-            const val = e.target.value === 'all' ? 'all' : Number(e.target.value);
-            setFilterRamaId(val);
-            setFilterCategoriaSlug('all');
-          }}
-          style={selectStyle}
-          title="Filtrar por rama (sector)"
-        >
-          <option value="all">Todas las ramas</option>
-          {BRANCHES.map((b) => (
-            <option key={b.id} value={b.id}>
-              Rama {b.id}: {b.name}
-            </option>
-          ))}
-        </select>
+        <MultiSelectDropdown
+          label="Todas las ramas"
+          options={BRANCHES.map((b) => ({ value: String(b.id), label: `Rama ${b.id}: ${b.name}` }))}
+          selected={filterRamaIds}
+          onChange={setFilterRamaIds}
+          minWidth="170px"
+        />
 
-        <select
-          value={filterCategoriaSlug}
-          onChange={(e) => setFilterCategoriaSlug(e.target.value)}
-          style={selectStyle}
-          title="Filtrar por subcategoría"
-        >
-          <option value="all">Todas las subcategorías</option>
-          {categoriasParaFiltro.map((c) => (
-            <option key={c.slug} value={c.slug}>
-              {c.nombre}
-            </option>
-          ))}
-        </select>
+        <MultiSelectDropdown
+          label="Todas las subcategorías"
+          options={categoriasParaFiltro.map((c) => ({ value: c.slug, label: c.nombre }))}
+          selected={filterCategoriaSlugs}
+          onChange={setFilterCategoriaSlugs}
+          minWidth="190px"
+        />
 
-        <select
-          value={filterMunicipio}
-          onChange={(e) => setFilterMunicipio(e.target.value as MunicipioCarabobo | 'all')}
-          style={selectStyle}
-          title="Filtrar por municipio"
-        >
-          <option value="all">Todos los municipios</option>
-          {MUNICIPIOS_CARABOBO.map((m) => (
-            <option key={m} value={m}>
-              {m}
-            </option>
-          ))}
-        </select>
+        <MultiSelectDropdown
+          label="Todos los municipios"
+          options={MUNICIPIOS_CARABOBO.map((m) => ({ value: m, label: m }))}
+          selected={filterMunicipios}
+          onChange={(next) => setFilterMunicipios(next as Set<string>)}
+          minWidth="180px"
+        />
 
         <select
           value={filterRevision}
@@ -317,6 +372,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
           <option value="all">Cualquier estado</option>
           <option value="solo_revisar">Solo por revisar</option>
           <option value="sin_revisar">Sin marca de revisión</option>
+        </select>
+
+        <select
+          value={filterVerificado}
+          onChange={(e) => setFilterVerificado(e.target.value as VerificadoFilter)}
+          style={selectStyle}
+          title="Filtrar por estado de verificación de contacto"
+        >
+          <option value="all">Verificados y sin verificar</option>
+          <option value="verificado">Solo verificados</option>
+          <option value="sin_verificar">Solo sin verificar</option>
         </select>
 
         <select
@@ -342,8 +408,47 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
 
       {errorMessage && <p className="warn">{errorMessage}</p>}
 
-      <div style={{ fontSize: '13px', color: 'var(--muted)', marginBottom: '8px' }}>
-        {loading ? 'Cargando…' : `${filteredEmpresas.length} de ${empresas.length} empresas`}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px', flexWrap: 'wrap' }}>
+        <div style={{ fontSize: '13px', color: 'var(--muted)' }}>
+          {loading ? 'Cargando…' : `${filteredEmpresas.length} de ${empresas.length} empresas`}
+        </div>
+
+        {selectedIds.size > 0 && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '4px 10px',
+              background: '#eef2ff',
+              border: '1px solid #c7d2fe',
+              borderRadius: '3px',
+              fontSize: '12.5px'
+            }}
+          >
+            <span>{selectedIds.size} seleccionada(s)</span>
+            {confirmBulkDelete ? (
+              <>
+                <span>¿Eliminar todas?</span>
+                <button type="button" className="btn danger" onClick={handleBulkDelete} disabled={bulkDeleting}>
+                  {bulkDeleting ? 'Eliminando…' : 'Sí, eliminar'}
+                </button>
+                <button type="button" className="btn" onClick={() => setConfirmBulkDelete(false)} disabled={bulkDeleting}>
+                  Cancelar
+                </button>
+              </>
+            ) : (
+              <>
+                <button type="button" className="btn danger" onClick={() => setConfirmBulkDelete(true)}>
+                  Eliminar seleccionadas
+                </button>
+                <button type="button" className="btn" onClick={() => setSelectedIds(new Set())}>
+                  Deseleccionar
+                </button>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Tabla de empresas */}
@@ -351,6 +456,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
         <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fff' }}>
           <thead>
             <tr>
+              <th style={{ ...thStyle, width: '28px' }}>
+                <input
+                  type="checkbox"
+                  checked={allVisibleSelected}
+                  onChange={toggleSelectAll}
+                  title="Seleccionar todas las filas visibles"
+                />
+              </th>
               <th style={thStyle}>Nombre</th>
               <th style={thStyle}>Sector(es)</th>
               <th style={thStyle}>Municipio</th>
@@ -362,7 +475,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
           <tbody>
             {!loading && filteredEmpresas.length === 0 && (
               <tr>
-                <td colSpan={6} style={{ ...tdStyle, textAlign: 'center', color: 'var(--muted)' }}>
+                <td colSpan={7} style={{ ...tdStyle, textAlign: 'center', color: 'var(--muted)' }}>
                   No hay empresas que coincidan con los filtros seleccionados.
                 </td>
               </tr>
@@ -372,6 +485,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
               const nombres = slugs.map((s) => CATEGORIES_BY_SLUG[s]?.nombre || s);
               return (
                 <tr key={emp.id}>
+                  <td style={tdStyle}>
+                    <input type="checkbox" checked={selectedIds.has(emp.id)} onChange={() => toggleSelectOne(emp.id)} />
+                  </td>
                   <td style={tdStyle}>
                     <b>{emp.nombre}</b>
                     {emp.tipo_registro === 'referencia_generica' && (
