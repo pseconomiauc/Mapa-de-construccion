@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Empresa, MunicipioCarabobo, MUNICIPIOS_CARABOBO } from '../types/database';
-import { ALL_CATEGORIES } from '../data/cadenaData';
+import { ALL_CATEGORIES, norm } from '../data/cadenaData';
 import { LocationPickerModal } from './LocationPickerModal';
 import {
   parseCoordinatesString,
@@ -77,6 +77,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
   const [selectedCats, setSelectedCats] = useState<Set<string>>(
     new Set(currentCategorySlug ? [currentCategorySlug] : [])
   );
+  const [catSearchQuery, setCatSearchQuery] = useState('');
 
   // Casillas activas
   const [activeTicks, setActiveTicks] = useState<Set<OptionalFieldKey>>(new Set());
@@ -814,44 +815,84 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
                 <span style={{ fontSize: '12px', color: 'var(--muted)', display: 'block', marginBottom: '8px' }}>
                   (Aparecerá en los listados de cada una pero una sola vez en el mapa industrial)
                 </span>
-                <div
+
+                <input
+                  type="text"
+                  value={catSearchQuery}
+                  onChange={(e) => setCatSearchQuery(e.target.value)}
+                  placeholder="Buscar subcategoría… (ej: ferretería, materiales de construcción)"
                   style={{
-                    maxHeight: '180px',
-                    overflowY: 'auto',
-                    border: '1px solid var(--line-soft)',
-                    padding: '8px 10px',
-                    background: 'var(--surface)',
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
-                    gap: '4px 12px'
+                    width: '100%',
+                    padding: '6px 8px',
+                    marginBottom: '8px',
+                    border: '1px solid var(--line)',
+                    borderRadius: '2px',
+                    boxSizing: 'border-box',
+                    fontSize: '13px'
                   }}
-                >
-                  {ALL_CATEGORIES.map((cat) => {
-                    const isCurrent = cat.slug === currentCategorySlug;
-                    const isChecked = selectedCats.has(cat.slug);
+                />
+
+                {(() => {
+                  const nq = norm(catSearchQuery.trim());
+                  const categoriasFiltradas = nq
+                    ? ALL_CATEGORIES.filter(
+                        (c) =>
+                          norm(c.nombre).includes(nq) ||
+                          norm(c.grupo).includes(nq) ||
+                          norm(c.rama_nombre).includes(nq)
+                      )
+                    : ALL_CATEGORIES;
+
+                  if (categoriasFiltradas.length === 0) {
                     return (
-                      <label
-                        key={cat.slug}
-                        className="tick"
-                        style={{
-                          fontSize: '12.5px',
-                          color: isCurrent ? 'var(--ink)' : 'inherit',
-                          fontWeight: isCurrent ? 600 : 400
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          disabled={isCurrent}
-                          onChange={() => toggleCategory(cat.slug)}
-                        />
-                        <span>
-                          {cat.nombre} {isCurrent && <em style={{ fontSize: '11px', color: 'var(--muted)' }}>(actual)</em>}
-                        </span>
-                      </label>
+                      <p style={{ fontSize: '12.5px', color: 'var(--muted)', margin: '4px 0 8px' }}>
+                        No hay subcategorías que coincidan con "{catSearchQuery}".
+                      </p>
                     );
-                  })}
-                </div>
+                  }
+
+                  return (
+                    <div
+                      style={{
+                        maxHeight: '180px',
+                        overflowY: 'auto',
+                        border: '1px solid var(--line-soft)',
+                        padding: '8px 10px',
+                        background: 'var(--surface)',
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 260px), 1fr))',
+                        gap: '4px 12px'
+                      }}
+                    >
+                      {categoriasFiltradas.map((cat) => {
+                        const isCurrent = cat.slug === currentCategorySlug;
+                        const isChecked = selectedCats.has(cat.slug);
+                        return (
+                          <label
+                            key={cat.slug}
+                            className="tick"
+                            style={{
+                              fontSize: '12.5px',
+                              color: isCurrent ? 'var(--ink)' : 'inherit',
+                              fontWeight: isCurrent ? 600 : 400
+                            }}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              disabled={isCurrent}
+                              onChange={() => toggleCategory(cat.slug)}
+                            />
+                            <span>
+                              {cat.nombre}{' '}
+                              {isCurrent && <em style={{ fontSize: '11px', color: 'var(--muted)' }}>(actual)</em>}
+                            </span>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  );
+                })()}
               </div>
             )}
           </div>
