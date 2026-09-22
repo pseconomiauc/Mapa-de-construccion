@@ -78,13 +78,13 @@ const MUNICIPIOS_CARABOBO = [
 ];
 
 /**
- * Realiza una búsqueda web en tiempo real sobre fuentes de Carabobo / Venezuela
- * para sustentar la respuesta de Gemini con URLs y datos reales.
+ * Realiza una búsqueda web rápida en tiempo real con timeout estricto de 3.5s.
  */
 async function buscarWeb(query: string): Promise<SearchResult[]> {
   const url = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
   try {
     const res = await fetch(url, {
+      signal: AbortSignal.timeout(3500),
       headers: {
         'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -120,9 +120,9 @@ async function buscarWeb(query: string): Promise<SearchResult[]> {
       }
     }
 
-    return results.slice(0, 10);
-  } catch (err) {
-    console.error('Error en búsqueda web de soporte:', err);
+    return results.slice(0, 8);
+  } catch (_err) {
+    // Si la búsqueda web da timeout o falla, continuar rápidamente sin bloquear
     return [];
   }
 }
@@ -133,22 +133,22 @@ async function buscarWeb(query: string): Promise<SearchResult[]> {
 async function obtenerContextoWeb(subcategoriaNombre: string, municipioNombre?: string): Promise<SearchResult[]> {
   const zona = municipioNombre ? `${municipioNombre} Carabobo Venezuela` : 'Carabobo Valencia Venezuela';
   
-  // Sin comillas exactas: el nombre de la subcategoría es nuestra propia taxonomía y casi
-  // nunca aparece tal cual, palabra por palabra, en una página real (comprobado: 1 resultado
-  // con comillas vs. 10 sin ellas para la misma búsqueda).
   const query1 = `empresas ${subcategoriaNombre} ${zona}`;
   const query2 = `directorio ${subcategoriaNombre} ${zona}`;
 
-  const [res1, res2] = await Promise.all([buscarWeb(query1), buscarWeb(query2)]);
+  const [res1, res2] = await Promise.allSettled([buscarWeb(query1), buscarWeb(query2)]);
 
   const unicos = new Map<string, SearchResult>();
-  for (const item of [...res1, ...res2]) {
+  const lista1 = res1.status === 'fulfilled' ? res1.value : [];
+  const lista2 = res2.status === 'fulfilled' ? res2.value : [];
+
+  for (const item of [...lista1, ...lista2]) {
     if (item.url && !unicos.has(item.url)) {
       unicos.set(item.url, item);
     }
   }
 
-  return Array.from(unicos.values()).slice(0, 15);
+  return Array.from(unicos.values()).slice(0, 12);
 }
 
 function buildPrompt(subcategoriaNombre: string, municipioNombre?: string, fuentesWeb: SearchResult[] = []): string {
@@ -204,32 +204,45 @@ Responde ÚNICAMENTE con un JSON array válido con este formato exacto:
 Si no encuentras ninguna empresa real y confiable, responde exactamente con: []`;
 }
 
-// gemini-2.5-flash, gemini-1.5-flash y gemini-2.0-flash quedaron descontinuados en esta cuenta
-// (confirmado: los tres responden 404 "no longer available"). El único modelo vigente
-// verificado es gemini-3.6-flash.
+// Modelos vigentes de la generación Gemini 3.x (priorizamos 3.5-flash-lite por velocidad)
+const MODELOS_GEMINI = [
+  'gemini-3.5-flash-lite',
+  'gemini-3.6-flash',
+  'gemini-3.5-flash'
+];
+
 async function llamarGeminiConReintentos(key: string, prompt: string): Promise<Response> {
-  const ESPERAS_MS = [0, 2000, 5000]; // 3 intentos: inmediato, +2s, +5s
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${key}`;
   const body = JSON.stringify({
     contents: [{ parts: [{ text: prompt }] }],
     generationConfig: { responseMimeType: 'application/json', temperature: 0.1 }
   });
 
   let ultimaRespuesta: Response | null = null;
-  for (const espera of ESPERAS_MS) {
-    if (espera > 0) await sleep(espera);
 
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body
-    });
+  for (const modelo of MODELOS_GEMINI) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${key}`;
+    
+    try {
+      const res = await fetch(url, {
+        signal: AbortSignal.timeout(12000),
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body
+      });
 
-    // 503 ("modelo con alta demanda") y 429 (cuota) son transitorios; el resto no vale reintentar.
-    if (res.ok || ![503, 429].includes(res.status)) {
-      return res;
+      if (res.ok) {
+        return res;
+      }
+
+      ultimaRespuesta = res;
+
+      // Si da 404 o 503, pasar de inmediato al siguiente modelo del pool
+      if ([404, 503, 429].includes(res.status)) {
+        continue;
+      }
+    } catch (err) {
+      console.error(`Error o timeout llamando ${modelo}:`, err);
     }
-    ultimaRespuesta = res;
   }
 
   return ultimaRespuesta as Response;
@@ -239,10 +252,12 @@ async function preguntarAGeminiConGrounding(
   subcategoriaNombre: string,
   municipioNombre?: string
 ): Promise<EmpresaSugerida[]> {
-  const key = Deno.env.get('GEMINI_API_KEY');
-  if (!key) throw new Error('Falta la credencial GEMINI_API_KEY en los secretos de la función.');
+  const rawKey = Deno.env.get('GEMINI_API_KEY');
+  if (!rawKey) throw new Error('Falta la credencial GEMINI_API_KEY en los secretos de la función.');
 
-  // 1. Obtener fuentes reales de búsqueda web
+  const key = rawKey.trim().replace(/^["']|["']$/g, '');
+
+  // 1. Obtener fuentes reales de búsqueda web (rápido, con timeout)
   const fuentesWeb = await obtenerContextoWeb(subcategoriaNombre, municipioNombre);
 
   // 2. Construir prompt con grounding
@@ -251,9 +266,10 @@ async function preguntarAGeminiConGrounding(
   // 3. Consultar a Gemini
   const res = await llamarGeminiConReintentos(key, prompt);
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Gemini respondió ${res.status}: ${text.slice(0, 300)}`);
+  if (!res || !res.ok) {
+    const text = res ? await res.text() : 'No se recibió respuesta de los modelos.';
+    const status = res ? res.status : 504;
+    throw new Error(`Gemini respondió ${status}: ${text.slice(0, 300)}`);
   }
 
   const data = await res.json();
@@ -289,7 +305,7 @@ async function preguntarAGeminiConGrounding(
     }));
 }
 
-// Intento opcional de geocodificar con Nominatim
+// Intento opcional de geocodificar con Nominatim (rápido, con timeout de 2.5s)
 async function intentarGeocodificar(
   nombre: string,
   municipioNombre?: string,
@@ -310,6 +326,7 @@ async function intentarGeocodificar(
 
   try {
     const res = await fetch(url.toString(), {
+      signal: AbortSignal.timeout(2500),
       headers: {
         'Accept-Language': 'es',
         'User-Agent': 'CadenaConstruccionCarabobo/1.0 (contacto@cadenacarabobo.org)'
@@ -359,18 +376,19 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const empresas: ResultCompany[] = [];
-    for (const s of sugeridas) {
-      const geo = await intentarGeocodificar(s.nombre, s.municipio || municipioNombre, s.direccion);
-      empresas.push({
-        ...s,
-        lat: geo?.lat ?? null,
-        lng: geo?.lng ?? null,
-        ubicacionConfirmada: !!geo,
-        fuente: s.fuente ?? null
-      });
-      await sleep(1100); // respetar límite de 1 solicitud/segundo de Nominatim
-    }
+    // Geocodificación rápida en paralelo para las sugerencias
+    const empresas: ResultCompany[] = await Promise.all(
+      sugeridas.map(async (s) => {
+        const geo = await intentarGeocodificar(s.nombre, s.municipio || municipioNombre, s.direccion);
+        return {
+          ...s,
+          lat: geo?.lat ?? null,
+          lng: geo?.lng ?? null,
+          ubicacionConfirmada: !!geo,
+          fuente: s.fuente ?? null
+        };
+      })
+    );
 
     return json({ empresas });
   } catch (err) {
