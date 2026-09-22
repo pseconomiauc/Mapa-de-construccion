@@ -2,7 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MunicipioCarabobo } from '../types/database';
-import { getMunicipioFromGeoJSON, createPinIcon, isValidVenezuelaCoords } from '../utils/geoUtils';
+import {
+  getMunicipioFromGeoJSON,
+  createPinIcon,
+  isValidVenezuelaCoords,
+  parseCoordinatesString
+} from '../utils/geoUtils';
+import { searchAddressNominatim } from '../services/nominatimService';
+import { getErrorMessage } from '../utils/errorUtils';
 
 interface LocationPickerModalProps {
   initialLat?: number | null;
@@ -39,6 +46,15 @@ export const LocationPickerModal: React.FC<LocationPickerModalProps> = ({
     initialMunicipio || null
   );
 
+  // Campos editables de latitud/longitud (texto, se sincronizan con el pin del mapa)
+  const [latInput, setLatInput] = useState<string>(hasInitial ? String(initialLat) : '');
+  const [lngInput, setLngInput] = useState<string>(hasInitial ? String(initialLng) : '');
+
+  // Búsqueda de dirección
+  const [direccion, setDireccion] = useState('');
+  const [searchingAddress, setSearchingAddress] = useState(false);
+  const [addressFeedback, setAddressFeedback] = useState<{ text: string; isError: boolean } | null>(null);
+
   // Cargar GeoJSON de los 14 municipios de Carabobo
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}data/carabobo_municipios.geojson`)
@@ -52,6 +68,40 @@ export const LocationPickerModal: React.FC<LocationPickerModalProps> = ({
       })
       .catch((err) => console.warn('Error al cargar GeoJSON para el modal selector:', err));
   }, [hasInitial, initialLat, initialLng]);
+
+  // Coloca/mueve el pin, centra el mapa y sincroniza todo el estado (usado por clic, arrastre,
+  // búsqueda de dirección y edición manual de lat/lng).
+  const applyPosition = (lat: number, lng: number, opciones?: { panMap?: boolean }) => {
+    const roundedLat = Number(lat.toFixed(6));
+    const roundedLng = Number(lng.toFixed(6));
+    setCurrentLat(roundedLat);
+    setCurrentLng(roundedLng);
+    setLatInput(String(roundedLat));
+    setLngInput(String(roundedLng));
+    setHasPosition(true);
+
+    if (geojsonRef.current) {
+      const mun = getMunicipioFromGeoJSON(roundedLat, roundedLng, geojsonRef.current);
+      setDetectedMunicipio(mun);
+    }
+
+    const map = mapInstanceRef.current;
+    if (map) {
+      if (markerRef.current) {
+        markerRef.current.setLatLng([roundedLat, roundedLng]);
+      } else {
+        const marker = L.marker([roundedLat, roundedLng], { draggable: true, icon: createPinIcon('F') }).addTo(map);
+        marker.on('dragend', () => {
+          const pos = marker.getLatLng();
+          applyPosition(pos.lat, pos.lng);
+        });
+        markerRef.current = marker;
+      }
+      if (opciones?.panMap !== false) {
+        map.setView([roundedLat, roundedLng], Math.max(map.getZoom(), 15));
+      }
+    }
+  };
 
   // Inicializar mapa de selección
   useEffect(() => {
@@ -95,46 +145,18 @@ export const LocationPickerModal: React.FC<LocationPickerModalProps> = ({
       })
       .catch(() => {});
 
-    // Icono del pin
-    const pinIcon = createPinIcon('F');
-
-    // Función auxiliar para actualizar posición del pin
-    const updatePinPosition = (lat: number, lng: number) => {
-      const roundedLat = Number(lat.toFixed(6));
-      const roundedLng = Number(lng.toFixed(6));
-      setCurrentLat(roundedLat);
-      setCurrentLng(roundedLng);
-      setHasPosition(true);
-
-      if (geojsonRef.current) {
-        const mun = getMunicipioFromGeoJSON(roundedLat, roundedLng, geojsonRef.current);
-        setDetectedMunicipio(mun);
-      }
-    };
-
     if (hasInitial) {
-      const marker = L.marker(startCenter, { draggable: true, icon: pinIcon }).addTo(map);
+      const marker = L.marker(startCenter, { draggable: true, icon: createPinIcon('F') }).addTo(map);
       marker.on('dragend', () => {
         const pos = marker.getLatLng();
-        updatePinPosition(pos.lat, pos.lng);
+        applyPosition(pos.lat, pos.lng, { panMap: false });
       });
       markerRef.current = marker;
     }
 
     // Al hacer clic en el mapa, mover o crear el pin
     map.on('click', (e: L.LeafletMouseEvent) => {
-      const { lat, lng } = e.latlng;
-      if (markerRef.current) {
-        markerRef.current.setLatLng([lat, lng]);
-      } else {
-        const marker = L.marker([lat, lng], { draggable: true, icon: pinIcon }).addTo(map);
-        marker.on('dragend', () => {
-          const pos = marker.getLatLng();
-          updatePinPosition(pos.lat, pos.lng);
-        });
-        markerRef.current = marker;
-      }
-      updatePinPosition(lat, lng);
+      applyPosition(e.latlng.lat, e.latlng.lng, { panMap: false });
     });
 
     mapInstanceRef.current = map;
@@ -144,6 +166,7 @@ export const LocationPickerModal: React.FC<LocationPickerModalProps> = ({
       mapInstanceRef.current = null;
       markerRef.current = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ResizeObserver para el mapa dentro del modal
@@ -191,6 +214,56 @@ export const LocationPickerModal: React.FC<LocationPickerModalProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
+  const handleSearchAddress = async () => {
+    const query = direccion.trim();
+    if (!query) {
+      setAddressFeedback({ text: 'Escribe una dirección antes de buscar.', isError: true });
+      return;
+    }
+    setSearchingAddress(true);
+    setAddressFeedback({ text: 'Consultando OpenStreetMap (Nominatim)…', isError: false });
+    try {
+      const results = await searchAddressNominatim(query);
+      if (results.length > 0) {
+        const best = results[0];
+        applyPosition(best.lat, best.lng);
+        setAddressFeedback({
+          text: `Ubicación encontrada: "${best.displayName.substring(0, 80)}…". Ajusta el pin si no cae exactamente en la empresa.`,
+          isError: false
+        });
+      } else {
+        setAddressFeedback({
+          text: 'No se encontraron coordenadas para esa dirección. Marca el punto directamente en el mapa.',
+          isError: true
+        });
+      }
+    } catch (err) {
+      setAddressFeedback({ text: `Error al consultar Nominatim: ${getErrorMessage(err)}`, isError: true });
+    } finally {
+      setSearchingAddress(false);
+    }
+  };
+
+  const handleApplyManualCoords = () => {
+    const latNum = parseFloat(latInput.trim().replace(',', '.'));
+    const lngNum = parseFloat(lngInput.trim().replace(',', '.'));
+    if (isNaN(latNum) || isNaN(lngNum)) {
+      setAddressFeedback({ text: 'Latitud/longitud inválidas. Usa números como 10.1620 y -68.0077.', isError: true });
+      return;
+    }
+    applyPosition(latNum, lngNum);
+    setAddressFeedback(null);
+  };
+
+  const handlePasteCoords = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const pasted = e.clipboardData.getData('text');
+    const parsed = parseCoordinatesString(pasted);
+    if (parsed) {
+      e.preventDefault();
+      applyPosition(parsed.lat, parsed.lng);
+    }
+  };
+
   const handleConfirm = () => {
     if (!hasPosition) return;
     onConfirm({
@@ -211,7 +284,7 @@ export const LocationPickerModal: React.FC<LocationPickerModalProps> = ({
               Marcar ubicación en el mapa
             </h3>
             <p style={{ margin: '4px 0 0', fontSize: '13px', color: '#54595d' }}>
-              Haz clic en cualquier punto del mapa o arrastra el pin para fijar las coordenadas exactas.
+              Busca una dirección, escribe las coordenadas directamente, o haz clic/arrastra el pin en el mapa.
             </p>
           </div>
           <button
@@ -223,6 +296,79 @@ export const LocationPickerModal: React.FC<LocationPickerModalProps> = ({
           >
             ✕
           </button>
+        </div>
+
+        {/* Búsqueda de dirección + lat/lng editables */}
+        <div style={{ padding: '10px 16px', borderBottom: '1px solid #e3e3e3', display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'flex-end' }}>
+          <label style={{ fontSize: '12.5px', flex: '2 1 240px' }}>
+            Dirección
+            <div style={{ display: 'flex', gap: '6px', marginTop: '3px' }}>
+              <input
+                type="text"
+                placeholder="Ej: Zona Industrial San Diego, Valencia"
+                value={direccion}
+                onChange={(e) => setDireccion(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSearchAddress();
+                  }
+                }}
+                style={{ flex: 1, padding: '5px 8px', border: '1px solid #a2a9b1', borderRadius: '2px' }}
+              />
+              <button
+                type="button"
+                className="btn"
+                onClick={handleSearchAddress}
+                disabled={searchingAddress || !direccion.trim()}
+                style={{ whiteSpace: 'nowrap' }}
+              >
+                {searchingAddress ? 'Buscando…' : '🔍 Buscar'}
+              </button>
+            </div>
+          </label>
+
+          <label style={{ fontSize: '12.5px', flex: '1 1 120px' }}>
+            Latitud
+            <input
+              type="text"
+              value={latInput}
+              onChange={(e) => setLatInput(e.target.value)}
+              onPaste={handlePasteCoords}
+              onKeyDown={(e) => e.key === 'Enter' && handleApplyManualCoords()}
+              style={{ width: '100%', marginTop: '3px', padding: '5px 8px', border: '1px solid #a2a9b1', borderRadius: '2px', boxSizing: 'border-box' }}
+            />
+          </label>
+          <label style={{ fontSize: '12.5px', flex: '1 1 120px' }}>
+            Longitud
+            <input
+              type="text"
+              value={lngInput}
+              onChange={(e) => setLngInput(e.target.value)}
+              onPaste={handlePasteCoords}
+              onKeyDown={(e) => e.key === 'Enter' && handleApplyManualCoords()}
+              style={{ width: '100%', marginTop: '3px', padding: '5px 8px', border: '1px solid #a2a9b1', borderRadius: '2px', boxSizing: 'border-box' }}
+            />
+          </label>
+          <button type="button" className="btn" onClick={handleApplyManualCoords} style={{ whiteSpace: 'nowrap' }}>
+            Aplicar coordenadas
+          </button>
+
+          {addressFeedback && (
+            <div
+              style={{
+                flexBasis: '100%',
+                fontSize: '12px',
+                padding: '5px 9px',
+                borderRadius: '2px',
+                background: addressFeedback.isError ? '#fdf2f2' : '#f0fdf4',
+                border: `1px solid ${addressFeedback.isError ? '#f8b4b4' : '#bbf7d0'}`,
+                color: addressFeedback.isError ? '#b32424' : '#166534'
+              }}
+            >
+              {addressFeedback.text}
+            </div>
+          )}
         </div>
 
         {/* Contenedor del mapa */}
@@ -256,7 +402,7 @@ export const LocationPickerModal: React.FC<LocationPickerModalProps> = ({
               </div>
             ) : (
               <span style={{ color: '#54595d' }}>
-                Haz clic en el mapa para situar el marcador de la empresa.
+                Busca una dirección, escribe coordenadas, o haz clic en el mapa para situar el marcador.
               </span>
             )}
           </div>
