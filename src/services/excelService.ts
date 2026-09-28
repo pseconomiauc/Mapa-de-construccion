@@ -139,15 +139,8 @@ export function exportPlantillaExcel() {
     'Empresa',
     'Municipio',
     'Dirección',
-    'Teléfono',
-    'WhatsApp',
-    'Correo',
-    'Productos',
-    'Servicios',
-    'Marca',
     'Latitud',
-    'Longitud',
-    'Revisar'
+    'Longitud'
   ];
 
   const wsEmpresas = XLSX.utils.aoa_to_sheet([headers]);
@@ -159,17 +152,10 @@ export function exportPlantillaExcel() {
     { wch: 36 },
     { wch: 18 },
     { wch: 40 },
-    { wch: 18 },
-    { wch: 18 },
-    { wch: 26 },
-    { wch: 45 },
-    { wch: 30 },
-    { wch: 20 },
     { wch: 14 },
-    { wch: 14 },
-    { wch: 10 }
+    { wch: 14 }
   ];
-  wsEmpresas['!autofilter'] = { ref: 'A1:P1' };
+  wsEmpresas['!autofilter'] = { ref: 'A1:I1' };
 
   // Catálogo completo
   const rowsCatalogo = ALL_CATEGORIES.map((cat) => ({
@@ -207,15 +193,8 @@ export function exportPlantillaExcel() {
     { 'Campo': 'Tipo de actor', 'Obligatorio': 'Opcional', 'Descripción': 'Fabricante, Distribuidor, Contratista, Servicio profesional o Alquiler / logística.' },
     { 'Campo': 'Municipio', 'Obligatorio': 'Opcional', 'Descripción': 'Uno de los 14 municipios oficiales de Carabobo.' },
     { 'Campo': 'Dirección', 'Obligatorio': 'Opcional', 'Descripción': 'Dirección física o referencia del local/planta.' },
-    { 'Campo': 'Teléfono', 'Obligatorio': 'Opcional', 'Descripción': 'Teléfono en formato +58 XXX XXXXXXX.' },
-    { 'Campo': 'WhatsApp', 'Obligatorio': 'Opcional', 'Descripción': 'WhatsApp comercial en formato +58 XXX XXXXXXX.' },
-    { 'Campo': 'Correo', 'Obligatorio': 'Opcional', 'Descripción': 'Correo electrónico institucional o de ventas.' },
-    { 'Campo': 'Productos', 'Obligatorio': 'Opcional', 'Descripción': 'Descripción o lista de productos suministrados.' },
-    { 'Campo': 'Servicios', 'Obligatorio': 'Opcional', 'Descripción': 'Descripción de servicios prestados.' },
-    { 'Campo': 'Marca', 'Obligatorio': 'Opcional', 'Descripción': 'Marca o marcas comerciales que representa.' },
     { 'Campo': 'Latitud', 'Obligatorio': 'Opcional', 'Descripción': 'Coordenada decimal dentro de Venezuela (ej: 10.1620).' },
-    { 'Campo': 'Longitud', 'Obligatorio': 'Opcional', 'Descripción': 'Coordenada decimal dentro de Venezuela (ej: -68.0077).' },
-    { 'Campo': 'Revisar', 'Obligatorio': 'Opcional', 'Descripción': 'Indicar "Sí" si algún dato requiere revisión posterior, o "No".' }
+    { 'Campo': 'Longitud', 'Obligatorio': 'Opcional', 'Descripción': 'Coordenada decimal dentro de Venezuela (ej: -68.0077).' }
   ];
 
   const wsInstrucciones = XLSX.utils.json_to_sheet(rowsInstrucciones);
