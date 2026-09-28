@@ -67,6 +67,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Menú desplegable de filtros en el encabezado "Estado" (verificación + revisión)
+  const [estadoMenuOpen, setEstadoMenuOpen] = useState(false);
+  const estadoMenuRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (estadoMenuRef.current && !estadoMenuRef.current.contains(e.target as Node)) {
+        setEstadoMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const loadData = useCallback(async () => {
     setLoading(true);
     setErrorMessage(null);
@@ -136,6 +149,17 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
       if (emp.municipio) counts[emp.municipio] = (counts[emp.municipio] || 0) + 1;
     });
     return MUNICIPIOS_CARABOBO.filter((m) => (counts[m] || 0) > 0);
+  }, [empresas]);
+
+  // Tipos de actor que ya tienen al menos una empresa cargada
+  const tiposActorParaFiltro = useMemo(() => {
+    const counts: Record<string, number> = {};
+    empresas.forEach((emp) => {
+      (emp.tipo_actor || []).forEach((t) => {
+        counts[t] = (counts[t] || 0) + 1;
+      });
+    });
+    return TIPOS_ACTOR.filter((t) => (counts[t] || 0) > 0);
   }, [empresas]);
 
   // Al cambiar las ramas seleccionadas, descarta subcategorías que ya no apliquen
@@ -445,36 +469,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
           minWidth="170px"
         />
 
-        <MultiSelectDropdown
-          label="Fabricante, distribuidor…"
-          options={TIPOS_ACTOR.map((t) => ({ value: t, label: DESCRIPCION_ACTORES[t] }))}
-          selected={filterTipoActor}
-          onChange={setFilterTipoActor}
-          minWidth="180px"
-        />
-
-        <select
-          value={filterRevision}
-          onChange={(e) => setFilterRevision(e.target.value as RevisionFilter)}
-          style={selectStyle}
-          title="Filtrar por estado de revisión"
-        >
-          <option value="all">Cualquier estado</option>
-          <option value="solo_revisar">Solo por revisar</option>
-          <option value="sin_revisar">Sin marca de revisión</option>
-        </select>
-
-        <select
-          value={filterVerificado}
-          onChange={(e) => setFilterVerificado(e.target.value as VerificadoFilter)}
-          style={selectStyle}
-          title="Filtrar por estado de verificación de contacto"
-        >
-          <option value="all">Verificados y sin verificar</option>
-          <option value="verificado">Solo verificados</option>
-          <option value="sin_verificar">Solo sin verificar</option>
-        </select>
-
         <select
           value={filterTipo}
           onChange={(e) => setFilterTipo(e.target.value as TipoFilter)}
@@ -654,8 +648,129 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
                   minWidth="0"
                 />
               </th>
-              <th style={thStyle}>Tipo de actor</th>
-              <th style={thStyle}>Estado</th>
+              <th style={thStyle}>
+                <MultiSelectDropdown
+                  label="Tipo de actor"
+                  options={tiposActorParaFiltro.map((t) => ({ value: t, label: DESCRIPCION_ACTORES[t] }))}
+                  selected={filterTipoActor}
+                  onChange={setFilterTipoActor}
+                  minWidth="0"
+                />
+              </th>
+              <th style={thStyle}>
+                <div ref={estadoMenuRef} style={{ position: 'relative', display: 'inline-block' }}>
+                  <button
+                    type="button"
+                    onClick={() => setEstadoMenuOpen((o) => !o)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      font: 'inherit',
+                      fontWeight: 600,
+                      color: 'var(--muted)',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: 0
+                    }}
+                    title="Filtrar por verificación o revisión"
+                  >
+                    Estado <span style={{ fontSize: '10px' }}>▾</span>
+                  </button>
+                  {estadoMenuOpen && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 'calc(100% + 4px)',
+                        left: 0,
+                        zIndex: 50,
+                        background: '#fff',
+                        border: '1px solid var(--line)',
+                        borderRadius: '3px',
+                        boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+                        minWidth: '220px',
+                        padding: '8px'
+                      }}
+                    >
+                      <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--muted)', margin: '2px 0 4px' }}>
+                        Verificación
+                      </div>
+                      {(
+                        [
+                          { value: 'all', label: 'Verificados y sin verificar' },
+                          { value: 'verificado', label: 'Solo verificados' },
+                          { value: 'sin_verificar', label: 'Solo sin verificar' }
+                        ] as { value: VerificadoFilter; label: string }[]
+                      ).map((o) => (
+                        <button
+                          key={o.value}
+                          type="button"
+                          onClick={() => setFilterVerificado(o.value)}
+                          style={{
+                            display: 'block',
+                            width: '100%',
+                            textAlign: 'left',
+                            padding: '5px 8px',
+                            fontSize: '12.5px',
+                            fontWeight: 400,
+                            background: filterVerificado === o.value ? '#eef2ff' : 'transparent',
+                            border: 'none',
+                            borderRadius: '2px',
+                            cursor: 'pointer',
+                            color: 'var(--ink)'
+                          }}
+                        >
+                          {filterVerificado === o.value ? '✓ ' : ''}
+                          {o.label}
+                        </button>
+                      ))}
+
+                      <div
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          color: 'var(--muted)',
+                          margin: '8px 0 4px',
+                          borderTop: '1px solid var(--line-soft)',
+                          paddingTop: '6px'
+                        }}
+                      >
+                        Revisión
+                      </div>
+                      {(
+                        [
+                          { value: 'all', label: 'Cualquier estado' },
+                          { value: 'solo_revisar', label: 'Solo por revisar' },
+                          { value: 'sin_revisar', label: 'Sin marca de revisión' }
+                        ] as { value: RevisionFilter; label: string }[]
+                      ).map((o) => (
+                        <button
+                          key={o.value}
+                          type="button"
+                          onClick={() => setFilterRevision(o.value)}
+                          style={{
+                            display: 'block',
+                            width: '100%',
+                            textAlign: 'left',
+                            padding: '5px 8px',
+                            fontSize: '12.5px',
+                            fontWeight: 400,
+                            background: filterRevision === o.value ? '#eef2ff' : 'transparent',
+                            border: 'none',
+                            borderRadius: '2px',
+                            cursor: 'pointer',
+                            color: 'var(--ink)'
+                          }}
+                        >
+                          {filterRevision === o.value ? '✓ ' : ''}
+                          {o.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </th>
               <th style={thStyle}>Acciones</th>
             </tr>
           </thead>
