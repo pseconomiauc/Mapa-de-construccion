@@ -34,6 +34,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [bulkDeleting, setBulkDeleting] = useState(false);
   const [confirmBulkDelete, setConfirmBulkDelete] = useState(false);
+  const [bulkVerifying, setBulkVerifying] = useState(false);
 
   // Modal de alta / edición
   const [showForm, setShowForm] = useState(false);
@@ -182,6 +183,29 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
     } finally {
       setBulkDeleting(false);
       setConfirmBulkDelete(false);
+    }
+  };
+
+  const handleBulkSetVerificado = async (verificado: boolean) => {
+    setBulkVerifying(true);
+    try {
+      const { error } = await supabase
+        .from('empresas')
+        .update({ contacto_verificado: verificado })
+        .in('id', [...selectedIds]);
+      if (error) throw error;
+      setSelectedIds(new Set());
+      await loadData();
+      onCountsChanged();
+    } catch (err: unknown) {
+      const e = err as { message?: string; code?: string };
+      if (e?.code === '42501') {
+        alert('No tienes permiso de editor para verificar empresas.');
+      } else {
+        alert(`No se pudo actualizar el estado de verificación: ${e?.message || 'error desconocido'}`);
+      }
+    } finally {
+      setBulkVerifying(false);
     }
   };
 
@@ -439,6 +463,22 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
               </>
             ) : (
               <>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => handleBulkSetVerificado(true)}
+                  disabled={bulkVerifying}
+                >
+                  {bulkVerifying ? 'Actualizando…' : '✓ Marcar verificadas'}
+                </button>
+                <button
+                  type="button"
+                  className="btn"
+                  onClick={() => handleBulkSetVerificado(false)}
+                  disabled={bulkVerifying}
+                >
+                  Marcar sin verificar
+                </button>
                 <button type="button" className="btn danger" onClick={() => setConfirmBulkDelete(true)}>
                   Eliminar seleccionadas
                 </button>
@@ -514,11 +554,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
                         🔍 Por revisar
                       </span>
                     )}
-                    {!emp.contacto_verificado && (
-                      <div>
+                    <div>
+                      {emp.contacto_verificado ? (
+                        <span className="badge-unverified" style={{ background: '#d1fae5', color: '#065f46' }}>
+                          ✓ verificado
+                        </span>
+                      ) : (
                         <span className="badge-unverified">sin verificar</span>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </td>
                   <td style={tdStyle}>
                     {confirmDeleteId === emp.id ? (
