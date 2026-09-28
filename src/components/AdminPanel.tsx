@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { Empresa, MUNICIPIOS_CARABOBO } from '../types/database';
+import { Empresa, MUNICIPIOS_CARABOBO, TIPOS_ACTOR, TipoActor, DESCRIPCION_ACTORES } from '../types/database';
 import { BRANCHES, ALL_CATEGORIES, CATEGORIES_BY_SLUG, norm } from '../data/cadenaData';
 import { CompanyForm } from './CompanyForm';
 import { MultiSelectDropdown } from './MultiSelectDropdown';
@@ -14,6 +14,7 @@ interface AdminPanelProps {
 type RevisionFilter = 'all' | 'solo_revisar' | 'sin_revisar';
 type TipoFilter = 'all' | 'empresa' | 'referencia_generica';
 type VerificadoFilter = 'all' | 'verificado' | 'sin_verificar';
+type SortOption = 'nombre_asc' | 'nombre_desc' | 'mas_nuevo' | 'mas_antiguo';
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCountsChanged }) => {
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
@@ -29,6 +30,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
   const [filterRevision, setFilterRevision] = useState<RevisionFilter>('all');
   const [filterTipo, setFilterTipo] = useState<TipoFilter>('all');
   const [filterVerificado, setFilterVerificado] = useState<VerificadoFilter>('all');
+  const [filterTipoActor, setFilterTipoActor] = useState<Set<string>>(new Set());
+  const [sortBy, setSortBy] = useState<SortOption>('nombre_asc');
 
   // Selección de filas para acciones en lote
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -87,11 +90,24 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
     };
   }, [loadData]);
 
-  // Grupos disponibles para el filtro de subcategoría, dependientes de las ramas elegidas
+  // Cantidad de empresas cargadas por subcategoría (para no ofrecer sectores vacíos en el filtro)
+  const categoriaCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    Object.values(relMap).forEach((slugs) => {
+      slugs.forEach((slug) => {
+        counts[slug] = (counts[slug] || 0) + 1;
+      });
+    });
+    return counts;
+  }, [relMap]);
+
+  // Grupos disponibles para el filtro de subcategoría: dependientes de las ramas elegidas
+  // y limitados a los sectores que ya tienen al menos una empresa cargada
   const categoriasParaFiltro = useMemo(() => {
-    if (filterRamaIds.size === 0) return ALL_CATEGORIES;
-    return ALL_CATEGORIES.filter((c) => filterRamaIds.has(String(c.rama_id)));
-  }, [filterRamaIds]);
+    const base =
+      filterRamaIds.size === 0 ? ALL_CATEGORIES : ALL_CATEGORIES.filter((c) => filterRamaIds.has(String(c.rama_id)));
+    return base.filter((c) => (categoriaCounts[c.slug] || 0) > 0);
+  }, [filterRamaIds, categoriaCounts]);
 
   // Al cambiar las ramas seleccionadas, descarta subcategorías que ya no apliquen
   useEffect(() => {
@@ -107,7 +123,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
   const filteredEmpresas = useMemo(() => {
     const nq = norm(searchQuery.trim());
 
-    return empresas.filter((emp) => {
+    const result = empresas.filter((emp) => {
       if (nq && !norm(emp.nombre || '').includes(nq)) return false;
 
       if (filterMunicipios.size > 0 && (!emp.municipio || !filterMunicipios.has(emp.municipio))) return false;
@@ -120,6 +136,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
 
       if (filterTipo !== 'all' && (emp.tipo_registro || 'empresa') !== filterTipo) return false;
 
+      if (filterTipoActor.size > 0 && !(emp.tipo_actor || []).some((t) => filterTipoActor.has(t))) return false;
+
       const slugs = relMap[emp.id] || [];
       if (filterCategoriaSlugs.size > 0 && !slugs.some((s) => filterCategoriaSlugs.has(s))) return false;
       if (filterRamaIds.size > 0) {
@@ -129,6 +147,22 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
 
       return true;
     });
+
+    const sorted = [...result];
+    sorted.sort((a, b) => {
+      switch (sortBy) {
+        case 'nombre_desc':
+          return (b.nombre || '').localeCompare(a.nombre || '', 'es');
+        case 'mas_nuevo':
+          return new Date(b.creado_en).getTime() - new Date(a.creado_en).getTime();
+        case 'mas_antiguo':
+          return new Date(a.creado_en).getTime() - new Date(b.creado_en).getTime();
+        case 'nombre_asc':
+        default:
+          return (a.nombre || '').localeCompare(b.nombre || '', 'es');
+      }
+    });
+    return sorted;
   }, [
     empresas,
     relMap,
@@ -137,14 +171,25 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
     filterRevision,
     filterVerificado,
     filterTipo,
+    filterTipoActor,
     filterCategoriaSlugs,
-    filterRamaIds
+    filterRamaIds,
+    sortBy
   ]);
 
   // La selección se limpia si cambian los filtros, para no arrastrar filas que ya no se ven
   useEffect(() => {
     setSelectedIds(new Set());
-  }, [searchQuery, filterMunicipios, filterRevision, filterVerificado, filterTipo, filterCategoriaSlugs, filterRamaIds]);
+  }, [
+    searchQuery,
+    filterMunicipios,
+    filterRevision,
+    filterVerificado,
+    filterTipo,
+    filterTipoActor,
+    filterCategoriaSlugs,
+    filterRamaIds
+  ]);
 
   const allVisibleSelected = filteredEmpresas.length > 0 && filteredEmpresas.every((e) => selectedIds.has(e.id));
 
@@ -387,6 +432,26 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
           minWidth="180px"
         />
 
+        <MultiSelectDropdown
+          label="Fabricante, distribuidor…"
+          options={TIPOS_ACTOR.map((t) => ({ value: t, label: DESCRIPCION_ACTORES[t] }))}
+          selected={filterTipoActor}
+          onChange={setFilterTipoActor}
+          minWidth="180px"
+        />
+
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as SortOption)}
+          style={selectStyle}
+          title="Ordenar listado"
+        >
+          <option value="nombre_asc">Nombre A-Z</option>
+          <option value="nombre_desc">Nombre Z-A</option>
+          <option value="mas_nuevo">Más nuevas primero</option>
+          <option value="mas_antiguo">Más antiguas primero</option>
+        </select>
+
         <select
           value={filterRevision}
           onChange={(e) => setFilterRevision(e.target.value as RevisionFilter)}
@@ -507,7 +572,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
               <th style={thStyle}>Nombre</th>
               <th style={thStyle}>Sector(es)</th>
               <th style={thStyle}>Municipio</th>
-              <th style={thStyle}>Contacto</th>
+              <th style={thStyle}>Tipo de actor</th>
               <th style={thStyle}>Estado</th>
               <th style={thStyle}>Acciones</th>
             </tr>
@@ -543,10 +608,27 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
                   </td>
                   <td style={tdStyle}>{emp.municipio || <span style={{ color: 'var(--muted)' }}>—</span>}</td>
                   <td style={{ ...tdStyle, fontSize: '12.5px' }}>
-                    {emp.telefono && <div>{emp.telefono}</div>}
-                    {emp.whatsapp && <div>WhatsApp: {emp.whatsapp}</div>}
-                    {emp.correo && <div>{emp.correo}</div>}
-                    {!emp.telefono && !emp.whatsapp && !emp.correo && <span style={{ color: 'var(--muted)' }}>—</span>}
+                    {emp.tipo_actor && emp.tipo_actor.length > 0 ? (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                        {(emp.tipo_actor as TipoActor[]).map((t) => (
+                          <span
+                            key={t}
+                            style={{
+                              fontSize: '11px',
+                              padding: '2px 6px',
+                              borderRadius: '2px',
+                              background: '#e0e7ff',
+                              color: '#3730a3',
+                              whiteSpace: 'nowrap'
+                            }}
+                          >
+                            {DESCRIPCION_ACTORES[t]}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <span style={{ color: 'var(--muted)' }}>—</span>
+                    )}
                   </td>
                   <td style={tdStyle}>
                     {emp.revisar && (

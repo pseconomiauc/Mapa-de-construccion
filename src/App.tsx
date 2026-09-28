@@ -228,7 +228,7 @@ export const App: React.FC = () => {
 
     // A) Insertar empresas nuevas
     for (const item of readyToImport) {
-      const { categoriaSlugs, isExisting: _, existingId: __, tipo_actor: ___, warnings: ____, ...empresaFields } = item;
+      const { categoriaSlugs, isExisting: _, existingId: __, warnings: ___, ...empresaFields } = item;
 
       // 1. Insertar empresa
       const { data: inserted, error: insErr } = await supabase
@@ -258,12 +258,14 @@ export const App: React.FC = () => {
     for (const item of existingMerged) {
       if (!item.existingId) continue;
 
-      const { categoriaSlugs, isExisting: _, existingId, tipo_actor: __, warnings: ___, ...empresaFields } = item;
+      const { categoriaSlugs, isExisting: _, existingId, warnings: ___, ...empresaFields } = item;
 
-      // 1. Actualizar campos opcionales no nulos
+      // 1. Actualizar campos opcionales no nulos (un arreglo vacío de tipo_actor no pisa el valor ya guardado)
       const updateData: Record<string, unknown> = {};
       Object.entries(empresaFields).forEach(([k, v]) => {
-        if (v !== null && v !== undefined && v !== '') {
+        if (Array.isArray(v)) {
+          if (v.length > 0) updateData[k] = v;
+        } else if (v !== null && v !== undefined && v !== '') {
           updateData[k] = v;
         }
       });

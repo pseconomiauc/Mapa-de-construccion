@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS public.empresas (
     contacto_verificado boolean NOT NULL DEFAULT false,
     fuente text,
     tipo_registro text NOT NULL DEFAULT 'empresa' CHECK (tipo_registro IN ('empresa', 'referencia_generica')),
+    tipo_actor text[] NOT NULL DEFAULT '{}' CHECK (tipo_actor <@ ARRAY['F', 'D', 'C', 'S', 'A']::text[]),
     creado_en timestamptz NOT NULL DEFAULT now(),
     actualizado_en timestamptz NOT NULL DEFAULT now(),
     creado_por uuid REFERENCES auth.users(id) ON DELETE SET NULL
@@ -81,6 +82,7 @@ CREATE TABLE IF NOT EXISTS public.empresas (
 COMMENT ON TABLE public.empresas IS 'Empresas registradas en la cadena de la construcción';
 COMMENT ON COLUMN public.empresas.nombre IS 'Nombre o razón social de la empresa (único campo obligatorio)';
 COMMENT ON COLUMN public.empresas.municipio IS 'Uno de los 14 municipios oficiales del estado Carabobo';
+COMMENT ON COLUMN public.empresas.tipo_actor IS 'Roles de la empresa en la cadena: F=Fabricante, D=Distribuidor, C=Contratista, S=Servicio profesional, A=Alquiler/logística. Puede tener varios (ej: fabricante y distribuidor a la vez)';
 
 -- Trigger para mantener actualizado el campo actualizado_en automáticamente
 CREATE OR REPLACE FUNCTION public.set_actualizado_en()

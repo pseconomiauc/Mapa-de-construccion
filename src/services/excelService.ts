@@ -47,15 +47,18 @@ export function exportEmpresasExcel(
 
     slugsToUse.forEach((slug) => {
       const cat = CATEGORIES_BY_SLUG[slug];
-      const defaultActor = cat && cat.actores && cat.actores.length > 0
-        ? DESCRIPCION_ACTORES[cat.actores[0] as TipoActor]
-        : 'Fabricante';
+      const tipoActorTexto =
+        emp.tipo_actor && emp.tipo_actor.length > 0
+          ? emp.tipo_actor.map((t) => DESCRIPCION_ACTORES[t as TipoActor]).join(' y ')
+          : cat && cat.actores && cat.actores.length > 0
+          ? DESCRIPCION_ACTORES[cat.actores[0] as TipoActor]
+          : 'Fabricante';
 
       rowsEmpresas.push({
         'Rama': cat ? cat.rama_nombre : '',
         'Grupo': cat ? cat.grupo : '',
         'Subcategoría': cat ? cat.nombre : slug,
-        'Tipo de actor': defaultActor,
+        'Tipo de actor': tipoActorTexto,
         'Empresa': emp.nombre || '',
         'Municipio': emp.municipio || '',
         'Dirección': emp.direccion || '',
@@ -212,14 +215,30 @@ export function exportPlantillaExcel() {
   downloadWorkbook(wb, 'plantilla_cadena_construccion.xlsx');
 }
 
-export const TIPOS_ACTOR_VALIDOS = [
-  'Fabricante',
-  'Distribuidor',
-  'Contratista',
-  'Servicio profesional',
-  'Alquiler / logística',
-  'F', 'D', 'C', 'S', 'A'
-];
+// Mapa normalizado (nombre completo o letra, en minúsculas sin tildes) -> código de actor
+const ACTOR_CODE_BY_TEXT: Record<string, TipoActor> = {};
+(Object.keys(DESCRIPCION_ACTORES) as TipoActor[]).forEach((code) => {
+  ACTOR_CODE_BY_TEXT[norm(code)] = code;
+  ACTOR_CODE_BY_TEXT[norm(DESCRIPCION_ACTORES[code])] = code;
+});
+
+/**
+ * Interpreta una celda "Tipo de actor" que puede traer uno o varios roles
+ * (ej: "Fabricante y Distribuidor", "Fabricante, Distribuidor", "F/D") y
+ * devuelve los códigos de actor reconocidos, sin duplicados.
+ */
+export function parseTiposActor(raw: string): TipoActor[] {
+  const clean = (raw || '').trim();
+  if (!clean) return [];
+
+  const tokens = clean.split(/\s*(?:,|\/|\+|;|\by\b|\be\b)\s*/i).map((t) => t.trim()).filter(Boolean);
+  const codes: TipoActor[] = [];
+  for (const token of tokens) {
+    const code = ACTOR_CODE_BY_TEXT[norm(token)];
+    if (code && !codes.includes(code)) codes.push(code);
+  }
+  return codes;
+}
 
 export interface ParsedImportItem {
   nombre: string;
@@ -240,7 +259,7 @@ export interface ParsedImportItem {
   contacto_verificado?: boolean;
   fuente?: string | null;
   tipo_registro?: 'empresa' | 'referencia_generica';
-  tipo_actor?: string | null;
+  tipo_actor: TipoActor[];
   categoriaSlugs: string[];
   isExisting: boolean;
   existingId?: string;
@@ -391,15 +410,15 @@ export async function parseExcelFile(
       }
     }
 
-    // Validar Tipo de actor
-    let validActor = actorRaw;
-    if (actorRaw && !TIPOS_ACTOR_VALIDOS.some(v => norm(v) === norm(actorRaw))) {
+    // Validar Tipo de actor (puede traer varios roles a la vez, ej: "Fabricante y Distribuidor")
+    let tiposActor: TipoActor[] = parseTiposActor(actorRaw);
+    if (actorRaw && tiposActor.length === 0) {
       warnings.push({
         row: rowNumber,
         empresa: nombre,
         reason: `Tipo de actor "${actorRaw}" no estándar. Se ajusta según la subcategoría.`
       });
-      validActor = cat.actores && cat.actores.length > 0 ? DESCRIPCION_ACTORES[cat.actores[0] as TipoActor] : 'Fabricante';
+      tiposActor = cat.actores && cat.actores.length > 0 ? [cat.actores[0] as TipoActor] : ['F'];
     }
 
     // Validar Municipio
@@ -496,7 +515,7 @@ export async function parseExcelFile(
         contacto_verificado: false,
         fuente: 'Importación Excel',
         tipo_registro: esGenerico ? 'referencia_generica' : 'empresa',
-        tipo_actor: validActor || null,
+        tipo_actor: tiposActor,
         categoriaSlugs: [cat.slug],
         isExisting: !!existing,
         existingId: existing ? existing.id : undefined,
@@ -516,6 +535,9 @@ export async function parseExcelFile(
         const combined = Array.from(new Set([...currentNote.split('. ').filter(Boolean), ...notasList])).join('. ');
         existingItem.nota_revision = combined;
       }
+      tiposActor.forEach((t) => {
+        if (!existingItem.tipo_actor.includes(t)) existingItem.tipo_actor.push(t);
+      });
       if (!existingItem.telefono && telRaw) existingItem.telefono = telRaw;
       if (!existingItem.whatsapp && waRaw) existingItem.whatsapp = waRaw;
       if (!existingItem.correo && correoRaw) existingItem.correo = correoRaw;

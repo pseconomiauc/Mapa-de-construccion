@@ -12,6 +12,8 @@ export const DESCRIPCION_ACTORES: Record<TipoActor, string> = {
   A: 'Alquiler / logística'
 };
 
+export const TIPOS_ACTOR: TipoActor[] = ['F', 'D', 'C', 'S', 'A'];
+
 export const MUNICIPIOS_CARABOBO = [
   'Bejuma',
   'Carlos Arvelo',
@@ -66,6 +68,7 @@ export interface Empresa {
   contacto_verificado?: boolean;
   fuente?: string | null;
   tipo_registro?: 'empresa' | 'referencia_generica';
+  tipo_actor?: TipoActor[] | null;
   creado_en: string;
   actualizado_en: string;
   creado_por?: string | null;

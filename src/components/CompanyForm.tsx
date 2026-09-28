@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Empresa, MunicipioCarabobo, MUNICIPIOS_CARABOBO } from '../types/database';
+import { Empresa, MunicipioCarabobo, MUNICIPIOS_CARABOBO, TipoActor, TIPOS_ACTOR, DESCRIPCION_ACTORES } from '../types/database';
 import { ALL_CATEGORIES, norm } from '../data/cadenaData';
 import { LocationPickerModal } from './LocationPickerModal';
 import {
@@ -32,6 +32,7 @@ type OptionalFieldKey =
   | 'telefono'
   | 'whatsapp'
   | 'correo'
+  | 'tipo_actor'
   | 'revision_calidad'
   | 'fuente'
   | 'otras_categorias';
@@ -46,6 +47,7 @@ const OPTIONAL_FIELDS: { key: OptionalFieldKey; label: string }[] = [
   { key: 'telefono', label: 'Teléfono' },
   { key: 'whatsapp', label: 'WhatsApp' },
   { key: 'correo', label: 'Correo electrónico' },
+  { key: 'tipo_actor', label: 'Tipo de actor (fabricante, distribuidor…)' },
   { key: 'revision_calidad', label: 'Estado de revisión / Calidad' },
   { key: 'fuente', label: 'Fuente del dato (URL o referencia)' },
   { key: 'otras_categorias', label: 'Otras subcategorías donde también aplica' }
@@ -69,6 +71,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
   const [telefono, setTelefono] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
   const [correo, setCorreo] = useState('');
+  const [tipoActor, setTipoActor] = useState<Set<TipoActor>>(new Set());
   const [contactoVerificado, setContactoVerificado] = useState(false);
   const [revisar, setRevisar] = useState(false);
   const [notaRevision, setNotaRevision] = useState('');
@@ -114,6 +117,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
       setTelefono(empresaToEdit.telefono || '');
       setWhatsapp(empresaToEdit.whatsapp || '');
       setCorreo(empresaToEdit.correo || '');
+      setTipoActor(new Set(empresaToEdit.tipo_actor || []));
       setContactoVerificado(!!empresaToEdit.contacto_verificado);
       setRevisar(!!empresaToEdit.revisar);
       setNotaRevision(empresaToEdit.nota_revision || '');
@@ -130,6 +134,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
       if (empresaToEdit.telefono) initialTicks.add('telefono');
       if (empresaToEdit.whatsapp) initialTicks.add('whatsapp');
       if (empresaToEdit.correo) initialTicks.add('correo');
+      if (empresaToEdit.tipo_actor && empresaToEdit.tipo_actor.length > 0) initialTicks.add('tipo_actor');
       if (empresaToEdit.revisar || empresaToEdit.nota_revision || empresaToEdit.contacto_verificado || empresaToEdit.tipo_registro === 'referencia_generica') {
         initialTicks.add('revision_calidad');
       }
@@ -157,6 +162,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
       setTelefono('');
       setWhatsapp('');
       setCorreo('');
+      setTipoActor(new Set());
       setContactoVerificado(false);
       setRevisar(false);
       setNotaRevision('');
@@ -177,6 +183,15 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
       } else {
         next.add(key);
       }
+      return next;
+    });
+  };
+
+  const toggleTipoActor = (tipo: TipoActor) => {
+    setTipoActor((prev) => {
+      const next = new Set(prev);
+      if (next.has(tipo)) next.delete(tipo);
+      else next.add(tipo);
       return next;
     });
   };
@@ -382,6 +397,7 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
         telefono: activeTicks.has('telefono') && telefono.trim() ? telefono.trim() : null,
         whatsapp: activeTicks.has('whatsapp') && whatsapp.trim() ? whatsapp.trim() : null,
         correo: activeTicks.has('correo') && correo.trim() ? correo.trim() : null,
+        tipo_actor: activeTicks.has('tipo_actor') && tipoActor.size > 0 ? Array.from(tipoActor) : [],
         contacto_verificado: contactoVerificado,
         revisar: activeTicks.has('revision_calidad') ? revisar : false,
         nota_revision: activeTicks.has('revision_calidad') && notaRevision.trim() ? notaRevision.trim() : null,
@@ -737,6 +753,23 @@ export const CompanyForm: React.FC<CompanyFormProps> = ({
                   onChange={(e) => setCorreo(e.target.value)}
                 />
               </label>
+            )}
+
+            {/* TIPO DE ACTOR */}
+            {activeTicks.has('tipo_actor') && (
+              <div style={{ gridColumn: '1 / -1' }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
+                  Tipo de actor (marca todos los que apliquen)
+                </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px' }}>
+                  {TIPOS_ACTOR.map((t) => (
+                    <label key={t} className="tick" style={{ fontSize: '13px' }}>
+                      <input type="checkbox" checked={tipoActor.has(t)} onChange={() => toggleTipoActor(t)} />
+                      <span>{DESCRIPCION_ACTORES[t]}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
             )}
 
             {/* FUENTE */}
