@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { supabase } from '../lib/supabase';
 import { Empresa, MUNICIPIOS_CARABOBO, TIPOS_ACTOR, TipoActor, DESCRIPCION_ACTORES } from '../types/database';
 import { BRANCHES, ALL_CATEGORIES, CATEGORIES_BY_SLUG, norm } from '../data/cadenaData';
@@ -15,6 +15,13 @@ type RevisionFilter = 'all' | 'solo_revisar' | 'sin_revisar';
 type TipoFilter = 'all' | 'empresa' | 'referencia_generica';
 type VerificadoFilter = 'all' | 'verificado' | 'sin_verificar';
 type SortOption = 'nombre_asc' | 'nombre_desc' | 'mas_nuevo' | 'mas_antiguo';
+
+const SORT_OPTIONS: { value: SortOption; label: string }[] = [
+  { value: 'nombre_asc', label: 'Alfabético A-Z' },
+  { value: 'nombre_desc', label: 'Alfabético Z-A' },
+  { value: 'mas_nuevo', label: 'Más nuevas primero' },
+  { value: 'mas_antiguo', label: 'Más antiguas primero' }
+];
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCountsChanged }) => {
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
@@ -46,6 +53,19 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
 
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  // Menú desplegable de orden en el encabezado "Nombre"
+  const [sortMenuOpen, setSortMenuOpen] = useState(false);
+  const sortMenuRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (sortMenuRef.current && !sortMenuRef.current.contains(e.target as Node)) {
+        setSortMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -108,6 +128,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
       filterRamaIds.size === 0 ? ALL_CATEGORIES : ALL_CATEGORIES.filter((c) => filterRamaIds.has(String(c.rama_id)));
     return base.filter((c) => (categoriaCounts[c.slug] || 0) > 0);
   }, [filterRamaIds, categoriaCounts]);
+
+  // Municipios que ya tienen al menos una empresa cargada (para no ofrecer municipios vacíos en el filtro)
+  const municipiosParaFiltro = useMemo(() => {
+    const counts: Record<string, number> = {};
+    empresas.forEach((emp) => {
+      if (emp.municipio) counts[emp.municipio] = (counts[emp.municipio] || 0) + 1;
+    });
+    return MUNICIPIOS_CARABOBO.filter((m) => (counts[m] || 0) > 0);
+  }, [empresas]);
 
   // Al cambiar las ramas seleccionadas, descarta subcategorías que ya no apliquen
   useEffect(() => {
@@ -417,40 +446,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
         />
 
         <MultiSelectDropdown
-          label="Todas las subcategorías"
-          options={categoriasParaFiltro.map((c) => ({ value: c.slug, label: c.nombre }))}
-          selected={filterCategoriaSlugs}
-          onChange={setFilterCategoriaSlugs}
-          minWidth="190px"
-        />
-
-        <MultiSelectDropdown
-          label="Todos los municipios"
-          options={MUNICIPIOS_CARABOBO.map((m) => ({ value: m, label: m }))}
-          selected={filterMunicipios}
-          onChange={(next) => setFilterMunicipios(next as Set<string>)}
-          minWidth="180px"
-        />
-
-        <MultiSelectDropdown
           label="Fabricante, distribuidor…"
           options={TIPOS_ACTOR.map((t) => ({ value: t, label: DESCRIPCION_ACTORES[t] }))}
           selected={filterTipoActor}
           onChange={setFilterTipoActor}
           minWidth="180px"
         />
-
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as SortOption)}
-          style={selectStyle}
-          title="Ordenar listado"
-        >
-          <option value="nombre_asc">Nombre A-Z</option>
-          <option value="nombre_desc">Nombre Z-A</option>
-          <option value="mas_nuevo">Más nuevas primero</option>
-          <option value="mas_antiguo">Más antiguas primero</option>
-        </select>
 
         <select
           value={filterRevision}
@@ -569,9 +570,90 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onNavigateHome, onCounts
                   title="Seleccionar todas las filas visibles"
                 />
               </th>
-              <th style={thStyle}>Nombre</th>
-              <th style={thStyle}>Sector(es)</th>
-              <th style={thStyle}>Municipio</th>
+              <th style={thStyle}>
+                <div ref={sortMenuRef} style={{ position: 'relative', display: 'inline-block' }}>
+                  <button
+                    type="button"
+                    onClick={() => setSortMenuOpen((o) => !o)}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      font: 'inherit',
+                      fontWeight: 600,
+                      color: 'var(--muted)',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: 0
+                    }}
+                    title="Ordenar por nombre o fecha"
+                  >
+                    Nombre <span style={{ fontSize: '10px' }}>▾</span>
+                  </button>
+                  {sortMenuOpen && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 'calc(100% + 4px)',
+                        left: 0,
+                        zIndex: 50,
+                        background: '#fff',
+                        border: '1px solid var(--line)',
+                        borderRadius: '3px',
+                        boxShadow: '0 4px 14px rgba(0,0,0,0.15)',
+                        minWidth: '170px',
+                        padding: '4px'
+                      }}
+                    >
+                      {SORT_OPTIONS.map((o) => (
+                        <button
+                          key={o.value}
+                          type="button"
+                          onClick={() => {
+                            setSortBy(o.value);
+                            setSortMenuOpen(false);
+                          }}
+                          style={{
+                            display: 'block',
+                            width: '100%',
+                            textAlign: 'left',
+                            padding: '6px 8px',
+                            fontSize: '12.5px',
+                            fontWeight: 400,
+                            background: sortBy === o.value ? '#eef2ff' : 'transparent',
+                            border: 'none',
+                            borderRadius: '2px',
+                            cursor: 'pointer',
+                            color: 'var(--ink)'
+                          }}
+                        >
+                          {sortBy === o.value ? '✓ ' : ''}
+                          {o.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </th>
+              <th style={thStyle}>
+                <MultiSelectDropdown
+                  label="Sector(es)"
+                  options={categoriasParaFiltro.map((c) => ({ value: c.slug, label: c.nombre }))}
+                  selected={filterCategoriaSlugs}
+                  onChange={setFilterCategoriaSlugs}
+                  minWidth="0"
+                />
+              </th>
+              <th style={thStyle}>
+                <MultiSelectDropdown
+                  label="Municipio"
+                  options={municipiosParaFiltro.map((m) => ({ value: m, label: m }))}
+                  selected={filterMunicipios}
+                  onChange={(next) => setFilterMunicipios(next as Set<string>)}
+                  minWidth="0"
+                />
+              </th>
               <th style={thStyle}>Tipo de actor</th>
               <th style={thStyle}>Estado</th>
               <th style={thStyle}>Acciones</th>
